@@ -1,0 +1,47 @@
+@use 'variables';
+
+.bookCard {
+  margin: 20px;
+  width: 300px;
+  height: 380px;
+  background-color: variables.$white;
+  border-radius: 2px;
+  
+  align-self: center;
+  justify-self: center;
+
+  .image {
+    position: relative;
+    left: -20px;
+    top: -20px;
+    border-radius: 2px 0;
+    filter: drop-shadow(2px 2px 0 variables.$dark-brown);
+  }
+  .bookInfo {
+    height: 75px;
+    position: relative;
+    left: 20px;
+    top : -75px;
+    filter: drop-shadow(2px 2px 0 variables.$dark-brown);
+    color: variables.$white;
+    padding: 3px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .title{
+      font-size: 32px;
+      align-self: flex-end;
+    }
+    .author {
+      font-style: italic;
+      font-size: 20px;
+    }
+  }
+  .votes {
+    position: relative;
+    top: -55px;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
+}

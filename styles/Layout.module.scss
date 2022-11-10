@@ -1,0 +1,28 @@
+@use 'variables';
+
+.mainBody {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: 160px 1fr 300px;
+}
+
+
+.main {
+  justify-self: center;
+  display: grid;
+  align-items: center;
+  width: variables.$responsive-size;
+}
+
+@media screen and (min-width: variables.$desktop-size){
+
+  .mainBody {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: 235px 1fr 300px;
+  }
+  .main {
+    justify-self: center;
+    width: variables.$desktop-size;
+  }
+} 

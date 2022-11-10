@@ -1,0 +1,9 @@
+@use 'variables';
+
+.arrow {
+  border: none;
+  filter: drop-shadow(2px 2px 0px variables.$dark-brown);
+  background-color: variables.$green;
+  width: 75px;
+  height: 30px;
+}

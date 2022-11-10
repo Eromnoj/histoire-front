@@ -1,0 +1,29 @@
+
+  .showcase {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    justify-self: center;
+  }
+
+  .books {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: auto;
+    row-gap: 30px;
+  }
+
+@media screen and (min-width: 780px) {
+.showcase {
+  width: 750px;
+}
+
+.books {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 60px;
+  column-gap: 75px;
+}
+}

@@ -1,0 +1,32 @@
+@use 'variables';
+
+.footer {
+  height: 300px;
+  background-color: variables.$dark-brown;
+  width: 100vw;
+  display : flex;
+  justify-content: center;
+  .footerContainer{
+    width: variables.$desktop-size;
+    height: 100%;
+    position: relative;
+    ul {
+      color : variables.$white;
+      text-align: right;
+      font-size: 20px;
+      list-style: none;
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      li {
+        margin-bottom: 15px;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: variables.$desktop-size){
+  .footer {
+    width: 100%;
+  }
+}
