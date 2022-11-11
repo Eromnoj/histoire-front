@@ -13,3 +13,7 @@ $black: hsla(0, 0%, 0%, 1);
 
 $desktop-size : 1066px;
 $responsive-size: 100%;
+
+@mixin drop-shadow($x, $y) {
+  filter: drop-shadow($x $y 0px $dark-brown);
+}

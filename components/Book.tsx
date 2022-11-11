@@ -3,7 +3,7 @@ import type { FC } from 'react'
 import type {BookProps} from '../types/componentsTypes'
 import styles from '../styles/Book.module.scss'
 import Image from 'next/image'
-import {categoryColor, countStars } from '../utils/bookComponentFunctions'
+import {categoryColor, countStars } from '../utils/'
 //images imports :
 import star from '../public/img/Star.png'
 import starHalf from '../public/img/Star-half.png'
@@ -20,13 +20,15 @@ const Book: FC<BookProps> = ({
   rating,
   favorite }) => {
 
-    const showStars = countStars(rating).map(value => value ? 
+    const showStars = countStars(rating).map((value,index) => value ? 
     <Image
+    key={index}
       src={star}
       alt={"full star"}
       width={45}
       height={45}
     /> : <Image
+    key={index}
     src={starHalf}
     alt={"half star"}
     width={45}

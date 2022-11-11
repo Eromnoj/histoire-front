@@ -9,7 +9,10 @@ body {
 }
 
 body {
-  background-color: variables.$seashell;
+  background: url('../public/background/BG3.svg') left -105px top 200px no-repeat, url('../public/background/BG6.svg') right -100px top 700px no-repeat, variables.$seashell ;
+  background-size: 500px 500px, 50%;
+  color: variables.$dark-brown;
   font-family: 'Josefin Sans', sans-serif;
+  font-size: 20px;
 }
 

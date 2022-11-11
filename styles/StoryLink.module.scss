@@ -1,0 +1,14 @@
+@use 'variables';
+
+.storyLink {
+  min-height: 45px;
+  @include variables.drop-shadow(2px, 2px);
+  font-size: 20px;
+  color: variables.$white;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 5px;
+  margin: 10px 0;
+}
+

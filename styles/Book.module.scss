@@ -15,14 +15,14 @@
     left: -20px;
     top: -20px;
     border-radius: 2px 0;
-    filter: drop-shadow(2px 2px 0 variables.$dark-brown);
+    @include variables.drop-shadow(2px, 2px);
   }
   .bookInfo {
     height: 75px;
     position: relative;
     left: 20px;
-    top : -75px;
-    filter: drop-shadow(2px 2px 0 variables.$dark-brown);
+    top : -75px;  
+    @include variables.drop-shadow(2px, 2px);
     color: variables.$white;
     padding: 3px;
     display: flex;

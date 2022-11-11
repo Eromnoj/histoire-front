@@ -1,0 +1,27 @@
+@use 'variables';
+
+.checker {
+  width: 200px;
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  @include variables.drop-shadow(2px, 2px);
+  color: variables.$white;
+  font-size: 18px;
+  margin: 10px;
+}
+
+.label {
+  margin-top: 2px;
+}
+
+.checkbox {
+  width: 18px;
+  height: 18px;
+  @include variables.drop-shadow(1px, 1px);
+  border: none;
+  box-shadow: none;
+  border-radius: 0px;
+}

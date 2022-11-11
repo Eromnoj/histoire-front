@@ -1,0 +1,16 @@
+@use 'variables';
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
+
+.submit {
+  border: none;
+  background-color: variables.$green;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 30px;
+  color: variables.$white;
+  height: 45px;
+  padding: 0 20px;
+  padding-top: 5px;
+  cursor: pointer;
+  @include variables.drop-shadow(2px, 2px)
+  
+}

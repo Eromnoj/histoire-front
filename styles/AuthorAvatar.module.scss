@@ -1,0 +1,15 @@
+@use 'variables';
+
+.avatar {
+  $size: 100%;
+  width: $size;
+  height: $size;
+  @include variables.drop-shadow(2px, 2px);
+  margin: 2px;
+  position: relative;
+  overflow: hidden;
+  img {
+    border-radius: 100%;
+    object-fit: cover;
+  }
+}

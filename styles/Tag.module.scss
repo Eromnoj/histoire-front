@@ -1,0 +1,14 @@
+@use 'variables';
+
+.tag{
+  font-size: 18px;
+  border: 1px solid variables.$dark-brown;
+  border-radius: 2px;
+  height : 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @include variables.drop-shadow(2px, 2px);
+  padding: 10px 10px;
+  margin: 7px;
+}

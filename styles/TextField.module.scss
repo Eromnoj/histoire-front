@@ -1,0 +1,27 @@
+@use 'variables';
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
+
+.inputDiv {
+  width: 100%;
+  padding-top: 15px;
+  
+  .label {
+    display: block;
+    margin-bottom: 15px;
+  }
+
+  .field {
+    width: 95%;
+    height: 45px;
+    border: none;
+    border-radius: 2px;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 20px;
+    font-style: italic;
+    color : lighten($color: variables.$dark-brown, $amount: 5%);
+    padding:10px;
+    padding-top: 15px;
+
+    @include variables.drop-shadow(2px, 2px);
+  }
+}

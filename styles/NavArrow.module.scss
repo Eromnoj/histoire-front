@@ -2,8 +2,9 @@
 
 .arrow {
   border: none;
-  filter: drop-shadow(2px 2px 0px variables.$dark-brown);
+  @include variables.drop-shadow(2px, 2px);
   background-color: variables.$green;
   width: 75px;
   height: 30px;
+  margin: 2px;
 }
