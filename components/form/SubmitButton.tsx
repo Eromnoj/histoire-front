@@ -1,6 +1,6 @@
 import React, {FC} from 'react'
 import type { SubmitButtonProps } from '../../types/componentsTypes'
-import styles from '../../styles/SubmitButton.module.scss'
+import styles from '../../styles/formElementsStyle/SubmitButton.module.scss'
 
 
 const SubmitButton:FC<SubmitButtonProps> = ({name}) => {

@@ -1,4 +1,4 @@
-@use 'variables';
+@use '../variables';
 
 .avatar {
   $size: 100%;
@@ -8,6 +8,7 @@
   margin: 2px;
   position: relative;
   overflow: hidden;
+  cursor: pointer;
   img {
     border-radius: 100%;
     object-fit: cover;

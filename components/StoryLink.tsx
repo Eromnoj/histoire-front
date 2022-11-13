@@ -1,5 +1,5 @@
 import React, {FC} from 'react'
-import styles from '../styles/StoryLink.module.scss'
+import styles from '../styles/componentsStyle/StoryLink.module.scss'
 import type { StoryLinkProps } from '../types/componentsTypes'
 import { categoryColor } from '../utils'
 

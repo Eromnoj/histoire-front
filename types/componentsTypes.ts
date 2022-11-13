@@ -33,6 +33,7 @@ export type CheckerProps = {
 
 export type SubmitButtonProps = {
   name: string
+  onClick? : MouseEventHandler
 }
 
 export type TextFieldProps = {
@@ -40,6 +41,26 @@ export type TextFieldProps = {
   name: string
   label: string
   value?: string | undefined
+  onChange : ChangeEventHandler
+}
+
+export type SelectProps = {
+  id: string
+  name: string
+  options : OptionProps[]
+}
+
+export type OptionProps = {
+  _id: string
+  chapterName: string
+}
+
+export type TextAreaProps = {
+  id: string
+  name: string
+  label: string
+  value?: string | undefined
+  rows : number
   onChange : ChangeEventHandler
 }
 //avatar

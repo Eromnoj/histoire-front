@@ -1,7 +1,7 @@
 import React from 'react'
 import type { FC } from 'react'
 import type {BookProps} from '../types/componentsTypes'
-import styles from '../styles/Book.module.scss'
+import styles from '../styles/componentsStyle/Book.module.scss'
 import Image from 'next/image'
 import {categoryColor, countStars } from '../utils/'
 //images imports :

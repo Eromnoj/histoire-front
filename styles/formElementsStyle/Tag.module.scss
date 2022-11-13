@@ -1,4 +1,4 @@
-@use 'variables';
+@use '../variables';
 
 .tag{
   font-size: 18px;
@@ -11,4 +11,5 @@
   @include variables.drop-shadow(2px, 2px);
   padding: 10px 10px;
   margin: 7px;
+  cursor: pointer;
 }

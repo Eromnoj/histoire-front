@@ -1,0 +1,11 @@
+@use '../variables';
+
+
+.tagSelector {
+  margin-top: 30px;
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+}

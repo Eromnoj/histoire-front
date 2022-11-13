@@ -2,7 +2,7 @@ import React from 'react'
 import type { FC, ReactNode } from 'react'
 import Navbar from './Navbar'
 import Footer from './Footer'
-import styles from '../styles/Layout.module.scss'
+import styles from '../../styles/layoutStyle/Layout.module.scss'
 
 type ChildProp = {
   children: ReactNode

@@ -1,0 +1,27 @@
+@use '../variables';
+
+
+.authors {
+  width: 100%;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+
+  .avatarGrid{
+    align-self: center;
+    margin-top: 15px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    row-gap: 30px;
+    .avatar {
+      width: 50px;
+      height: 50px;
+    }
+  }
+  .nav {
+    margin-top: 15px;
+    align-self: flex-end;
+  }
+}

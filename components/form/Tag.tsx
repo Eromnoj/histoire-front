@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from 'react'
 import type { TagProps } from '../../types/componentsTypes'
-import styles from '../../styles/Tag.module.scss'
+import styles from '../../styles/formElementsStyle/Tag.module.scss'
 
 const Tag: FC<TagProps> = ({name, isSelected, onClick}) => {
 

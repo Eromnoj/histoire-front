@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
-import styles from '../styles/Navbar.module.scss'
+import styles from '../../styles/layoutStyle/Navbar.module.scss'
 import Image from 'next/image'
-import burger from '../public/img/Menu.png'
+import burger from '../../public/img/Menu.png'
 
 const Navbar: FC = () => {
   const [windowWidth, setWindowWidth] = useState(0)

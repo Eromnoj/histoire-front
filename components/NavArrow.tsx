@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import type { NavArrowProps } from '../types/componentsTypes'
-import styles from '../styles/NavArrow.module.scss'
+import styles from '../styles/componentsStyle/NavArrow.module.scss'
 import Image, { StaticImageData } from 'next/image'
 import up from '../public/img/up.png'
 import down from '../public/img/down.png'

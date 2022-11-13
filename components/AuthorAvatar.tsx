@@ -1,7 +1,7 @@
 import React, {FC} from 'react'
 import type { AuthorAvatarProps } from '../types/componentsTypes'
 import Image from 'next/image'
-import styles from '../styles/AuthorAvatar.module.scss'
+import styles from '../styles/componentsStyle/AuthorAvatar.module.scss'
 
 const AuthorAvatar: FC<AuthorAvatarProps> = ({id, name, imgUrl}) => {
   return (

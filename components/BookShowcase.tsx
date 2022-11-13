@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import Book from './Book'
-import styles from '../styles/BookShowcase.module.scss'
+import styles from '../styles/componentsStyle/BookShowcase.module.scss'
 import NavArrow from './NavArrow'
 import Tag from './form/Tag'
 
@@ -80,6 +80,11 @@ const bookShowcase: FC = () => {
           rating={2}
           favorite={false} />
       </div>
+
+      <div className={styles.navBottom}>
+          <NavArrow direction='left' onClick={() =>  null } />
+          <NavArrow direction='right' onClick={() => null } />
+        </div>
     </div>
   )
 }

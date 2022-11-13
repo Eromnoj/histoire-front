@@ -1,6 +1,6 @@
 import React,{FC} from 'react'
 import type {CheckerProps} from '../../types/componentsTypes'
-import styles from '../../styles/Checker.module.scss'
+import styles from '../../styles/formElementsStyle/Checker.module.scss'
 import { categoryColor } from '../../utils'
 
 const Checker: FC<CheckerProps> = ({
