@@ -1,0 +1,21 @@
+@use 'variables';
+
+.main {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 100px;
+  .sideBar {
+    height: 100%;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+    .books {
+      align-self: flex-end;
+    }
+    .nav {
+      align-self: flex-end;
+    }
+  }
+}

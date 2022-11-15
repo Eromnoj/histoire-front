@@ -10,6 +10,23 @@ export type BookProps = {
   favorite: boolean
 }
 
+export type BookMinProps = {
+  id: string
+  title: string
+  total: number
+  published: number
+  category: string
+}
+
+export type ChapterProps = {
+  id : string
+  title: string
+  isPublish: boolean
+  onClickStatus: MouseEventHandler
+  onClickMod: MouseEventHandler
+  onClickDel: MouseEventHandler
+}
+
 export type NavArrowProps = {
   direction : string
   onClick : MouseEventHandler
@@ -39,6 +56,7 @@ export type SubmitButtonProps = {
 export type TextFieldProps = {
   id: string
   name: string
+  type?: string
   label: string
   value?: string | undefined
   onChange : ChangeEventHandler
@@ -63,6 +81,8 @@ export type TextAreaProps = {
   rows : number
   onChange : ChangeEventHandler
 }
+
+
 //avatar
 
 export type AuthorAvatarProps = {

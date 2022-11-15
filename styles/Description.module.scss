@@ -1,0 +1,45 @@
+@use 'variables';
+
+.main {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 100px;
+  .sideBar {
+    height: 100%;
+  }
+  .content {
+   .avatarMod {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-end;
+    .avatar {
+      width: 150px;
+      height: 150px;
+    }
+    .avatarForm {
+      .avatarInput{
+        display: none;
+      }
+      .avatarLabel {
+        display: block;
+        cursor: pointer;
+        @include variables.drop-shadow(2px,2px);
+        color: variables.$white;
+        background-color: variables.$blue;
+        padding: 7px 10px;
+      }
+    }
+   }
+
+   .descForm {
+    display: flex;
+    flex-direction: column;
+
+    .button {
+      margin-top: 45px;
+      align-self: flex-end;
+    }
+   }
+  }
+}

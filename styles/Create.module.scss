@@ -1,0 +1,67 @@
+@use 'variables';
+
+.main {
+  display: grid;
+  grid-template-columns: 310px 600px;
+  gap: 150px;
+
+
+  .sideBar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .bookImgMod{
+      .bookImg {
+        @include variables.drop-shadow(2px, 2px)
+      }
+      .bookImgForm {
+        .bookImgInput{
+          display: none;
+        }
+        .bookImgLabel {
+          display: block;
+          cursor: pointer;
+          @include variables.drop-shadow(2px,2px);
+          color: variables.$white;
+          background-color: variables.$green;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 5px;
+          padding-top: 9px;
+          width: 240px;
+          position: relative;
+          top: -10px;
+          left: 70px;
+        }
+      }
+    }
+    .restrain {
+      width: 280px;
+    }
+  }
+  .bookDesc {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .button {
+      align-self: flex-end;
+      margin-top: 30px;
+    }
+    .chapter {
+      width: 100%;
+      margin-top: 45px;
+      display: flex;
+      flex-direction: column;
+      .chapTitle {
+        font-size: 20px;
+        margin-bottom: 15px;
+      }
+
+      .nav {
+        align-self: flex-end;
+        margin-top: 10px;
+      }
+    }
+  }
+}

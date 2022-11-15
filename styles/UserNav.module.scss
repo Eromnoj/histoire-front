@@ -1,0 +1,30 @@
+@use 'variables';
+
+.userNav {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  .linksList {
+    list-style: none;
+    .link {
+      @include variables.drop-shadow(2px, 2px);
+      width : 240px;
+      height: 45px;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      padding-left: 5px;
+      color: variables.$white;
+    }
+    .link:nth-child(1){
+      background-color: variables.$blue;
+    }
+    .link:nth-child(2){
+      background-color: variables.$red;
+    }
+    .link:nth-child(3){
+      background-color: variables.$green;
+    }
+  }
+}

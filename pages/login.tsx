@@ -6,7 +6,7 @@ import type { NextPageWithLayout } from './_app'
 
 import Layout from '../components/layout/Layout'
 
-import TextField from '../components/form/TextField'
+import InputField from '../components/form/InputField'
 import SubmitButton from '../components/form/SubmitButton'
 
 const Login: NextPageWithLayout = () => {
@@ -24,14 +24,16 @@ Login.getLayout = function getLayout(page: ReactElement) {
       <div className={styles.main}>
         <p className={styles.title}>Se connecter</p>
         <form className={styles.loginForm}>
-          <TextField
+          <InputField
             id='email'
+            type='email'
             name='email'
             label='Email'
             onChange={() => null}
           />
-          <TextField
+          <InputField
             id='password'
+            type='password'
             name='password'
             label='Mot de passe'
             onChange={() => null}

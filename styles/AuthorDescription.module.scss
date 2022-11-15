@@ -1,0 +1,51 @@
+@use 'variables';
+
+.main {
+  display: grid;
+  grid-template-rows: 1fr 400px;
+  margin-bottom: 210px;
+  .authorInfo {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 150px;
+    .sideBar {
+      display: flex;
+      flex-direction: column;
+      .avatar {
+        width: 300px;
+        height: 300px;
+      }
+      .social {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 45px;
+      }
+    }
+    .authorDescription{
+      width: 600px;
+      .authorName {
+        font-size: 45px;
+        margin-bottom: 75px;
+      }
+      .paragraph {
+        font-size: 25px;
+        margin-bottom: 25px;
+      }
+    }
+  }
+
+  .bookNav {
+    display: flex;
+    flex-direction: column;
+    margin-top: 150px;
+    .books {
+      display: flex;
+      justify-content: space-between;
+    }
+    .nav {
+      align-self: flex-end;
+      margin-top: 30px;
+    }
+  }
+}

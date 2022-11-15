@@ -1,0 +1,42 @@
+@use 'variables';
+
+.bookDiv {
+  width: 600px;
+  background-color: variables.$white;
+  border-radius: 2px;
+  height: 75px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin-bottom: 45px;
+  .title {
+    height: 55px;
+    width: 320px;
+    @include variables.drop-shadow(2px, 2px);  
+    color: variables.$white;
+    font-size: 25px;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    position: relative;
+    left: -15px;
+    top: -15px;
+  }
+  .bookInfo{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .count {
+      display: flex;
+      justify-content: space-between;
+      // padding:  0px 10px;
+      .chapterCount, .publishedCount{
+        margin: 0px 10px;
+      }    
+      
+    }
+    .modify{
+      margin-right: 2px;
+    }
+  }
+}

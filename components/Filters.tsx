@@ -3,7 +3,7 @@ import styles from '../styles/componentsStyle/Filters.module.scss'
 
 import CategorySelector from './CategorySelector'
 import TagSelector from './TagSelector'
-import TextField from './form/TextField'
+import InputField from './form/InputField'
 import AuthorGrid from './AuthorGrid'
 import BookList from './BookList'
 
@@ -17,7 +17,7 @@ const Filters: FC = () => {
 
       <TagSelector />
 
-      <TextField
+      <InputField
         id='fzfzefz'
         name='filter'
         label='Rechercher'

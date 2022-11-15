@@ -1,0 +1,64 @@
+@use 'variables';
+
+.main {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 110px;
+
+  .sideBar{
+    .tag {
+      margin-top: 45px;
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .authorInfo{
+      margin-top: 45px;
+      .authorID{
+        margin-top: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .avatar{
+          width: 100px;
+          height: 100px;
+        }
+        .authorName {
+          font-size: 30px;
+          font-style: italic;
+        }
+      }
+
+      .authorPrez {
+        margin-top: 20px;
+        font-size: 25px;
+      }
+    }
+  }
+
+  .content {
+    width: 600px;
+    .title {
+      font-size: 45px;
+      margin-bottom: 75px;
+    }
+    .paragraph {
+      font-size: 25px;
+      margin-bottom: 25px;
+    }
+
+    .selectChapter {
+      margin-top: 45px;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      & div:first-child {
+        align-self: flex-start;
+        width: 90%;
+      }
+      & div:last-child {
+        margin-top: 45px;
+        align-self: flex-end;
+      }
+    }
+  }
+}
