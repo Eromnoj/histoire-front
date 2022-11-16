@@ -1,0 +1,47 @@
+@use 'variables';
+@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  .button{
+    position: fixed;
+    top: 75px;
+    left: 75px;
+    width: 75px;
+    height: 195px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .back, .bookmarkSave{
+      cursor: pointer;
+    }
+  }
+
+  .whiteBox {
+    font-family: 'Lora', serif;
+    font-size: 20px;
+    margin: auto;
+    max-width: 800px;
+    height: 100vh;
+    overflow-y:scroll;
+    background-color: variables.$white;
+    .text {
+      width: 600px;
+      margin: auto;
+    }
+  }
+  .editor {
+    font-family: 'Lora', serif;
+    font-size: 20px;
+    margin: auto;
+    max-width: 800px;
+    height: 100vh;
+    overflow-y:hidden;
+    background-color: variables.$white;
+  }
+}
+
+
+
