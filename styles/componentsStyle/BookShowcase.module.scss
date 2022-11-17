@@ -1,42 +1,109 @@
+@use '../variables';
 
-  .showcase {
-    width: 100%;
+.showcase {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  justify-self: center;
+  align-items: center;
+  position: relative;
+
+  .toggleFilter {
     display: flex;
-    flex-direction: column;
-    align-self: center;
-    justify-self: center;
-    .showcaseNav {
+    justify-content: space-evenly;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-top: 4px;
+    width: 180px;
+    height: 30px;
+    @include variables.drop-shadow(2px, 2px);
+    color: variables.$white;
+    background-color: variables.$green;
+    z-index: 30;
+
+    .arrow {
+      transform: rotate(0deg);
+      transform-origin: 15px 15px;
+      transition: transform 0.1s;
+    }
+
+    .arrowDown {
+      transform: rotate(-180deg);
+      transform-origin: 15px 15px;
+      transition: transform 0.1s;
+    }
+
+  }
+
+  .filtersHide {
+    height: 0px;
+    visibility: hidden;
+    position: absolute;
+    z-index: 20;
+  }
+
+  .filtersShow {
+    visibility: visible;
+    position: absolute;
+    z-index: 20;
+    background-color: variables.$seashell;
+    transition: height 0.3s;
+    padding: 30px 50px;
+  }
+
+  .showcaseNav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 30px;
+
+    .sort {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 30px;
-      .sort {
-        display: flex;
-        align-items: center;
-      }
     }
+  }
+
+  .books {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: auto;
+    row-gap: 30px;
+  }
+
+  .navBottom {
+    margin-top: 15px;
+  }
+}
+
+@media screen and (min-width: 780px) {
+  .showcase {
+    width: 750px;
+
     .books {
-      width: 100%;
       display: grid;
-      grid-template-columns: 1fr;
-      padding: auto;
-      row-gap: 30px;
+      grid-template-columns: 1fr 1fr;
+      row-gap: 60px;
+      column-gap: 75px;
     }
-    
+
     .navBottom {
-      margin-top: 15px;
       align-self: flex-end;
     }
   }
-@media screen and (min-width: 780px) {
-.showcase {
-  width: 750px;
-  
-  .books {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    row-gap: 60px;
-    column-gap: 75px;
-  }
 }
+
+@media screen and (min-width: 900px) {
+  .showcase {
+
+    .toggleFilter{
+      align-self: flex-start;
+    }
+    .filtersShow {
+      width: 95vw;
+    }
+  }
+
 }

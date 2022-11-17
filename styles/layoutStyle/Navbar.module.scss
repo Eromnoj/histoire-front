@@ -5,21 +5,25 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  z-index: 20;
+  z-index: 40;
+
   .burger {
     position: absolute;
     top: 10px;
     right: 10px;
   }
+
   .dropdown {
     list-style: none;
     padding-top: 50px;
     width: variables.$responsive-size;
+
     ul {
       display: flex;
       flex-direction: column;
       list-style: none;
       background-color: variables.$seashell;
+
       li {
         color: variables.$dark-brown;
         text-align: right;
@@ -27,30 +31,42 @@
         margin-top: 40px;
         margin-right: 20px;
         height: 30px;
-        &:nth-child(4){
+
+        &:nth-child(4) {
           margin-top: 55px;
           height: 60px;
         }
       }
     }
   }
+
   .navbar {
     list-style: none;
     padding-top: 50px;
-    width: variables.$desktop-size;
+    width: 900px;
     display: flex;
-    justify-content: flex-end;
-    
+    justify-content: center;
+
     ul {
       display: flex;
       flex-direction: row;
       list-style: none;
-      
+
       li {
         color: variables.$dark-brown;
         font-size: 25px;
         margin-left: 45px;
       }
+    }
+  }
+}
+
+@media screen and (min-width: 1066px) {
+  .header {
+
+    .navbar {
+      width: 1066px;
+      justify-content: flex-end;
     }
   }
 }

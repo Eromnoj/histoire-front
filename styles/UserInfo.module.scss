@@ -1,0 +1,63 @@
+@use 'variables';
+
+.main {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .sideBar {
+    height: 100%;
+  }
+
+  .content {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .infoForm{
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      .button{
+        align-self: flex-end;
+        margin-top: 45px;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .main {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  
+    .sideBar {
+      height: 100%;
+      width: 100%;
+    }
+  
+    .content {
+      width: 90%;
+      max-width: 600px;
+     
+    }
+  }
+
+
+
+
+
+}
+
+@media screen and (min-width: 1066px) {
+  .main {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 100px;
+  }
+}

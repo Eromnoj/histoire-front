@@ -5,7 +5,7 @@
   border: none;
   background-color: variables.$green;
   font-family: 'Josefin Sans', sans-serif;
-  font-size: 30px;
+  font-size: 20px;
   color: variables.$white;
   height: 45px;
   padding: 0 20px;
@@ -13,4 +13,10 @@
   cursor: pointer;
   @include variables.drop-shadow(2px, 2px)
   
+}
+
+@media screen and (min-width: 900px) {
+.submit {
+  font-size: 30px;
+}
 }

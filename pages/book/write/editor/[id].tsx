@@ -11,7 +11,7 @@ const QuillNoSSRWrapper = dynamic(import('react-quill'), {
 	loading: () => <p>Loading ...</p>,
 	})
 
-const read = () => {
+const Edit = () => {
   const router = useRouter()
   const {id} = router.query
 
@@ -46,4 +46,4 @@ const read = () => {
   )
 }
 
-export default read
+export default Edit

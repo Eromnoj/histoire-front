@@ -9,11 +9,11 @@ const Navbar: FC = () => {
 
   useEffect(()=>{
     setWindowWidth(window.innerWidth)
-  },[])
+  },[windowWidth])
 
   return (
     <header className={styles.header}>
-      {windowWidth >= 1066 ?
+      {windowWidth >= 900 ?
       null :
       <div className={styles.burger} onClick={()=> setToggle(prev => !prev)}>
         <Image
@@ -24,8 +24,8 @@ const Navbar: FC = () => {
         />
         </div>
     }
-    <nav className={windowWidth >= 1066 ? styles.navbar : styles.dropdown} >
-      {toggle || windowWidth >= 1066  ? 
+    <nav className={windowWidth >= 900 ? styles.navbar : styles.dropdown} >
+      {toggle || windowWidth >= 900  ? 
       <ul>
         <li>Ecrire</li>
         <li>Parcourir</li>

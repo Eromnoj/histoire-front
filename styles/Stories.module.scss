@@ -2,20 +2,60 @@
 
 .main {
   height: 100%;
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  gap: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   .sideBar {
     height: 100%;
   }
+
   .content {
+    margin-top: 45px;
     display: flex;
     flex-direction: column;
+    align-items: center;
     .books {
-      align-self: flex-end;
+      width: 100%;
     }
-    .nav {
-      align-self: flex-end;
+  }
+}
+
+@media screen and (min-width:900px) {
+.main {
+  .sideBar{
+    width: 100%;
+  }
+  .content{
+    width: 600px;
+  }
+}
+
+
+}
+
+@media screen and (min-width:1066px) {
+  .main {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 100px;
+
+    .sideBar {
+      height: 100%;
+    }
+
+    .content {
+      margin: unset;
+      display: flex;
+      flex-direction: column;
+
+      .books {
+        align-self: flex-end;
+      }
+
+      .nav {
+        align-self: flex-end;
+      }
     }
   }
 }

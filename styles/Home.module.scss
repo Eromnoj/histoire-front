@@ -3,3 +3,10 @@
   grid-template-columns: 752px 245px;
   gap: 69px;
 }
+
+.mainResponsive {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

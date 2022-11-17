@@ -1,36 +1,52 @@
 @use 'variables';
 
 .main {
-  display: grid;
-  grid-template-rows: 1fr 400px;
-  margin-bottom: 210px;
+  display: flex;
+  flex-direction: column;
+
   .authorInfo {
-    display: grid;
-    grid-template-columns: 300px 1fr;
-    gap: 150px;
+    display: flex;
+    flex-direction: column;
+
     .sideBar {
       display: flex;
       flex-direction: column;
+      align-items: center;
+
       .avatar {
         width: 300px;
         height: 300px;
       }
+
       .social {
         display: flex;
-        justify-content: space-between;
+        justify-content: space-evenly;
         width: 100%;
         margin-top: 45px;
+        .links {
+          display: flex;
+          justify-content: space-evenly;
+          width: 100%;
+        }
       }
     }
-    .authorDescription{
-      width: 600px;
+
+    .authorDescription {
+      width: 100%;
+      max-width: 600px;
+
       .authorName {
         font-size: 45px;
+        margin-top: 30px;
         margin-bottom: 75px;
+        text-align: center;
       }
+
       .paragraph {
         font-size: 25px;
         margin-bottom: 25px;
+        width: 95%;
+        margin: auto;
       }
     }
   }
@@ -38,14 +54,94 @@
   .bookNav {
     display: flex;
     flex-direction: column;
+    align-items: center;
     margin-top: 150px;
+
     .books {
       display: flex;
+      flex-direction: column;
+      width: 100%;
       justify-content: space-between;
     }
+
     .nav {
-      align-self: flex-end;
       margin-top: 30px;
+    }
+  }
+}
+
+@media screen and (min-width:900px) {
+  .main {
+
+    .authorInfo {
+      align-items: center;
+
+      .sideBar {
+        flex-direction: row;
+        justify-content: space-evenly;
+        width: 100%;
+        margin-bottom: 45px;
+
+        .social {
+          display: flex;
+          flex-direction: column;
+          width: 30%;
+
+          .authorName {
+            align-self: center;
+          }
+
+          .links {
+            margin-top: 30px;
+            justify-content: space-evenly;
+            display: flex;
+          }
+        }
+      }
+    }
+    .bookNav {
+      .books {
+        flex-direction: row;
+        justify-content: space-evenly;
+      }
+    }
+  }
+
+}
+
+@media screen and (min-width:1066px) {
+  .main {
+    display: grid;
+    grid-template-rows: 1fr 400px;
+    margin-bottom: 210px;
+
+    .authorInfo {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 150px;
+
+      .sideBar {
+        flex-direction: column;
+        .social{
+          width: 100%;
+          .links {
+            justify-content: space-evenly;
+          }
+        }
+      }
+
+      .authorDescription {
+
+        .authorName {
+          text-align: left;
+        }
+      }
+    }
+
+    .bookNav {
+      .nav {
+        align-self: flex-end;
+      }
     }
   }
 }

@@ -52,13 +52,16 @@ EditBook.getLayout = function getLayout(page: ReactElement) {
               </label>
             </form>
           </div>
-          <div className={styles.restrain}>
-            <CategorySelector />
+          <div className={styles.selectors}>
 
-          </div>
-          <div className={styles.restrain}>
-            <TagSelector />
+            <div className={styles.restrain}>
+              <CategorySelector />
 
+            </div>
+            <div className={styles.restrain}>
+              <TagSelector />
+
+            </div>
           </div>
 
         </div>

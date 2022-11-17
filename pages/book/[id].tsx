@@ -32,26 +32,30 @@ BookDescription.getLayout = function getLayout(page: ReactElement) {
       </Head>
       <div className={styles.main}>
         <div className={styles.sideBar}>
-          <Book
-            id='adeggreg5'
-            picture='/book.webp'
-            title='Lorem Ipsum'
-            author='Author Name'
-            category='short_story'
-            rating={4}
-            favorite={true} />
 
-          <div className={styles.tag}>
-            <Tag
-              name='Jeunesse'
-              isSelected={false}
-              onClick={() => null}
-            />
-            <Tag
-              name='Aventure'
-              isSelected={false}
-              onClick={() => null}
-            />
+          <div className={styles.book}>
+
+            <Book
+              id='adeggreg5'
+              picture='/book.webp'
+              title='Lorem Ipsum'
+              author='Author Name'
+              category='short_story'
+              rating={4}
+              favorite={true} />
+
+            <div className={styles.tag}>
+              <Tag
+                name='Jeunesse'
+                isSelected={false}
+                onClick={() => null}
+              />
+              <Tag
+                name='Aventure'
+                isSelected={false}
+                onClick={() => null}
+              />
+            </div>
           </div>
 
           <div className={styles.authorInfo}>
@@ -75,6 +79,8 @@ BookDescription.getLayout = function getLayout(page: ReactElement) {
               Fusce condimentum viverra neque eu vehicula. Donec sem quam, condimentum imperdiet neque iaculis, finibus dignissim enim
             </div>
           </div>
+
+
         </div>
         <div className={styles.content}>
           <h2 className={styles.title}>Lorem Ipsum</h2>
@@ -92,26 +98,26 @@ BookDescription.getLayout = function getLayout(page: ReactElement) {
           <form className={styles.selectChapter}>
             <div>
 
-            <Select
-              id='select_chapter'
-              name='select_chapter'
-              options={[
-                {
-                  _id: 'sfddsfsdfsd',
-                  chapterName: 'Chapitre 1 - La rue des ombres'
-                },
-                {
-                  _id: 'sfddsfsdfsd',
-                  chapterName: 'Chapitre 1 - La cabanes au fond du jardin'
-                }
-              ]}
+              <Select
+                id='select_chapter'
+                name='select_chapter'
+                options={[
+                  {
+                    _id: 'sfddsfsdfsd',
+                    chapterName: 'Chapitre 1 - La rue des ombres'
+                  },
+                  {
+                    _id: 'sfddsfsdfsd',
+                    chapterName: 'Chapitre 1 - La cabanes au fond du jardin'
+                  }
+                ]}
               />
-              </div>
-              <div>
+            </div>
+            <div>
 
-          <SubmitButton 
-            name='Commencer'
-            />
+              <SubmitButton
+                name='Commencer'
+              />
             </div>
           </form>
         </div>

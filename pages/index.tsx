@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.scss'
 
-import type { ReactElement } from 'react'
+import { ReactElement, useEffect,useState } from 'react'
 import type { NextPageWithLayout } from './_app'
 import BookShowcase from '../components/BookShowcase'
 
@@ -13,6 +13,12 @@ const Home: NextPageWithLayout = () => {
 }
 
 Home.getLayout = function getLayout(page: ReactElement) {
+
+  const [windowWidth, setWindowWidth] = useState(0)
+
+  useEffect(()=>{
+    setWindowWidth(window.innerWidth)
+  },[windowWidth])
   return (
     <Layout>
       <Head>
@@ -20,9 +26,13 @@ Home.getLayout = function getLayout(page: ReactElement) {
         <meta name="description" content="Partagez vos histoires" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className={styles.main}>
+      <div className={windowWidth >= 1066 ? styles.main : styles.mainResponsive}>
       <BookShowcase />
+      {windowWidth <= 1066 ?
+      null :
       <Filters />
+    }
+     
       </div>
     </Layout>
   )

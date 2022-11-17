@@ -1,7 +1,7 @@
 @use 'variables';
 
 .bookDiv {
-  width: 600px;
+  width: 100%;
   background-color: variables.$white;
   border-radius: 2px;
   height: 75px;
@@ -11,7 +11,7 @@
   margin-bottom: 45px;
   .title {
     height: 55px;
-    width: 320px;
+    min-width: 320px;
     @include variables.drop-shadow(2px, 2px);  
     color: variables.$white;
     font-size: 25px;

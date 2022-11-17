@@ -2,12 +2,12 @@
 
 
 .authors {
-  width: 100%;
+  width: 240px;
   margin-top: 30px;
   display: flex;
   flex-direction: column;
 
-  .avatarGrid{
+  .avatarGrid {
     align-self: center;
     margin-top: 15px;
     width: 100%;
@@ -15,13 +15,30 @@
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
     row-gap: 30px;
+
     .avatar {
       width: 50px;
       height: 50px;
     }
   }
+
   .nav {
     margin-top: 15px;
     align-self: flex-end;
   }
+}
+
+@media screen and (min-width: 900px) and (max-width: 1066px) {
+  .authors {
+    .avatarGrid {
+      align-self: center;
+      display: flex;
+      flex-wrap: wrap;
+      row-gap: 0;
+      .avatar {
+        margin: 15px;
+      }
+    }
+  }
+
 }
