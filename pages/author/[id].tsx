@@ -1,8 +1,7 @@
 import Head from 'next/head'
 import styles from '../../styles/AuthorDescription.module.scss'
 
-import { ReactElement, useEffect, useState } from 'react'
-import type { NextPageWithLayout } from '../_app'
+import { useEffect, useState } from 'react'
 import Layout from '../../components/layout/Layout'
 
 import React, { FC } from 'react'
@@ -48,11 +47,8 @@ const SocialLink: FC = () => {
   )
 }
 
-const AuthorDescription: NextPageWithLayout = () => {
-  return <p>Author description</p>
-}
 
-AuthorDescription.getLayout = function getLayout(page: ReactElement) {
+const AuthorDescription = () => {
   const router = useRouter()
   const { id } = router.query
 

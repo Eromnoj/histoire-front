@@ -1,6 +1,8 @@
 import React, { FC } from 'react'
-import Checker from './form/Checker'
+import Radio from './form/Radio'
 import styles from '../styles/componentsStyle/CategorySelector.module.scss'
+
+
 const CategorySelector: FC = () => {
 
   return (
@@ -8,19 +10,19 @@ const CategorySelector: FC = () => {
       <p className={styles.title}>Catégorie :</p>
       <div className={styles.selectors}>
 
-        <Checker
+        <Radio
+          name='bookType'
           id='novel'
-          name='novel'
           label='Roman'
         />
-        <Checker
+        <Radio
+          name='bookType'
           id='poetry'
-          name='poetry'
           label='Poésie'
         />
-        <Checker
+        <Radio
+          name='bookType'
           id='short_story'
-          name='short_story'
           label='Nouvelle'
         />
       </div>

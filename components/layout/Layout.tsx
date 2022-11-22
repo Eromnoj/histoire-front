@@ -4,6 +4,7 @@ import Navbar from './Navbar'
 import Footer from './Footer'
 import styles from '../../styles/layoutStyle/Layout.module.scss'
 
+
 type ChildProp = {
   children: ReactNode
 }

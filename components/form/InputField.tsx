@@ -6,8 +6,6 @@ import styles from '../../styles/formElementsStyle/TextField.module.scss'
 
 const TextField:FC<TextFieldProps> = ({id, name, type, label, value, onChange}) => {
 
-  console.log(type);
-  
   return (
     <div className={styles.inputDiv}>
       <label htmlFor={name} className={styles.label}>{label} :</label>

@@ -1,19 +1,37 @@
 import Head from 'next/head'
 import styles from '../styles/login.module.scss'
 
-import type { ReactElement } from 'react'
-import type { NextPageWithLayout } from './_app'
-
 import Layout from '../components/layout/Layout'
 
 import InputField from '../components/form/InputField'
 import SubmitButton from '../components/form/SubmitButton'
 
-const Register: NextPageWithLayout = () => {
-  return <p>Register</p>
-}
+import React, { useReducer } from 'react'
 
-Register.getLayout = function getLayout(page: ReactElement) {
+const Register = () => {
+  const initialState = {
+    email: '',
+    username: '',
+    password: ''
+  }
+
+  const reducer = (state: { email: string, username: string, password: string }, action: { field: string, payload: string }) => {
+    switch (action.field) {
+      case 'email':
+        return { ...state, email: action.payload };
+      case 'username':
+        return { ...state, username: action.payload };
+      case 'password':
+        return { ...state, password: action.payload };
+      default:
+        return state
+
+    }
+  }
+
+  const [state, dispatch] = useReducer(reducer, initialState)
+
+
   return (
     <Layout>
       <Head>
@@ -28,20 +46,23 @@ Register.getLayout = function getLayout(page: ReactElement) {
             id='email'
             name='email'
             label='Email'
-            onChange={() => null}
+            value={state.email}
+            onChange={(e) => dispatch({field:'email', payload: e.currentTarget.value })}
           />
 
           <InputField
             id='username'
             name='username'
             label={`Nom d'utilisateur`}
-            onChange={() => null}
+            value={state.username}
+            onChange={(e) => dispatch({field:'username', payload: e.currentTarget.value })}
           />
           <InputField
             id='password'
             name='password'
             label='Mot de passe'
-            onChange={() => null}
+            value={state.password}
+            onChange={(e) => dispatch({field:'password', payload: e.currentTarget.value })}
           />
 
           <div className={styles.button}>
@@ -60,4 +81,3 @@ Register.getLayout = function getLayout(page: ReactElement) {
 }
 
 export default Register
-

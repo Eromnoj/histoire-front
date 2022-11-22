@@ -1,8 +1,6 @@
 import Head from 'next/head'
 import styles from '../../styles/BookDescription.module.scss'
 
-import type { ReactElement } from 'react'
-import type { NextPageWithLayout } from '../_app'
 import Layout from '../../components/layout/Layout'
 
 import React from 'react'
@@ -15,11 +13,8 @@ import AuthorAvatar from '../../components/AuthorAvatar'
 import Select from '../../components/form/Select'
 import SubmitButton from '../../components/form/SubmitButton'
 
-const BookDescription: NextPageWithLayout = () => {
-  return <p>Book Description</p>
-}
 
-BookDescription.getLayout = function getLayout(page: ReactElement) {
+const BookDescription = () => {
   const router = useRouter()
   const { id } = router.query
 

@@ -1,19 +1,18 @@
 import Head from 'next/head'
 import styles from '../styles/login.module.scss'
 
-import type { ReactElement } from 'react'
-import type { NextPageWithLayout } from './_app'
-
 import Layout from '../components/layout/Layout'
 
 import InputField from '../components/form/InputField'
 import SubmitButton from '../components/form/SubmitButton'
 
-const Forgot: NextPageWithLayout = () => {
-  return <p>Forgot</p>
-}
+import React, { useState } from 'react'
 
-Forgot.getLayout = function getLayout(page: ReactElement) {
+const Forgot = () => {
+
+  const [email, setEmail] = useState('')
+
+
   return (
     <Layout>
       <Head>
@@ -29,7 +28,8 @@ Forgot.getLayout = function getLayout(page: ReactElement) {
             id='email'
             name='email'
             label='Email'
-            onChange={() => null}
+            value={email}
+            onChange={(e) => setEmail(e.currentTarget.value)}
           />
 
           <div className={styles.button}>
@@ -46,4 +46,5 @@ Forgot.getLayout = function getLayout(page: ReactElement) {
 }
 
 export default Forgot
+
 

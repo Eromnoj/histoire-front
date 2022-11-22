@@ -5,7 +5,12 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Back from '../../../../public/img/Back.png'
 import Save from '../../../../public/img/Save.png'
+import InputField from '../../../../components/form/InputField'
+
+import { useSelector, useDispatch } from 'react-redux'
+
 import dynamic from 'next/dynamic'
+import { chapterContent, chapterTitle, RootState } from '../../../../stores'
 const QuillNoSSRWrapper = dynamic(import('react-quill'), {	
 	ssr: false,
 	loading: () => <p>Loading ...</p>,
@@ -15,32 +20,44 @@ const Edit = () => {
   const router = useRouter()
   const {id} = router.query
 
-  const [text, setText] = useState('Commencez à écrire')
+  const dispatch = useDispatch()
+  const chapter = useSelector((state:RootState) => state.chapter)
 
-  console.log(text)
+  console.log(chapter);
+  
   return (
     <div className={styles.container}>
       <div className={styles.button}>
         <div className={styles.back}>
+          <div className={styles.image}>
           <Image
             src={Back}
-            width={75}
-            height={75}
+            fill={true}
             alt='Go Back'
-          />
+            />
+            </div>
         </div>
         <div className={styles.bookmarkSave}>
+        <div className={styles.image}>
           <Image
             src={Save}
-            width={75}
-            height={75}
-            alt='Bookmark'
+            fill={true}
+            alt='Save'
           />
+        </div>
         </div>
       </div>
 
       <div className={styles.editor}>
-       <QuillNoSSRWrapper theme='snow' style={{height: '100vh'}} value={text} onChange={(e) => setText(e)}/>
+        <InputField 
+          id='title'
+          label='Titre'
+          name='title'
+          value={chapter.title}
+          onChange={(e)=> dispatch(chapterTitle({title: e.currentTarget.value}))}
+        
+        />
+       <QuillNoSSRWrapper theme='snow' style={{height: '100vh'}} value={chapter.content} onChange={(e) => dispatch(chapterContent({content: e}))}/>
       </div>
     </div>
   )

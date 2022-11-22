@@ -1,4 +1,4 @@
-import { ChangeEventHandler, MouseEventHandler } from "react"
+import { ChangeEventHandler, FormEventHandler, MouseEventHandler } from "react"
 
 export type BookProps = {
   id: string
@@ -47,6 +47,12 @@ export type CheckerProps = {
   label: string
 }
 
+export type RadioProps = {
+  id: string
+  name: string
+  label: string
+}
+
 
 export type SubmitButtonProps = {
   name: string
@@ -59,7 +65,7 @@ export type TextFieldProps = {
   type?: string
   label: string
   value?: string | undefined
-  onChange : ChangeEventHandler
+  onChange : FormEventHandler<HTMLInputElement>
 }
 
 export type SelectProps = {
@@ -79,7 +85,7 @@ export type TextAreaProps = {
   label: string
   value?: string | undefined
   rows : number
-  onChange : ChangeEventHandler
+  onChange :  FormEventHandler<HTMLTextAreaElement>
 }
 
 
@@ -98,4 +104,10 @@ export type StoryLinkProps = {
   name: string
   category: string
   onClick: MouseEventHandler
+}
+
+//
+
+export type TagSelectorProps = {
+  method: string
 }

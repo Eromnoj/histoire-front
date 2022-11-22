@@ -1,4 +1,4 @@
-import React, { FC, useState,useEffect } from 'react'
+import React, { FC, useState,useEffect, ReactNode } from 'react'
 import styles from '../styles/componentsStyle/Filters.module.scss'
 
 import CategorySelector from './CategorySelector'
@@ -8,10 +8,27 @@ import AuthorGrid from './AuthorGrid'
 import BookList from './BookList'
 import Sort from './Sort'
 
+
+
+import { useDispatch, useSelector } from 'react-redux'
+
+import { RootState } from '../stores'
+import { searchFromTitle } from '../stores'
+
+
 const Filters: FC = () => {
 
   const [windowWidth, setWindowWidth] = useState(0)
+  const dispatch = useDispatch()
+  const filter = useSelector((state:RootState)=> state.filter)
+  const {search} = filter
 
+  const handleSearch = (e:React.FormEvent<HTMLInputElement>)=> {
+    e.preventDefault()
+    const {value} = e.currentTarget
+    dispatch(searchFromTitle({search: value}))
+
+  }
   useEffect(() => {
     setWindowWidth(window.innerWidth)
   }, [windowWidth])
@@ -27,13 +44,14 @@ const Filters: FC = () => {
 
       <CategorySelector />
 
-      <TagSelector />
+      <TagSelector method='filter' />
 
       <InputField
         id='fzfzefz'
         name='filter'
         label='Rechercher'
-        onChange={() => null}
+        value={search}
+        onChange={(e) => handleSearch(e) }
       />
       
       <AuthorGrid />

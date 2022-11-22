@@ -1,8 +1,6 @@
 import Head from 'next/head'
 import styles from '../../../styles/Description.module.scss'
 
-import type { ReactElement } from 'react'
-import type { NextPageWithLayout } from '../../_app'
 import Layout from '../../../components/layout/Layout'
 
 import React from 'react'
@@ -13,14 +11,18 @@ import AuthorAvatar from '../../../components/AuthorAvatar'
 import TextArea from '../../../components/form/TextArea'
 import SubmitButton from '../../../components/form/SubmitButton'
 
-const Description: NextPageWithLayout = () => {
-  return <p>Description</p>
-}
 
-Description.getLayout = function getLayout(page: ReactElement) {
+import { useSelector, useDispatch } from 'react-redux'
+import { RootState, userDescriptionContent } from '../../../stores'
+const Description = () => {
   const router = useRouter()
   const { id } = router.query
 
+  const dispatch = useDispatch()
+  const userDescription = useSelector((state:RootState) => state.userDescription)
+
+  console.log(userDescription)
+  
   return (
     <Layout>
       <Head>
@@ -47,6 +49,7 @@ Description.getLayout = function getLayout(page: ReactElement) {
               Changer ma photo de profil
             <input type="file" accept="image/*" name="avatar" id="avatar" className={styles.avatarInput} />
             </label>
+            {/* Integrer imgPath dans l'état */}
             </form>
           </div>
           <div className={styles.description}>
@@ -56,7 +59,8 @@ Description.getLayout = function getLayout(page: ReactElement) {
                 id='textarea'
                 name='textarea'
                 label='Ma description'
-                onChange={() => null}
+                value={userDescription.content}
+                onChange={(e)=> dispatch(userDescriptionContent({content: e.currentTarget.value}))}
                 rows={30}
               />
               <div className={styles.button}>

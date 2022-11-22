@@ -1,46 +1,38 @@
-import React, {FC} from 'react'
+import React, { FC } from 'react'
 import styles from '../styles/componentsStyle/TagSelector.module.scss'
 
-import Tag from './form/Tag'
+import type { TagSelectorProps } from '../types/componentsTypes'
+import { useDispatch, useSelector } from 'react-redux'
 
-const TagSelector:FC = () => {
+import Tag from './form/Tag'
+import { RootState } from '../stores'
+import { chooseGenre, bookGenre } from '../stores'
+
+const TagSelector: FC<TagSelectorProps> = ({ method }) => {
+
+  const filter = method === 'filter' ? useSelector((state: RootState) => state.filter) : useSelector((state: RootState) => state.create)
+  const { genre } = filter
+  const dispatch = useDispatch()
+  const allGenres = [{ id: 'youth', label: 'Jeunesse' },
+  { id: 'adventure', label: 'Aventure' },
+  { id: 'horror', label: 'Horreur' },
+  { id: 'fantastic', label: 'Fantastique' },
+  { id: 'love_story', label: 'Romance' },
+  { id: 'fiction', label: 'Fiction' }]
+
+  const allTags = allGenres.map(itemGenre => <Tag
+    key={itemGenre.id}
+    name={itemGenre.label}
+    isSelected={genre.includes(`${itemGenre.id}`)}
+    onClick={() => method === 'filter' ? dispatch(chooseGenre({ genre: itemGenre.id })) : dispatch(bookGenre({ genre: itemGenre.id }))}
+  />)
   return (
     <div className={styles.tagSelector}>
       <p className={styles.title}>Genres :</p>
 
-    <div className={styles.tags}>
-
-      <Tag 
-        name='Jeunesse'
-        isSelected={true}
-        onClick={() => null}
-        />
-      <Tag 
-        name='Aventure'
-        isSelected={false}
-        onClick={() => null}
-        />
-      <Tag 
-        name='Romance'
-        isSelected={false}
-        onClick={() => null}
-        />
-      <Tag 
-        name='Fantastique'
-        isSelected={true}
-        onClick={() => null}
-        />
-      <Tag 
-        name='Horreur'
-        isSelected={false}
-        onClick={() => null}
-        />
-      <Tag 
-        name='Fiction'
-        isSelected={false}
-        onClick={() => null}
-        />
-        </div>
+      <div className={styles.tags}>
+        {allTags}
+      </div>
 
     </div>
   )

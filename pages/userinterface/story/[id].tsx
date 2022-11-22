@@ -1,8 +1,6 @@
 import Head from 'next/head'
 import styles from '../../../styles/Stories.module.scss'
 
-import type { ReactElement } from 'react'
-import type { NextPageWithLayout } from '../../_app'
 import Layout from '../../../components/layout/Layout'
 
 import React from 'react'
@@ -12,11 +10,7 @@ import UserNav from '../../../components/UserNav'
 import BookMin from '../../../components/BookMin'
 import NavArrow from '../../../components/NavArrow'
 
-const Stories: NextPageWithLayout = () => {
-  return <p>Infos</p>
-}
-
-Stories.getLayout = function getLayout(page: ReactElement) {
+const Stories = () => {
   const router = useRouter()
   const { id } = router.query
 

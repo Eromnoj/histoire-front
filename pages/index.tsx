@@ -1,21 +1,23 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.scss'
 
-import { ReactElement, useEffect,useState } from 'react'
-import type { NextPageWithLayout } from './_app'
+import { useEffect,useState } from 'react'
 import BookShowcase from '../components/BookShowcase'
 
 import Layout from '../components/layout/Layout'
 import Filters from '../components/Filters'
+import type { RootState } from '../stores'
+import { useSelector } from 'react-redux'
 
-const Home: NextPageWithLayout = () => {
-  return <p>Index</p>
-}
+import React from 'react'
 
-Home.getLayout = function getLayout(page: ReactElement) {
+const Home = () => {
+
 
   const [windowWidth, setWindowWidth] = useState(0)
 
+  const filter = useSelector((state:RootState) => state.filter)
+  console.log(filter)
   useEffect(()=>{
     setWindowWidth(window.innerWidth)
   },[windowWidth])
@@ -39,4 +41,7 @@ Home.getLayout = function getLayout(page: ReactElement) {
 }
 
 export default Home
+
+
+
 

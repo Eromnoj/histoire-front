@@ -1,14 +1,12 @@
 import Head from 'next/head'
 import styles from '../../../styles/Create.module.scss'
 
-import type { ReactElement } from 'react'
-import type { NextPageWithLayout } from '../../_app'
 import Layout from '../../../components/layout/Layout'
 
 import React from 'react'
 import { useRouter } from 'next/router'
 
-import CategorySelector from '../../../components/CategorySelector'
+import CategoryRadio from '../../../components/CategoryRadio'
 import TagSelector from '../../../components/TagSelector'
 import InputField from '../../../components/form/InputField'
 import TextArea from '../../../components/form/TextArea'
@@ -16,15 +14,16 @@ import SubmitButton from '../../../components/form/SubmitButton'
 
 import Image from 'next/image'
 import Book from '../../../public/book.webp'
+import { useSelector, useDispatch } from 'react-redux'
+import { bookDescription, bookTitle, RootState } from '../../../stores'
 
-const Create: NextPageWithLayout = () => {
-  return <p>Book Description</p>
-}
-
-Create.getLayout = function getLayout(page: ReactElement) {
+const Create = () => {
   const router = useRouter()
   const { id } = router.query
-
+  const dispatch = useDispatch()
+  const bookCreate = useSelector((state:RootState)=> state.create)
+  console.log(bookCreate);
+  
   return (
     <Layout>
       <Head>
@@ -48,14 +47,15 @@ Create.getLayout = function getLayout(page: ReactElement) {
                 Choisir une couverture
                 <input type="file" accept="image/*" name="avatar" id="avatar" className={styles.bookImgInput} />
               </label>
+              {/* TODO : Intégrer le imgPath dans le state local après création du backend */}
             </form>
           </div>
           <div className={styles.restrain}>
-            <CategorySelector />
+            <CategoryRadio />
 
           </div>
           <div className={styles.restrain}>
-            <TagSelector />
+            <TagSelector method='create' />
 
           </div>
 
@@ -65,14 +65,16 @@ Create.getLayout = function getLayout(page: ReactElement) {
             id='title'
             name='title'
             label={`Titre de l'ouvrage`}
-            onChange={() => null}
+            value={bookCreate.title}
+            onChange={(e) => dispatch(bookTitle({title: e.currentTarget.value}))}
           />
           <TextArea
             id='description'
             name='description'
             label='Description'
             rows={20}
-            onChange={() => null}
+            value={bookCreate.description}
+            onChange={(e) => dispatch(bookDescription({description: e.currentTarget.value}))}
           />
           <div className={styles.button}>
             <SubmitButton
