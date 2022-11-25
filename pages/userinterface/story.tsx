@@ -1,18 +1,14 @@
 import Head from 'next/head'
-import styles from '../../../styles/Stories.module.scss'
-
-import Layout from '../../../components/layout/Layout'
+import styles from '../../styles/Stories.module.scss'
 
 import React from 'react'
-import { useRouter } from 'next/router'
 
-import UserNav from '../../../components/UserNav'
-import BookMin from '../../../components/BookMin'
-import NavArrow from '../../../components/NavArrow'
+import Layout from '../../components/layout/Layout'
+import UserNav from '../../components/UserNav'
+import BookMin from '../../components/BookMin'
+import NavArrow from '../../components/NavArrow'
 
 const Stories = () => {
-  const router = useRouter()
-  const { id } = router.query
 
   return (
     <Layout>

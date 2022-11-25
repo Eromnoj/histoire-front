@@ -2,27 +2,27 @@ import { PayloadAction } from "@reduxjs/toolkit"
 import { createSlice } from "@reduxjs/toolkit"
 
 interface userInfoState {
-  name: string,
+  username: string,
   email: string,
   facebook:string,
   twitter:string,
-  password:string
+  newPassword:string
 }
 
 const initialState: userInfoState = {
-  name: '',
+  username: '',
   email: '',
   facebook:'',
   twitter:'',
-  password:''
+  newPassword:''
 }
 
 export const userInfoSlice = createSlice({
   name:'userInfo',
   initialState,
   reducers: {
-    userInfoName: (state, action: PayloadAction<{name:string}>) => {
-      state.name = action.payload.name
+    userInfoName: (state, action: PayloadAction<{username:string}>) => {
+      state.username = action.payload.username
     },
     userInfoEmail: (state, action: PayloadAction<{email:string}>) => {
       state.email = action.payload.email
@@ -34,7 +34,7 @@ export const userInfoSlice = createSlice({
       state.twitter = action.payload.twitter
     },
     userInfoPassword: (state, action: PayloadAction<{password:string}>) => {
-      state.password = action.payload.password
+      state.newPassword = action.payload.password
     },
   }
 
