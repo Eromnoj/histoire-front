@@ -18,9 +18,16 @@ const Home = () => {
 
   const filter = useSelector((state:RootState) => state.filter)
   console.log(filter)
+  
+  
+  
+  
   useEffect(()=>{
     setWindowWidth(window.innerWidth)
   },[windowWidth])
+
+
+
   return (
     <Layout>
       <Head>
@@ -29,7 +36,9 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={windowWidth >= 1066 ? styles.main : styles.mainResponsive}>
+        <div className={styles.books}>
       <BookShowcase />
+        </div>
       {windowWidth <= 1066 ?
       null :
       <Filters />

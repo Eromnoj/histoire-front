@@ -8,6 +8,8 @@ export type BookProps = {
   category: string
   rating: number
   favorite: boolean
+  slug?: string | undefined
+  favClick: MouseEventHandler
 }
 
 export type BookMinProps = {

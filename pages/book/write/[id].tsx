@@ -3,8 +3,7 @@ import styles from '../../../styles/Create.module.scss'
 
 import Layout from '../../../components/layout/Layout'
 
-import React from 'react'
-import { useRouter } from 'next/router'
+import React, { useEffect } from 'react'
 import Chapter from '../../../components/Chapter'
 import NavArrow from '../../../components/NavArrow'
 
@@ -15,9 +14,19 @@ import TextArea from '../../../components/form/TextArea'
 import SubmitButton from '../../../components/form/SubmitButton'
 
 import Image from 'next/image'
-import Book from '../../../public/book.webp'
 import { useSelector, useDispatch } from 'react-redux'
-import { bookDescription, bookTitle, RootState } from '../../../stores'
+import { bookDescription, bookTitle, RootState, bookImgPath, bookCategory, bookGenre } from '../../../stores'
+import { Dispatch } from '@reduxjs/toolkit'
+import axios from 'axios'
+import { NextRouter, useRouter } from 'next/router'
+
+type BookState = {
+  category: string,
+  tags: string[],
+  title: string,
+  description: string,
+  coverPath: string
+}
 
 const EditBook = () => {
   const router = useRouter()
@@ -25,7 +34,14 @@ const EditBook = () => {
   const dispatch = useDispatch()
   const bookCreate = useSelector((state:RootState)=> state.create)
   console.log(bookCreate);
+  const imgPath = `http://localhost:5000${bookCreate.coverPath}`
   
+  console.log(id);
+  useEffect(()=>{
+    
+    getBook(id, dispatch)
+  },[id])
+
   return (
     <Layout>
       <Head>
@@ -38,7 +54,7 @@ const EditBook = () => {
           <div className={styles.bookImgMod}>
             <div className={styles.bookImg}>
               <Image
-                src={Book}
+                src={imgPath}
                 alt='livre'
                 width={300}
                 height={300}
@@ -47,9 +63,15 @@ const EditBook = () => {
             <form method="post" encType="multipart/form-data" className={styles.bookImgForm}>
               <label htmlFor="avatar" className={styles.bookImgLabel}>
                 Choisir une couverture
-                <input type="file" accept="image/*" name="avatar" id="avatar" className={styles.bookImgInput} />
+                <input 
+                type="file" 
+                accept="image/*" 
+                name="avatar" 
+                id="avatar" 
+                className={styles.bookImgInput}
+                onChange={(e) => updateBookCover(e.target.files, dispatch, id)}
+                />
               </label>
-              {/* TODO : Intégrer le imgPath dans le state local après création du backend */}
             </form>
           </div>
           <div className={styles.restrain}>
@@ -62,7 +84,10 @@ const EditBook = () => {
           </div>
 
         </div>
-        <div className={styles.bookDesc}>
+        <form className={styles.bookDesc} onSubmit={(e)=> {
+          e.preventDefault()
+          handleBookSumbit(bookCreate,router, id)
+        }}>
           <InputField
             id='title'
             name='title'
@@ -126,10 +151,67 @@ const EditBook = () => {
             </div>
           </div>
           <div className={styles.createChapter}>Créer un chapitre</div>
-        </div>
+        </form>
       </div>
     </Layout>
   )
 }
 
 export default EditBook
+
+
+const handleBookSumbit = async (book:BookState, router: NextRouter, id: any) => {
+    
+  console.log(book);
+  try {
+    const res = await axios.patch(`/api/v1/book/${id}`,book)
+    const data = await res.data
+    console.log(data.msg);
+  } catch (error) {
+    console.log(error);
+    
+  }
+}
+
+const updateBookCover = async (file: FileList | null, 
+  dispatch: Dispatch, id:any ) => {
+  if (file !== null) {
+    console.log(file[0]);
+    const formData = new FormData();
+    formData.append('image', file[0])
+    formData.append('bookId', id)
+    try {
+      const res = await axios.post('/api/v1/book/uploadcover', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      const img = await res.data.image
+      console.log(img);
+      
+      dispatch(bookImgPath({coverPath: img}))
+
+    } catch (error) {
+      console.log(error);
+
+    }
+  }
+}
+
+const getBook = async (id: any, dispatch:Dispatch)=>{
+  try {
+    const res = await axios(`/api/v1/book/${id}`)
+    const data = await res.data.book
+    dispatch(bookTitle({title : data.title}))
+    dispatch(bookDescription({description : data.description}))
+    dispatch(bookCategory({category : data.category}))
+    data.tags.forEach((tag: string) => {
+
+      dispatch(bookGenre({tags : tag}))
+    })
+    dispatch(bookImgPath({coverPath : data.coverPath}))
+  } catch (error) {
+    
+  }
+
+}

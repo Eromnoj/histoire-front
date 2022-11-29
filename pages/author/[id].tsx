@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react'
 import Layout from '../../components/layout/Layout'
 
 import React, { FC } from 'react'
-import { useRouter } from 'next/router'
 
 import Image from 'next/image'
 import Facebook from '../../public/img/Facebook.png'
@@ -16,41 +15,76 @@ import AuthorAvatar from '../../components/AuthorAvatar'
 import Book from '../../components/Book'
 import NavArrow from '../../components/NavArrow'
 
-const SocialLink: FC = () => {
+import { GetServerSideProps } from 'next'
+import axios from 'axios'
+import Link from 'next/link'
+
+type SocialLinkProps = {
+  twitter?: string
+  facebook?: string
+  email?: string
+}
+const SocialLink: FC<SocialLinkProps> = ({ twitter, facebook, email }) => {
   return (
     <div className={styles.links}>
-      <div className={styles.socialLink}>
-        <Image
-          src={Facebook}
-          width={45}
-          height={45}
-          alt='Facebook'
-        />
-      </div>
-      <div className={styles.socialLink}>
-        <Image
-          src={Twitter}
-          width={45}
-          height={45}
-          alt='Twitter'
-        />
-      </div>
-      <div className={styles.socialLink}>
-        <Image
-          src={Mail}
-          width={45}
-          height={45}
-          alt='Mail'
-        />
-      </div>
+
+      {twitter ?
+        <div className={styles.socialLink}>
+          <Link href={twitter}>
+            <Image
+              src={Twitter}
+              width={45}
+              height={45}
+              alt='Facebook'
+            />
+          </Link>
+        </div>
+        : null}
+      {facebook ?
+        <div className={styles.socialLink}>
+          <Link href={facebook}>
+            <Image
+              src={Facebook}
+              width={45}
+              height={45}
+              alt='Facebook'
+            />
+          </Link>
+        </div>
+        : null}
+      {email ?
+        <div className={styles.socialLink}>
+          <Link href={'mailto:' + email}>
+            <Image
+              src={Mail}
+              width={45}
+              height={45}
+              alt='Facebook'
+            />
+          </Link>
+        </div>
+        : null}
     </div>
   )
 }
 
+type dataProps = {
+  data: {
+    _id: string
+    email: string
+    twitter: string
+    facebook: string
+    description: string
+    imgPath: string
+    username: string
+    books: { category: string, favorites: boolean, _id: string, coverPath: string, title: string }[]
 
-const AuthorDescription = () => {
-  const router = useRouter()
-  const { id } = router.query
+
+  }
+}
+
+const AuthorDescription: FC<dataProps> = ({ data }) => {
+  console.log(data);
 
   const [windowWidth, setWindowWidth] = useState(0)
 
@@ -59,10 +93,25 @@ const AuthorDescription = () => {
   }, [])
 
 
+  const showBooks = data.books.map(book => {
+    return (
+      <Book
+        key={book._id}
+        id={book._id}
+        picture={book.coverPath}
+        title={book.title}
+        author={data.username}
+        category={book.category}
+        rating={4}
+        favorite={true}
+        favClick={() => null}
+      />
+    )
+  })
   return (
     <Layout>
       <Head>
-        <title>Histoires | Parcourir</title>
+        <title>Histoires | {data.username}</title>
         <meta name="description" content="Partagez vos histoires" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -71,20 +120,21 @@ const AuthorDescription = () => {
           <div className={styles.sideBar}>
             <div className={styles.avatar}>
               <AuthorAvatar
-                id='blbabl'
-                name='Author Name'
-                imgUrl='/avatars/headshot.png'
+                id={data._id}
+                name={data.username}
+                imgUrl={data.imgPath}
               />
             </div>
             <div className={styles.social}>
               {windowWidth >= 768 && windowWidth <= 1066 ?
                 <>
-                  <h2 className={styles.authorName}>Author Name</h2>
-          
-                  <SocialLink />
+                  <h2 className={styles.authorName}>{data.username}</h2>
+
+                  <SocialLink twitter={data.twitter} facebook={data.facebook} email={data.email} />
                 </>
 
-                : <SocialLink />
+                : <SocialLink twitter={data.twitter} facebook={data.facebook} email={data.email} />
+
               }
             </div>
           </div>
@@ -93,50 +143,17 @@ const AuthorDescription = () => {
               null
 
               :
-              <h2 className={styles.authorName}>Author Name</h2>
+              <h2 className={styles.authorName}>{data.username}</h2>
 
             }
             <p className={styles.paragraph}>
-              In lectus velit, maximus in imperdiet sed, iaculis in ligula. Aenean orci est, sollicitudin eget aliquet at, aliquet vitae enim. Duis sed euismod turpis. Mauris fringilla quam auctor efficitur imperdiet.
-            </p><p className={styles.paragraph}>
-              Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. In iaculis eleifend libero nec luctus. Fusce dictum rhoncus augue, quis facilisis diam rhoncus vel. Mauris vitae elit ex. Etiam iaculis euismod velit, ut sagittis massa condimentum eu. Aenean vitae erat vel purus tincidunt porttitor.
-            </p><p className={styles.paragraph}>
-              Pellentesque vulputate scelerisque tristique. Sed porttitor pellentesque odio et pharetra. Maecenas finibus porta fringilla. Vivamus tortor nisi, elementum non viverra sagittis, venenatis nec ipsum. Sed efficitur, velit sed elementum rhoncus, dui erat scelerisque tortor, non pharetra dolor leo non nisi.
-            </p><p className={styles.paragraph}>
-              In quis turpis sit amet ligula aliquet fermentum ac nec leo.
+              {data.description}
             </p>
 
           </div>
         </div>
         <div className={styles.bookNav}>
-          <div className={styles.books}>
-            <Book
-              id='adeggreg5'
-              picture='/book.webp'
-              title='Lorem Ipsum'
-              author='Author Name'
-              category='short_story'
-              rating={4}
-              favorite={true} />
-            <Book
-              id='adeggreg5'
-              picture='/book.webp'
-              title='Lorem Ipsum'
-              author='Author Name'
-              category='short_story'
-              rating={4}
-              favorite={true} />
-              {windowWidth <1066 ? null :
-            <Book
-            id='adeggreg5'
-            picture='/book.webp'
-            title='Lorem Ipsum'
-            author='Author Name'
-            category='short_story'
-            rating={4}
-            favorite={true} />
-          }
-          </div>
+          {showBooks}
           <div className={styles.nav}>
             <NavArrow direction='left' onClick={() => null} />
             <NavArrow direction='right' onClick={() => null} />
@@ -148,3 +165,12 @@ const AuthorDescription = () => {
 }
 
 export default AuthorDescription
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { id } = context.query
+  const res = await axios(`http://localhost:3000/api/v1/user/${id}`)
+  const data = await res.data.user
+
+
+  return { props: { data } }
+}

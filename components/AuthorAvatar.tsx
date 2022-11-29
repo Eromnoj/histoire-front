@@ -7,7 +7,7 @@ const AuthorAvatar: FC<AuthorAvatarProps> = ({id, name, imgUrl}) => {
   return (
     <div className={styles.avatar} id={id}>
       <Image 
-        src={imgUrl}
+        src={`http://localhost:5000${imgUrl}`}
         alt={name}
         fill={true}
         className={styles.img}

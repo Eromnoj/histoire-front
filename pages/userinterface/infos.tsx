@@ -13,7 +13,6 @@ import { RootState, userInfoEmail, userInfoFacebook, userInfoName, userInfoPassw
 
 import axios from 'axios'
 import { Dispatch } from '@reduxjs/toolkit'
-import { set } from 'immer/dist/internal'
 
 const UserInfo = () => {
   const dispatch = useDispatch()

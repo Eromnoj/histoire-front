@@ -11,10 +11,12 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import dynamic from 'next/dynamic'
 import { chapterContent, chapterTitle, RootState } from '../../../../stores'
-const QuillNoSSRWrapper = dynamic(import('react-quill'), {	
-	ssr: false,
-	loading: () => <p>Loading ...</p>,
-	})
+// const QuillNoSSRWrapper = dynamic(import('react-quill'), {	
+// 	ssr: false,
+// 	loading: () => <p>Loading ...</p>,
+// 	})
+const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false
+
 
 const Edit = () => {
   const router = useRouter()
@@ -57,7 +59,7 @@ const Edit = () => {
           onChange={(e)=> dispatch(chapterTitle({title: e.currentTarget.value}))}
         
         />
-       <QuillNoSSRWrapper theme='snow' style={{height: '100vh'}} value={chapter.content} onChange={(e) => dispatch(chapterContent({content: e}))}/>
+       <ReactQuill theme='snow' style={{height: '100vh'}} value={chapter.content} onChange={(e:string) => dispatch(chapterContent({content: e}))}/>
       </div>
     </div>
   )

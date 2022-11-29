@@ -7,7 +7,6 @@ interface userSessionState {
 }
 
 const initialState: userSessionState = {
-  
   userId:'',
   role:''
 }

@@ -11,7 +11,7 @@ import { chooseGenre, bookGenre } from '../stores'
 const TagSelector: FC<TagSelectorProps> = ({ method }) => {
 
   const filter = method === 'filter' ? useSelector((state: RootState) => state.filter) : useSelector((state: RootState) => state.create)
-  const { genre } = filter
+  const { tags } = filter
   const dispatch = useDispatch()
   const allGenres = [{ id: 'youth', label: 'Jeunesse' },
   { id: 'adventure', label: 'Aventure' },
@@ -23,8 +23,8 @@ const TagSelector: FC<TagSelectorProps> = ({ method }) => {
   const allTags = allGenres.map(itemGenre => <Tag
     key={itemGenre.id}
     name={itemGenre.label}
-    isSelected={genre.includes(`${itemGenre.id}`)}
-    onClick={() => method === 'filter' ? dispatch(chooseGenre({ genre: itemGenre.id })) : dispatch(bookGenre({ genre: itemGenre.id }))}
+    isSelected={tags.includes(`${itemGenre.id}`)}
+    onClick={() => method === 'filter' ? dispatch(chooseGenre({ tags: itemGenre.id })) : dispatch(bookGenre({ tags: itemGenre.id }))}
   />)
   return (
     <div className={styles.tagSelector}>

@@ -3,14 +3,14 @@ import { createSlice } from "@reduxjs/toolkit"
 
 interface FilterState {
   category: string[],
-  genre: string[],
+  tags: string[],
   search: string,
   sorted: string
 }
 
 const initialState: FilterState = {
   category: [],
-  genre:[],
+  tags:[],
   search: '',
   sorted: ''
 }
@@ -27,12 +27,12 @@ export const filterSlice = createSlice({
         state.category.push(action.payload.category)
       }
     },
-    chooseGenre: (state, action: PayloadAction<{genre:string}>) => {
-      if (state.genre.includes(action.payload.genre)){
-         state.genre = state.genre.filter(gen => gen !== action.payload.genre)
+    chooseGenre: (state, action: PayloadAction<{tags:string}>) => {
+      if (state.tags.includes(action.payload.tags)){
+         state.tags = state.tags.filter(gen => gen !== action.payload.tags)
           
       } else {
-        state.genre.push(action.payload.genre)
+        state.tags.push(action.payload.tags)
       }
     },
     sortBy: (state, action:PayloadAction<{sorted:string}>)=>{

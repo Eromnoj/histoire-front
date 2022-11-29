@@ -4,7 +4,6 @@ import styles from '../styles/componentsStyle/Filters.module.scss'
 import CategorySelector from './CategorySelector'
 import TagSelector from './TagSelector'
 import InputField from './form/InputField'
-import AuthorGrid from './AuthorGrid'
 import BookList from './BookList'
 import Sort from './Sort'
 
@@ -54,7 +53,6 @@ const Filters: FC = () => {
         onChange={(e) => handleSearch(e) }
       />
       
-      <AuthorGrid />
 
       <BookList />
 

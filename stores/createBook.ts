@@ -3,44 +3,48 @@ import { createSlice } from "@reduxjs/toolkit"
 
 interface createBookState {
   category: string,
-  genre: string[],
+  tags: string[],
   title: string,
   description: string,
-  imgPath: string
+  coverPath: string
 }
 
 const initialState: createBookState = {
   category: '',
-  genre:[],
+  tags: [],
   title: '',
   description: '',
-  imgPath: ''
+  coverPath: '/uploads/bookcover.jpg'
 }
 
 export const createBookSlice = createSlice({
-  name:'createBook',
+  name: 'createBook',
   initialState,
   reducers: {
-    bookCategory: (state, action: PayloadAction<{category:string}>) => {
+    bookCategory: (state, action: PayloadAction<{ category: string }>) => {
       state.category = action.payload.category
     },
-    bookGenre: (state, action: PayloadAction<{genre:string}>) => {
-      if (state.genre.includes(action.payload.genre)){
-         state.genre = state.genre.filter(gen => gen !== action.payload.genre)
-          
+    bookGenre: (state, action: PayloadAction<{ tags: string }>) => {
+      if (state.tags.includes(action.payload.tags)) {
+        state.tags = state.tags.filter(tag => tag !== action.payload.tags)
+
       } else {
-        state.genre.push(action.payload.genre)
+        state.tags.push(action.payload.tags)
       }
     },
-    bookTitle: (state, action:PayloadAction<{title:string}>)=>{
-        state.title = action.payload.title
+    bookTitle: (state, action: PayloadAction<{ title: string }>) => {
+      state.title = action.payload.title
     },
-    bookDescription: (state, action:PayloadAction<{description:string}>)=>{
+    bookDescription: (state, action: PayloadAction<{ description: string }>) => {
       state.description = action.payload.description
-  },
-  bookImgPath: (state, action:PayloadAction<{imgPath:string}>)=>{
-    state.imgPath = action.payload.imgPath
-},
+    },
+    bookImgPath: (state, action: PayloadAction<{ coverPath: string }>) => {
+      state.coverPath = action.payload.coverPath
+    },
+    bookReinit:(state) => {
+      state = initialState
+      return state
+    }
   }
 
 })

@@ -18,7 +18,7 @@ const persistConfig = {
 const persistedSessionReducer = persistReducer(persistConfig, userSessionSlice.reducer)
 
 export const {chooseCategory, chooseGenre, sortBy,searchFromTitle} = filterSlice.actions
-export const {bookCategory, bookDescription,bookGenre,bookImgPath,bookTitle} = createBookSlice.actions
+export const {bookCategory, bookDescription,bookGenre,bookImgPath,bookTitle, bookReinit} = createBookSlice.actions
 export const {chapterContent, chapterTitle} = createChapterSlice.actions
 export const {userInfoEmail,userInfoFacebook,userInfoName,userInfoPassword,userInfoTwitter} = userInfoSlice.actions
 export const {userDescriptionImgPath, userDescriptionContent} = userDescriptionSlice.actions

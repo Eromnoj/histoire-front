@@ -4,7 +4,6 @@ import styles from '../../../styles/Create.module.scss'
 import Layout from '../../../components/layout/Layout'
 
 import React from 'react'
-import { useRouter } from 'next/router'
 
 import CategoryRadio from '../../../components/CategoryRadio'
 import TagSelector from '../../../components/TagSelector'
@@ -12,18 +11,27 @@ import InputField from '../../../components/form/InputField'
 import TextArea from '../../../components/form/TextArea'
 import SubmitButton from '../../../components/form/SubmitButton'
 
-import Image from 'next/image'
-import Book from '../../../public/book.webp'
 import { useSelector, useDispatch } from 'react-redux'
 import { bookDescription, bookTitle, RootState } from '../../../stores'
+import { Dispatch } from '@reduxjs/toolkit'
+import axios from 'axios'
+import { NextRouter, useRouter } from 'next/router'
+
+
+type BookState = {
+  category: string,
+  tags: string[],
+  title: string,
+  description: string,
+  coverPath: string
+}
 
 const Create = () => {
-  const router = useRouter()
-  const { id } = router.query
   const dispatch = useDispatch()
   const bookCreate = useSelector((state:RootState)=> state.create)
-  console.log(bookCreate);
-  
+  const router = useRouter()
+
+
   return (
     <Layout>
       <Head>
@@ -33,23 +41,6 @@ const Create = () => {
       </Head>
       <div className={styles.main}>
         <div className={styles.sideBar}>
-          <div className={styles.bookImgMod}>
-            <div className={styles.bookImg}>
-              <Image
-                src={Book}
-                alt='livre'
-                width={300}
-                height={300}
-              />
-            </div>
-            <form method="post" encType="multipart/form-data" className={styles.bookImgForm}>
-              <label htmlFor="avatar" className={styles.bookImgLabel}>
-                Choisir une couverture
-                <input type="file" accept="image/*" name="avatar" id="avatar" className={styles.bookImgInput} />
-              </label>
-              {/* TODO : Intégrer le imgPath dans le state local après création du backend */}
-            </form>
-          </div>
           <div className={styles.restrain}>
             <CategoryRadio />
 
@@ -60,7 +51,10 @@ const Create = () => {
           </div>
 
         </div>
-        <div className={styles.bookDesc}>
+        <form className={styles.bookDesc} onSubmit={(e)=> {
+          e.preventDefault()
+          handleBookSumbit(dispatch,bookCreate,router)
+        }}>
           <InputField
             id='title'
             name='title'
@@ -81,10 +75,24 @@ const Create = () => {
               name='Sauvegarder'
             />
           </div>
-        </div>
+        </form>
       </div>
     </Layout>
   )
 }
 
 export default Create
+
+const handleBookSumbit = async (dispatch:Dispatch, book:BookState, router: NextRouter) => {
+    
+  console.log(book);
+  try {
+    const res = await axios.post('/api/v1/book/createbook',book)
+    const data = await res.data
+    console.log(data.msg);
+    router.push(`/book/write/${data.book._id}`)
+  } catch (error) {
+    console.log(error);
+    
+  }
+}

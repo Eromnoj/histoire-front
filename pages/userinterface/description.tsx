@@ -162,7 +162,7 @@ const updateAvatar = async (file: FileList | null,
         }
       })
       const img = await res.data.image
-      console.log(img);
+
       const imgPath = 'http://localhost:5000' + img
       avatarSetter(imgPath)
 

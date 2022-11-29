@@ -3,7 +3,7 @@ import styles from '../../styles/BookDescription.module.scss'
 
 import Layout from '../../components/layout/Layout'
 
-import React from 'react'
+import React, { FC } from 'react'
 import { useRouter } from 'next/router'
 
 
@@ -12,12 +12,62 @@ import Tag from '../../components/form/Tag'
 import AuthorAvatar from '../../components/AuthorAvatar'
 import Select from '../../components/form/Select'
 import SubmitButton from '../../components/form/SubmitButton'
+import axios from 'axios'
+import { GetServerSideProps } from 'next'
 
+type dataProps = {
+  data: {
+    _id:string
+    tags:string[]
+    description: string
+    coverPath:string
+    title:string
+    author: {username: string, description: string, _id: string, imgPath: string}[]
+    category: string
 
-const BookDescription = () => {
-  const router = useRouter()
-  const { id } = router.query
+  }
+}
 
+const BookDescription: FC<dataProps> = ({ data }) => {
+
+  console.log(data.author);
+  
+  const showTags = data.tags.map((tag: string)=> {
+    let tagDisplay
+    switch (tag){
+      case 'adventure':
+        tagDisplay = 'Aventure'
+        break
+      case 'fiction':
+        tagDisplay = 'Fiction'
+        break
+      case 'youth':
+        tagDisplay= 'Jeunesse'
+        break
+      case 'horror':
+        tagDisplay = 'Horreur'
+        break
+      case 'fantastic':
+        tagDisplay = 'Fantastique'
+        break
+      case 'love_story':
+        tagDisplay = 'Romance'
+        break
+      default:
+        tagDisplay = tag
+        break
+    }
+
+    return (
+      <Tag
+      key={tag}
+      name={tagDisplay}
+      isSelected={false}
+      onClick={() => null}
+    />
+    )
+
+  })
   return (
     <Layout>
       <Head>
@@ -31,25 +81,18 @@ const BookDescription = () => {
           <div className={styles.book}>
 
             <Book
-              id='adeggreg5'
-              picture='/book.webp'
-              title='Lorem Ipsum'
-              author='Author Name'
-              category='short_story'
+              id={data._id}
+              picture={data.coverPath}
+              title={data.title}
+              author={data.author[0].username}
+              category={data.category}
               rating={4}
-              favorite={true} />
+              favorite={true}
+              favClick={() => null}
+            />
 
             <div className={styles.tag}>
-              <Tag
-                name='Jeunesse'
-                isSelected={false}
-                onClick={() => null}
-              />
-              <Tag
-                name='Aventure'
-                isSelected={false}
-                onClick={() => null}
-              />
+              {showTags}
             </div>
           </div>
 
@@ -59,34 +102,28 @@ const BookDescription = () => {
             <div className={styles.authorID}>
               <div className={styles.avatar}>
                 <AuthorAvatar
-                  id='blbabl'
-                  name='Author Name'
-                  imgUrl='/avatars/headshot.png'
+                  id={data.author[0]._id}
+                  name={data.author[0].username}
+                  imgUrl={data.author[0].imgPath}
                 />
               </div>
 
               <div className={styles.authorName}>
-                Author Name
+              {data.author[0].username}
               </div>
             </div>
 
             <div className={styles.authorPrez}>
-              Fusce condimentum viverra neque eu vehicula. Donec sem quam, condimentum imperdiet neque iaculis, finibus dignissim enim
+            {data.author[0].description}
             </div>
           </div>
 
 
         </div>
         <div className={styles.content}>
-          <h2 className={styles.title}>Lorem Ipsum</h2>
+          <h2 className={styles.title}>{data.title}</h2>
           <p className={styles.paragraph}>
-            In lectus velit, maximus in imperdiet sed, iaculis in ligula. Aenean orci est, sollicitudin eget aliquet at, aliquet vitae enim. Duis sed euismod turpis. Mauris fringilla quam auctor efficitur imperdiet.
-          </p><p className={styles.paragraph}>
-            Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. In iaculis eleifend libero nec luctus. Fusce dictum rhoncus augue, quis facilisis diam rhoncus vel. Mauris vitae elit ex. Etiam iaculis euismod velit, ut sagittis massa condimentum eu. Aenean vitae erat vel purus tincidunt porttitor.
-          </p><p className={styles.paragraph}>
-            Pellentesque vulputate scelerisque tristique. Sed porttitor pellentesque odio et pharetra. Maecenas finibus porta fringilla. Vivamus tortor nisi, elementum non viverra sagittis, venenatis nec ipsum. Sed efficitur, velit sed elementum rhoncus, dui erat scelerisque tortor, non pharetra dolor leo non nisi.
-          </p><p className={styles.paragraph}>
-            In quis turpis sit amet ligula aliquet fermentum ac nec leo.
+          {data.description}
           </p>
 
 
@@ -123,3 +160,11 @@ const BookDescription = () => {
 }
 
 export default BookDescription
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { slug } = context.query
+  const res = await axios(`http://localhost:3000/api/v1/book/byslug/${slug}`)
+  const data = await res.data.book
+
+  return { props: { data } }
+}
