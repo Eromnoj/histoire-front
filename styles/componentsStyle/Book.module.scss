@@ -36,11 +36,13 @@
       width: 300px;
       display: block;
       overflow: hidden;
+      cursor: pointer;
     }
     .author {
       font-style: italic;
       font-size: 20px;
       align-self: flex-end;
+      cursor: pointer;
     }
   }
   .votes {
@@ -49,5 +51,8 @@
     padding: 5px;
     display: flex;
     justify-content: space-between;
+    .favorites{
+    cursor: pointer;
+    }
   }
 }

@@ -16,6 +16,7 @@ const Book: FC<BookProps> = ({
   picture,
   title,
   author,
+  authorId,
   category,
   rating,
   favorite,
@@ -49,13 +50,15 @@ const Book: FC<BookProps> = ({
           height={300}
         />
       </div>
-      <div className={styles.bookInfo} style={{backgroundColor: colorTag}} onClick={() => {
+      <div className={styles.bookInfo} style={{backgroundColor: colorTag}} >
+        <div className={styles.title} onClick={() => {
         router.push(`/book/${slug}`)
-
       }
-      }>
-        <div className={styles.title}>{title}</div>
-        <div className={styles.author}>{author}</div>
+      }>{title}</div>
+        <div className={styles.author} onClick={() => {
+        router.push(`/author/${authorId}`)
+      }
+      }>{author}</div>
       </div>
       <div className={styles.votes}>
         <div className={styles.rating}>{showStars}</div>

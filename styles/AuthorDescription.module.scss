@@ -20,9 +20,18 @@
 
       .social {
         display: flex;
+        flex-direction: column-reverse;
         justify-content: space-evenly;
         width: 100%;
         margin-top: 45px;
+
+        .authorName {
+          font-size: 45px;
+          margin-top: 30px;
+          margin-bottom: 75px;
+          text-align: center;
+          justify-self: center ;
+        }
         .links {
           display: flex;
           justify-content: space-evenly;
@@ -34,12 +43,12 @@
     .authorDescription {
       width: 100%;
       max-width: 600px;
-
       .authorName {
         font-size: 45px;
         margin-top: 30px;
         margin-bottom: 75px;
         text-align: center;
+        justify-self: center ;
       }
 
       .paragraph {
@@ -59,14 +68,12 @@
 
     .books {
       display: flex;
+      flex-wrap: wrap;
       flex-direction: column;
       width: 100%;
       justify-content: space-between;
     }
 
-    .nav {
-      margin-top: 30px;
-    }
   }
 }
 
@@ -112,8 +119,8 @@
 @media screen and (min-width:1066px) {
   .main {
     display: grid;
-    grid-template-rows: 1fr 400px;
-    margin-bottom: 210px;
+    grid-template-rows: 1fr 100%;
+    margin-bottom: 40px;
 
     .authorInfo {
       display: grid;
@@ -138,10 +145,5 @@
       }
     }
 
-    .bookNav {
-      .nav {
-        align-self: flex-end;
-      }
-    }
   }
 }

@@ -1,33 +1,27 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.scss'
 
-import { useEffect,useState } from 'react'
+import { useEffect, useState } from 'react'
 import BookShowcase from '../components/BookShowcase'
 
 import Layout from '../components/layout/Layout'
 import Filters from '../components/Filters'
-import type { RootState } from '../stores'
-import { useSelector } from 'react-redux'
+import { nextPage, RootState } from '../stores'
+import { useDispatch } from 'react-redux'
 
 import React from 'react'
 
 const Home = () => {
 
-
+  const dispatch = useDispatch()
   const [windowWidth, setWindowWidth] = useState(0)
 
-  const filter = useSelector((state:RootState) => state.filter)
-  console.log(filter)
   
-  
-  
-  
-  useEffect(()=>{
+  useEffect(() => {
     setWindowWidth(window.innerWidth)
-  },[windowWidth])
-
-
-
+  }, [windowWidth])
+  
+  
   return (
     <Layout>
       <Head>
@@ -37,13 +31,13 @@ const Home = () => {
       </Head>
       <div className={windowWidth >= 1066 ? styles.main : styles.mainResponsive}>
         <div className={styles.books}>
-      <BookShowcase />
+          <BookShowcase />
         </div>
-      {windowWidth <= 1066 ?
-      null :
-      <Filters />
-    }
-     
+        {windowWidth <= 1066 ?
+          null :
+          <Filters />
+        }
+
       </div>
     </Layout>
   )

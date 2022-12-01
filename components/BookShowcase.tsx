@@ -8,64 +8,64 @@ import Image from 'next/image'
 import Down from '../public/img/down.png'
 
 import axios from 'axios'
-import { useSelector } from 'react-redux'
-import { RootState } from '../stores'
+import { useSelector, useDispatch } from 'react-redux'
+import { nextPage, prevPage, RootState } from '../stores'
 
-interface BookType {
+type BookType = {
   _id: string
   coverPath: string
   title: string
-  author: {username: string, description: string}[],
+  author: { username: string, description: string, _id: string }[],
   category: string
-  rating: number
+  avgRate: number[]
   slug: string
   favorite: boolean
 }
 
+
+type FilterType = {
+  category: string[],
+  tags: string[],
+  search: string,
+  sorted: string,
+  page: number
+}
 const bookShowcase: FC = () => {
+
+
   const [windowWidth, setWindowWidth] = useState(0)
   const [toggleFilter, setToggleFilter] = useState(true)
-  const { userId } = useSelector((state: RootState) => state.userSession)
 
+  const [isNoResult, setNoResult] = useState(true)
+
+  const { userId } = useSelector((state: RootState) => state.userSession)
+  const filter = useSelector((state: RootState) => state.filter)
+  const dispatch = useDispatch()
+  const [totalBook, setTotalBook] = useState(0)
+  const [limitBook, setlimitBook] = useState(0)
   useEffect(() => {
     setWindowWidth(window.innerWidth)
   }, [windowWidth])
 
-  const getBooks = async () => {
-    try {
-      let path = ''
-      if (userId) {
-        path = `/api/v1/book/getall?userId=${userId}`
-      } else {
-        path = '/api/v1/book/getall'
-      }
-      const res = await axios(path)
-      const data = await res.data
-      setBooks(data.books)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+
 
   const handleFav = async (id: string) => {
-
-    console.log(id);
-    
     try {
       const res = await axios.post(`/api/v1/user/favorites/${id}`)
-      getBooks()
+      getBooks(userId, filter, setBooks, setNoResult, setTotalBook, setlimitBook)
       // TODO Ajouter le toast avec le message d'Ajout
-      
+
     } catch (error) {
       console.log(error);
-      
+
     }
   }
 
   const [books, setBooks] = useState<Array<BookType>>([])
+
   useEffect(() => {
-    getBooks()
-  }, [])
+    getBooks(userId, filter, setBooks, setNoResult, setTotalBook, setlimitBook)
+  }, [filter])
 
   const showBooks = books.map(book => {
     return (
@@ -75,13 +75,16 @@ const bookShowcase: FC = () => {
         picture={book.coverPath}
         title={book.title}
         author={book.author[0].username}
+        authorId={book.author[0]._id}
         category={book.category}
-        rating={2}
+        rating={book.avgRate[0]}
         favorite={book.favorite}
         slug={book.slug}
         favClick={() => handleFav(book._id)} />
     )
   })
+
+
   return (
     <div className={styles.showcase}>
       {windowWidth >= 1066 ?
@@ -90,8 +93,18 @@ const bookShowcase: FC = () => {
             <Sort />
           </div>
           <div className={styles.nav}>
-            <NavArrow direction='left' onClick={() => null} />
-            <NavArrow direction='right' onClick={() => null} />
+            <NavArrow direction='left' onClick={() => dispatch(prevPage())}
+              style={{
+                opacity: filter.page === 1 ? '50%' : '100%',
+                cursor: filter.page === 1 ? 'default' : 'pointer'
+              }}
+            />
+            <NavArrow direction='right' onClick={() => dispatch(nextPage({ total: totalBook, limit: limitBook }))}
+              style={{
+                opacity: filter.page > Math.floor(totalBook / limitBook) ? '50%' : '100%',
+                cursor: filter.page > Math.floor(totalBook / limitBook) ? 'default' : 'pointer'
+              }}
+            />
           </div>
         </div>
         :
@@ -104,15 +117,55 @@ const bookShowcase: FC = () => {
         </>
       }
       <div className={styles.books}>
-        {showBooks}
+        {isNoResult ? <p>Aucun résultats</p> : showBooks}
       </div>
 
       <div className={styles.navBottom}>
-        <NavArrow direction='left' onClick={() => null} />
-        <NavArrow direction='right' onClick={() => null} />
+        <NavArrow direction='left' onClick={() => dispatch(prevPage())}
+          style={{
+            opacity: filter.page === 1 ? '50%' : '100%',
+            cursor: filter.page === 1 ? 'default' : 'pointer'
+          }}
+        />
+        <NavArrow direction='right' onClick={() => dispatch(nextPage({ total: totalBook, limit: limitBook }))}
+          style={{
+            opacity: filter.page > Math.floor(totalBook / limitBook) ? '50%' : '100%',
+            cursor: filter.page > Math.floor(totalBook / limitBook) ? 'default' : 'pointer'
+          }}
+        />
       </div>
     </div>
   )
 }
 
 export default bookShowcase
+
+const getBooks = async (id: string,
+  filter: FilterType,
+  setBooks: React.Dispatch<React.SetStateAction<BookType[]>>,
+  setNoResult: React.Dispatch<React.SetStateAction<boolean>>,
+  setTotalBook: React.Dispatch<React.SetStateAction<number>>,
+  setlimitBook: React.Dispatch<React.SetStateAction<number>>) => {
+  try {
+    let path = ''
+    if (id) {
+      path = `/api/v1/book/getall?userId=${id}`
+    } else {
+      path = '/api/v1/book/getall?'
+    }
+    if (filter.search) path += `&search=${filter.search}`
+    if (filter.tags.length > 0) path += `&tags=${filter.tags}`
+    if (filter.category.length > 0) path += `&category=${filter.category}`
+    if (filter.sorted) path += `&sorted=${filter.sorted}`
+    path += `&page=${filter.page}`
+    const res = await axios(path)
+    const data = await res.data
+    setTotalBook(data.total)
+    setlimitBook(data.limit)
+    setBooks(data.books)
+    setNoResult(false)
+  } catch (error: any) {
+    console.log(error)
+    setNoResult(true)
+  }
+}

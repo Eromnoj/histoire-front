@@ -53,9 +53,6 @@ const Filters: FC = () => {
         onChange={(e) => handleSearch(e) }
       />
       
-
-      <BookList />
-
     </div>
   )
 }

@@ -7,7 +7,7 @@ import down from '../public/img/down.png'
 import left from '../public/img/left.png'
 import right from '../public/img/right.png'
 
-const NavArrow: FC<NavArrowProps> = ({ direction, onClick }) => {
+const NavArrow: FC<NavArrowProps> = ({ direction, onClick, style }) => {
 
   let image: StaticImageData
 
@@ -29,7 +29,7 @@ const NavArrow: FC<NavArrowProps> = ({ direction, onClick }) => {
       break
   }
   return (
-    <button className={styles.arrow} onClick={onClick}><Image
+    <button className={styles.arrow} onClick={onClick} style={style}><Image
     src={image}
     alt={`button ${direction}`}
     width={30}

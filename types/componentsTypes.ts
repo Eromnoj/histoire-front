@@ -5,6 +5,7 @@ export type BookProps = {
   picture: string
   title: string
   author: string
+  authorId: string
   category: string
   rating: number
   favorite: boolean
@@ -32,6 +33,7 @@ export type ChapterProps = {
 export type NavArrowProps = {
   direction : string
   onClick : MouseEventHandler
+  style? : {}
 }
 
 

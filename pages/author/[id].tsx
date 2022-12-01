@@ -13,11 +13,12 @@ import Mail from '../../public/img/Envelope.png'
 
 import AuthorAvatar from '../../components/AuthorAvatar'
 import Book from '../../components/Book'
-import NavArrow from '../../components/NavArrow'
 
 import { GetServerSideProps } from 'next'
 import axios from 'axios'
 import Link from 'next/link'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../stores'
 
 type SocialLinkProps = {
   twitter?: string
@@ -25,6 +26,7 @@ type SocialLinkProps = {
   email?: string
 }
 const SocialLink: FC<SocialLinkProps> = ({ twitter, facebook, email }) => {
+
   return (
     <div className={styles.links}>
 
@@ -77,14 +79,15 @@ type dataProps = {
     description: string
     imgPath: string
     username: string
-    books: { category: string, favorites: boolean, _id: string, coverPath: string, title: string }[]
-
-
+    books: { category: string, favorite: boolean, _id: string, coverPath: string, title: string , avgRate: number[], slug: string}[]
   }
 }
 
 const AuthorDescription: FC<dataProps> = ({ data }) => {
-  console.log(data);
+
+  
+  const {userId} = useSelector((state:RootState)=> state.userSession)
+  
 
   const [windowWidth, setWindowWidth] = useState(0)
 
@@ -93,7 +96,10 @@ const AuthorDescription: FC<dataProps> = ({ data }) => {
   }, [])
 
 
+
+
   const showBooks = data.books.map(book => {
+    const [isFavorite, setIsFavorite] = useState(book.favorite)
     return (
       <Book
         key={book._id}
@@ -101,10 +107,12 @@ const AuthorDescription: FC<dataProps> = ({ data }) => {
         picture={book.coverPath}
         title={book.title}
         author={data.username}
+        authorId={data._id}
         category={book.category}
-        rating={4}
-        favorite={true}
-        favClick={() => null}
+        rating={book.avgRate[0]}
+        favorite={isFavorite}
+        slug={book.slug}
+        favClick={() => handleFav(book.slug, userId, book._id, setIsFavorite )}
       />
     )
   })
@@ -153,10 +161,8 @@ const AuthorDescription: FC<dataProps> = ({ data }) => {
           </div>
         </div>
         <div className={styles.bookNav}>
+          <div className={styles.books}>
           {showBooks}
-          <div className={styles.nav}>
-            <NavArrow direction='left' onClick={() => null} />
-            <NavArrow direction='right' onClick={() => null} />
           </div>
         </div>
       </div>
@@ -168,9 +174,35 @@ export default AuthorDescription
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query
-  const res = await axios(`http://localhost:3000/api/v1/user/${id}`)
+  const res = await axios(`http://localhost:5000/api/v1/user/${id}`)
   const data = await res.data.user
 
-
+  console.log(data);
+  
   return { props: { data } }
+}
+
+const getFavorites = async (slug: any,
+  userId: string,
+  setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>) => {
+  const res = await axios(`/api/v1/book/byslug/${slug}?userId=${userId}`)
+  const favorites = await res.data.book.favorite
+  setIsFavorite(favorites)
+
+}
+
+
+const handleFav = async (slug: any,
+  userId: string,
+  id: string, 
+  setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>) => {
+  try {
+    const res = await axios.post(`/api/v1/user/favorites/${id}`)
+    getFavorites(slug, userId, setIsFavorite)
+    // TODO Ajouter le toast avec le message d'Ajout
+
+  } catch (error) {
+    console.log(error);
+
+  }
 }

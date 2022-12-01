@@ -5,14 +5,16 @@ interface FilterState {
   category: string[],
   tags: string[],
   search: string,
-  sorted: string
+  sorted: string,
+  page: number
 }
 
 const initialState: FilterState = {
   category: [],
   tags:[],
   search: '',
-  sorted: ''
+  sorted: '',
+  page: 1
 }
 
 export const filterSlice = createSlice({
@@ -45,6 +47,15 @@ export const filterSlice = createSlice({
     searchFromTitle: (state, action:PayloadAction<{search:string}>)=>{
         state.search = action.payload.search
     },
+    nextPage: (state, action:PayloadAction<{total:number, limit:number}>)=>{
+      if(state.page < Math.ceil(action.payload.total / action.payload.limit)) state.page += 1
+    },
+    prevPage: (state)=>{
+      if(state.page > 1) state.page -= 1
+    },
+    backFirstPage: (state) => {
+      state.page = 1
+    }
   }
 
 })
