@@ -1,24 +1,24 @@
 import Head from 'next/head'
-import styles from '../../styles/BookDescription.module.scss'
+import styles from '../../../styles/BookDescription.module.scss'
 
-import Layout from '../../components/layout/Layout'
+import Layout from '../../../components/layout/Layout'
 
 import React, { FC, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
 
-import Book from '../../components/Book'
-import Tag from '../../components/form/Tag'
-import AuthorAvatar from '../../components/AuthorAvatar'
-import Select from '../../components/form/Select'
-import SubmitButton from '../../components/form/SubmitButton'
+import Book from '../../../components/Book'
+import Tag from '../../../components/form/Tag'
+import AuthorAvatar from '../../../components/AuthorAvatar'
+import Select from '../../../components/form/Select'
+import SubmitButton from '../../../components/form/SubmitButton'
 import axios from 'axios'
 import Image from 'next/image'
 import Link from 'next/link'
-import Star from '../../public/img/Star.png'
+import Star from '../../../public/img/Star.png'
 import { GetServerSideProps } from 'next'
 import { useSelector } from 'react-redux'
-import { RootState } from '../../stores'
+import { RootState } from '../../../stores'
 
 
 
@@ -31,16 +31,25 @@ type dataProps = {
     title: string
     author: { username: string, description: string, _id: string, imgPath: string }[]
     category: string
-    avgRate: number[]
+    avgRate: number
     favorite: boolean
+    chapters: Chapter[]
   }
 }
 
-const BookDescription: FC<dataProps> = ({ data }) => {
+type Chapter = {
+  _id: string,
+  title: string,
+  chapterOrder: number,
+  isPublished: boolean,
+  slug: string
+}
 
+const BookDescription: FC<dataProps> = ({ data }) => {
   const { userId } = useSelector((state: RootState) => state.userSession)
   const router = useRouter()
   const { slug } = router.query
+  const [chapSlug, setChapSlug] = data.chapters.length <= 0 ? useState('Pas de chapitres') : useState(data.chapters[0].slug)
 
   const [isFavorite, setIsFavorite] = useState(data.favorite)
   const [rate, setRate] = useState(0)
@@ -81,8 +90,6 @@ const BookDescription: FC<dataProps> = ({ data }) => {
     )
 
   })
-
-
   useEffect(() => {
     if (userId) {
       getFavorites(slug, userId, setIsFavorite)
@@ -120,6 +127,19 @@ const BookDescription: FC<dataProps> = ({ data }) => {
     }
   }
 
+  const displayChapter = data.chapters.length > 0 ? data.chapters.map((chapter:Chapter) => {
+   return {
+      key: chapter._id,
+      _id: chapter.slug,
+      chapterName: `Chapitre ${chapter.chapterOrder} - ${chapter.title}`
+    }
+  }) : [
+    {
+      key: 'no name',
+      _id: 'none',
+      chapterName: `Pas de chapitres`
+    }
+  ]
 
   return (
     <Layout>
@@ -140,7 +160,7 @@ const BookDescription: FC<dataProps> = ({ data }) => {
               author={data.author[0].username}
               authorId={data.author[0]._id}
               category={data.category}
-              rating={data.avgRate[0]}
+              rating={data.avgRate}
               favorite={isFavorite}
               favClick={() => handleFav(slug, userId, data._id, setIsFavorite)}
             />
@@ -179,6 +199,7 @@ const BookDescription: FC<dataProps> = ({ data }) => {
         </div>
         <div className={styles.content}>
           <div className={styles.rate}>
+              <h3>Notez cet ouvrage :</h3>
             <ul className={styles.starsList}>
               {rateDisplay}
             </ul>
@@ -189,22 +210,19 @@ const BookDescription: FC<dataProps> = ({ data }) => {
           </p>
 
 
-          <form className={styles.selectChapter}>
+          <form className={styles.selectChapter} onSubmit= { data.chapters.length > 0 ? (e) => {
+            e.preventDefault()
+            console.log(e);
+            router.push(`/book/${slug}/${chapSlug}`)
+          } : (e) => e.preventDefault()  // If there's no chapters, do nothing
+        }>
             <div>
 
               <Select
                 id='select_chapter'
                 name='select_chapter'
-                options={[
-                  {
-                    _id: 'sfddsfsdfsd',
-                    chapterName: 'Chapitre 1 - La rue des ombres'
-                  },
-                  {
-                    _id: 'sfddsfsdfsd',
-                    chapterName: 'Chapitre 1 - La cabanes au fond du jardin'
-                  }
-                ]}
+                onChange={(e)=>{ setChapSlug(e.currentTarget.value)}}
+                options={displayChapter}
               />
             </div>
             <div>
@@ -225,7 +243,8 @@ export default BookDescription
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { slug } = context.query
-  const res = await axios(`http://localhost:3000/api/v1/book/byslug/${slug}`)
+
+  const res = await axios(`http://localhost:5000/api/v1/book/byslug/${slug}`)
   const data = await res.data.book
 
   return { props: { data } }
@@ -260,8 +279,8 @@ const getUserRate = async (id: string, setRate: React.Dispatch<React.SetStateAct
     const res = await axios(`/api/v1/user/rate/${id}`)
     const rate = await res.data.rate
     setRate(rate)
-
   } catch (error) {
-
+    console.log('coucou');
+    
   }
 }

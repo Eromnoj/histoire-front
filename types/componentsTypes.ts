@@ -25,9 +25,6 @@ export type ChapterProps = {
   id : string
   title: string
   isPublish: boolean
-  onClickStatus: MouseEventHandler
-  onClickMod: MouseEventHandler
-  onClickDel: MouseEventHandler
 }
 
 export type NavArrowProps = {
@@ -75,6 +72,7 @@ export type TextFieldProps = {
 export type SelectProps = {
   id: string
   name: string
+  onChange: ChangeEventHandler<HTMLSelectElement>
   options : OptionProps[]
 }
 

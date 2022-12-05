@@ -3,9 +3,8 @@ import styles from '../../../styles/Create.module.scss'
 
 import Layout from '../../../components/layout/Layout'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState} from 'react'
 import Chapter from '../../../components/Chapter'
-import NavArrow from '../../../components/NavArrow'
 
 import CategoryRadio from '../../../components/CategoryRadio'
 import TagSelector from '../../../components/TagSelector'
@@ -19,6 +18,7 @@ import { bookDescription, bookTitle, RootState, bookImgPath, bookCategory, bookG
 import { Dispatch } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { NextRouter, useRouter } from 'next/router'
+import { createChapterSlice } from '../../../stores/createChapter'
 
 type BookState = {
   category: string,
@@ -28,20 +28,35 @@ type BookState = {
   coverPath: string
 }
 
+type Chapter = {
+  _id: string,
+  title: string,
+  chapterOrder: number,
+  isPublished: boolean
+}
+
 const EditBook = () => {
   const router = useRouter()
   const { id } = router.query
   const dispatch = useDispatch()
   const bookCreate = useSelector((state:RootState)=> state.create)
-  console.log(bookCreate);
   const imgPath = `http://localhost:5000${bookCreate.coverPath}`
-  
-  console.log(id);
+  const [chapters, setChapters] = useState<Chapter[]>([])
+  const [isPublished, setIsPublished] = useState(false)
   useEffect(()=>{
-    
-    getBook(id, dispatch)
+    getBook(id, dispatch, setChapters, setIsPublished)
   },[id])
 
+  const displayChapters = chapters.map(chapter => {
+    return (
+      <Chapter
+              key={chapter._id}
+              id={chapter._id}
+              title={chapter.title}
+              isPublish={chapter.isPublished}
+            />
+    )
+  })
   return (
     <Layout>
       <Head>
@@ -84,10 +99,14 @@ const EditBook = () => {
           </div>
 
         </div>
+
         <form className={styles.bookDesc} onSubmit={(e)=> {
           e.preventDefault()
           handleBookSumbit(bookCreate,router, id)
         }}>
+
+            <div className={!isPublished ? styles.publishedButton : [styles.publishedButton, styles.waiting].join(' ')} onClick={() => handlePublishing(id, router)}>{isPublished ? 'Mettre en attente' : 'Publier'}</div>
+         
           <InputField
             id='title'
             name='title'
@@ -110,47 +129,12 @@ const EditBook = () => {
           </div>
 
           <div className={styles.chapter}>
-            <p className={styles.chapTitle}>Chapitre :</p>
+           {chapters.length > 0 ? <p className={styles.chapTitle}>Chapitres :</p> : null}
 
-            <Chapter
-              id='zfzezfe'
-              title='Lorem Ipsum'
-              isPublish={true}
-              onClickDel={() => null}
-              onClickMod={() => null}
-              onClickStatus={() => null}
-            />
-            <Chapter
-              id='zfzezfe'
-              title='Lorem Ipsum'
-              isPublish={false}
-              onClickDel={() => null}
-              onClickMod={() => null}
-              onClickStatus={() => null}
-            />
-            <Chapter
-              id='zfzezfe'
-              title='Lorem Ipsum'
-              isPublish={false}
-              onClickDel={() => null}
-              onClickMod={() => null}
-              onClickStatus={() => null}
-            />
-            <Chapter
-              id='zfzezfe'
-              title='Lorem Ipsum'
-              isPublish={false}
-              onClickDel={() => null}
-              onClickMod={() => null}
-              onClickStatus={() => null}
-            />
+            {displayChapters}
 
-            <div className={styles.nav}>
-              <NavArrow direction='left' onClick={() => null} />
-              <NavArrow direction='right' onClick={() => null} />
-            </div>
           </div>
-          <div className={styles.createChapter}>Créer un chapitre</div>
+          <div className={styles.createChapter} onClick={()=> createChapter(id, router, chapters.length+1)}>Créer un chapitre</div>
         </form>
       </div>
     </Layout>
@@ -198,7 +182,11 @@ const updateBookCover = async (file: FileList | null,
   }
 }
 
-const getBook = async (id: any, dispatch:Dispatch)=>{
+const getBook = async (
+  id: any, 
+  dispatch:Dispatch, 
+  setChapter:React.Dispatch<React.SetStateAction<Chapter[]>>,
+  setIsPublished:React.Dispatch<React.SetStateAction<boolean>>)=>{
   try {
     const res = await axios(`/api/v1/book/${id}`)
     const data = await res.data.book
@@ -206,12 +194,44 @@ const getBook = async (id: any, dispatch:Dispatch)=>{
     dispatch(bookDescription({description : data.description}))
     dispatch(bookCategory({category : data.category}))
     data.tags.forEach((tag: string) => {
-
       dispatch(bookGenre({tags : tag}))
     })
+    setChapter([])
+    data.chapters.forEach((chapter:Chapter)=>{
+        setChapter(prev => [...prev, chapter])
+    })
     dispatch(bookImgPath({coverPath : data.coverPath}))
+    setIsPublished(data.isPublished)
   } catch (error) {
     
   }
 
+}
+
+const handlePublishing =async (id:any, router:NextRouter) => {
+  try {
+    const res = await axios.patch(`/api/v1/book/${id}`, {togglePublished: true})
+    router.reload()
+  } catch (error) {
+    
+  }
+}
+
+const createChapter = async (bookId:any, router:NextRouter, chapterOrder: number) => {
+  const defaultChapter = {
+    bookId,
+    content: "Commencez votre chapitre",
+    title: "Choisissez un titre",
+    chapterOrder
+  }
+  
+  try {
+    const res = await axios.post(`/api/v1/chapter/create`, defaultChapter)
+    const data = await res.data
+    const chapterId = await data.chapter._id
+    router.push(`/book/write/editor/${chapterId}`)
+  } catch (error) {
+    console.log(error);
+    
+  }
 }

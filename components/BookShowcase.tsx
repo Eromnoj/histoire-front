@@ -17,7 +17,7 @@ type BookType = {
   title: string
   author: { username: string, description: string, _id: string }[],
   category: string
-  avgRate: number[]
+  avgRate: number
   slug: string
   favorite: boolean
 }
@@ -77,14 +77,13 @@ const bookShowcase: FC = () => {
         author={book.author[0].username}
         authorId={book.author[0]._id}
         category={book.category}
-        rating={book.avgRate[0]}
+        rating={book.avgRate}
         favorite={book.favorite}
         slug={book.slug}
         favClick={() => handleFav(book._id)} />
     )
   })
-
-
+  
   return (
     <div className={styles.showcase}>
       {windowWidth >= 1066 ?
@@ -101,8 +100,8 @@ const bookShowcase: FC = () => {
             />
             <NavArrow direction='right' onClick={() => dispatch(nextPage({ total: totalBook, limit: limitBook }))}
               style={{
-                opacity: filter.page > Math.floor(totalBook / limitBook) ? '50%' : '100%',
-                cursor: filter.page > Math.floor(totalBook / limitBook) ? 'default' : 'pointer'
+                opacity: filter.page > Math.floor(totalBook / limitBook) || totalBook / limitBook === 1 ? '50%' : '100%',
+                cursor: filter.page > Math.floor(totalBook / limitBook) || totalBook / limitBook === 1 ? 'default' : 'pointer'
               }}
             />
           </div>
@@ -129,8 +128,8 @@ const bookShowcase: FC = () => {
         />
         <NavArrow direction='right' onClick={() => dispatch(nextPage({ total: totalBook, limit: limitBook }))}
           style={{
-            opacity: filter.page > Math.floor(totalBook / limitBook) ? '50%' : '100%',
-            cursor: filter.page > Math.floor(totalBook / limitBook) ? 'default' : 'pointer'
+            opacity: filter.page >= Math.ceil(totalBook / limitBook) ? '50%' : '100%',
+            cursor: filter.page >= Math.ceil(totalBook / limitBook) ? 'default' : 'pointer'
           }}
         />
       </div>

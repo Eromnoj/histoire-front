@@ -3,12 +3,14 @@ import { createSlice } from "@reduxjs/toolkit"
 
 interface createChapterState {
   title: string,
-  content: string
+  content: string,
+  chapterOrder: number
 }
 
 const initialState: createChapterState = {
   title: '',
-  content: ''
+  content: '',
+  chapterOrder: 0
 }
 
 export const createChapterSlice = createSlice({
@@ -20,6 +22,9 @@ export const createChapterSlice = createSlice({
     },
     chapterContent: (state, action: PayloadAction<{ content: string }>) => {
       state.content = action.payload.content
+    },
+    chapterOrder: (state, action: PayloadAction<{ chapterOrder: number }>) => {
+      state.chapterOrder = action.payload.chapterOrder
     },
   }
 
