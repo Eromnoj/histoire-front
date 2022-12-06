@@ -8,6 +8,7 @@ import UserNav from '../../components/UserNav'
 import TextArea from '../../components/form/TextArea'
 import InputField from '../../components/form/InputField'
 import SubmitButton from '../../components/form/SubmitButton'
+import Toast from '../../components/Toast'
 import Layout from '../../components/layout/Layout'
 
 import axios from 'axios'
@@ -23,25 +24,23 @@ const Description: FC = () => {
   const userSession = useSelector((state: RootState) => state.userSession)
   const [password, setPassword] = useState('')
   const [authorAvatar, setAuthorAvatar] = useState('http://localhost:5000/uploads/headshot.png')
+  const [trigger, setTrigger]= useState(false)
   const [msg, setMsg] = useState('')
-  const [showMsg, setShowMsg] = useState(false)
 
-
-  // Dynamic rendering
-  useEffect(() => {
-    if (showMsg) {
-      setTimeout(() => {
-        setShowMsg(false)
+  useEffect(()=> {
+    if(trigger){
+      setTimeout(()=> {
+        setTrigger(false)
       }, 5000)
     }
-  }, [showMsg])
+  },[trigger])
 
   useEffect(() => {
     fetchUserData(userSession.userId,
       dispatch,
       setAuthorAvatar,
       setMsg,
-      setShowMsg)
+      setTrigger)
   }, [])
 
 
@@ -58,7 +57,6 @@ const Description: FC = () => {
         </div>
 
         <div className={styles.content}>
-          {showMsg ? <p>{msg}</p> : null}
           <div className={styles.avatarMod}>
             <div className={styles.avatar}>
                 <Image
@@ -78,7 +76,7 @@ const Description: FC = () => {
                   name="image"
                   id="image"
                   className={styles.avatarInput}
-                  onChange={(e) => updateAvatar(e.target.files, setAuthorAvatar)} />
+                  onChange={(e) => updateAvatar(e.target.files, setAuthorAvatar, setMsg, setTrigger)} />
               </label>
 
             </form>
@@ -90,7 +88,7 @@ const Description: FC = () => {
                 password,
                 userSession.userId,
                 setMsg,
-                setShowMsg)
+                setTrigger)
               setPassword('')
             }}>
 
@@ -122,7 +120,12 @@ const Description: FC = () => {
             </form>
           </div>
         </div>
+        {trigger ? <Toast 
+          message={msg}
+          click={() => setTrigger(false)}
+        /> : null }
       </div>
+      
     </Layout>
   )
 }
@@ -150,7 +153,9 @@ const submitChange = async (description: string,
 }
 
 const updateAvatar = async (file: FileList | null, 
-  avatarSetter: React.Dispatch<React.SetStateAction<string>>) => {
+  avatarSetter: React.Dispatch<React.SetStateAction<string>>,
+  msgSetter: React.Dispatch<React.SetStateAction<string>>,
+  showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
   if (file !== null) {
     console.log(file[0]);
     const formData = new FormData();
@@ -166,9 +171,9 @@ const updateAvatar = async (file: FileList | null,
       const imgPath = 'http://localhost:5000' + img
       avatarSetter(imgPath)
 
-    } catch (error) {
-      console.log(error);
-
+    } catch (error:any) {
+      msgSetter(error.response.data.msg)
+    showSetter(true)
     }
   }
 }

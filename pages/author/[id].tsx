@@ -13,7 +13,7 @@ import Mail from '../../public/img/Envelope.png'
 
 import AuthorAvatar from '../../components/AuthorAvatar'
 import Book from '../../components/Book'
-
+import Toast from '../../components/Toast'
 import { GetServerSideProps } from 'next'
 import axios from 'axios'
 import Link from 'next/link'
@@ -95,7 +95,16 @@ const AuthorDescription: FC<dataProps> = ({ data }) => {
     setWindowWidth(window.innerWidth)
   }, [])
 
+  const [trigger, setTrigger]= useState(false)
+  const [msg, setMsg] = useState('')
 
+  useEffect(()=> {
+    if(trigger){
+      setTimeout(()=> {
+        setTrigger(false)
+      }, 5000)
+    }
+  },[trigger])
 
 
   const showBooks = data.books.map(book => {
@@ -112,7 +121,7 @@ const AuthorDescription: FC<dataProps> = ({ data }) => {
         rating={book.avgRate[0]}
         favorite={isFavorite}
         slug={book.slug}
-        favClick={() => handleFav(book.slug, userId, book._id, setIsFavorite )}
+        favClick={() => handleFav(book.slug, userId, book._id, setIsFavorite, setMsg, setTrigger )}
       />
     )
   })
@@ -165,6 +174,10 @@ const AuthorDescription: FC<dataProps> = ({ data }) => {
           {showBooks}
           </div>
         </div>
+        {trigger ? <Toast
+        message={msg}
+        click={() => setTrigger(false)}
+      /> : null}
       </div>
     </Layout>
   )
@@ -195,12 +208,16 @@ const getFavorites = async (slug: any,
 const handleFav = async (slug: any,
   userId: string,
   id: string, 
-  setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>) => {
+  setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>,
+  msgSetter: React.Dispatch<React.SetStateAction<string>>,
+  showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
   try {
     const res = await axios.post(`/api/v1/user/favorites/${id}`)
     getFavorites(slug, userId, setIsFavorite)
     // TODO Ajouter le toast avec le message d'Ajout
-
+    const data = res.data
+    msgSetter(data.msg)
+    showSetter(true)
   } catch (error) {
     console.log(error);
 

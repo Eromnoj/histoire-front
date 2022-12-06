@@ -48,7 +48,7 @@ export const filterSlice = createSlice({
         state.search = action.payload.search
     },
     nextPage: (state, action:PayloadAction<{total:number, limit:number}>)=>{
-      if(state.page < Math.ceil(action.payload.total / action.payload.limit)) state.page += 1
+      if(state.page < Math.floor(action.payload.total / action.payload.limit)) state.page += 1
     },
     prevPage: (state)=>{
       if(state.page > 1) state.page -= 1

@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Back from '../../../../public/img/Back.png'
 import Save from '../../../../public/img/Save.png'
 import InputField from '../../../../components/form/InputField'
-
+import Toast from '../../../../components/Toast'
 import { useSelector, useDispatch } from 'react-redux'
 import { Dispatch } from '@reduxjs/toolkit'
 
@@ -27,8 +27,19 @@ const Edit = () => {
 
   const dispatch = useDispatch()
   const chapter:Chapter = useSelector((state:RootState) => state.chapter)
+  const [trigger, setTrigger]= useState(false)
+  const [msg, setMsg] = useState('')
+
+  useEffect(()=> {
+    if(trigger){
+      setTimeout(()=> {
+        setTrigger(false)
+      }, 5000)
+    }
+  },[trigger])
+
   useEffect(() => {
-    getChapterContent(id, dispatch)
+    getChapterContent(id, dispatch, setMsg, setTrigger)
   },[])
   
 
@@ -44,7 +55,7 @@ const Edit = () => {
             />
             </div>
         </div>
-        <div className={styles.bookmarkSave} onClick={()=> saveChapter(id, chapter)}>
+        <div className={styles.bookmarkSave} onClick={()=> saveChapter(id, chapter, setMsg, setTrigger)}>
         <div className={styles.image}>
           <Image
             src={Save}
@@ -74,34 +85,43 @@ const Edit = () => {
         />
        <ReactQuill theme='snow' style={{height: '100vh'}} value={chapter.content} onChange={(e:string) => dispatch(chapterContent({content: e}))}/>
       </div>
-        
+      {trigger ? <Toast
+        message={msg}
+        click={() => setTrigger(false)}
+      /> : null}
     </div>
   )
 }
 
 export default Edit
 
-const getChapterContent = async (id:any, dispatch:Dispatch) => {
+const getChapterContent = async (id:any, dispatch:Dispatch,
+  msgSetter: React.Dispatch<React.SetStateAction<string>>,
+  showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
   try {
     const res = await axios(`/api/v1/chapter/${id}`)
     const data = await res.data.chapter
     dispatch(chapterContent({content: data.content}))
     dispatch(chapterOrder({chapterOrder: data.chapterOrder}))
     dispatch(chapterTitle({title: data.title}))
-    console.log(data)
-  } catch (error) {
-    
+  } catch (error:any) {
+    msgSetter(error.response.data.msg)
+    showSetter(true)
   }
 }
 
-const saveChapter = async (id: any, chapterData:Chapter) => {
+const saveChapter = async (id: any, chapterData:Chapter,
+  msgSetter: React.Dispatch<React.SetStateAction<string>>,
+  showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
   try {
     const res = await axios.patch(`/api/v1/chapter/${id}`, chapterData)
     const data = await res.data
     const msg = await data.msg
-    console.log(msg);
+    msgSetter(msg)
+    showSetter(true)
     
-  } catch (error) {
-    
+  } catch (error:any) {
+    msgSetter(error.response.data.msg)
+    showSetter(true)
   }
 }

@@ -3,7 +3,7 @@ import styles from '../../../styles/Create.module.scss'
 
 import Layout from '../../../components/layout/Layout'
 
-import React, { useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import Chapter from '../../../components/Chapter'
 
 import CategoryRadio from '../../../components/CategoryRadio'
@@ -11,14 +11,13 @@ import TagSelector from '../../../components/TagSelector'
 import InputField from '../../../components/form/InputField'
 import TextArea from '../../../components/form/TextArea'
 import SubmitButton from '../../../components/form/SubmitButton'
-
+import Toast from '../../../components/Toast'
 import Image from 'next/image'
 import { useSelector, useDispatch } from 'react-redux'
 import { bookDescription, bookTitle, RootState, bookImgPath, bookCategory, bookGenre } from '../../../stores'
 import { Dispatch } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { NextRouter, useRouter } from 'next/router'
-import { createChapterSlice } from '../../../stores/createChapter'
 
 type BookState = {
   category: string,
@@ -39,22 +38,32 @@ const EditBook = () => {
   const router = useRouter()
   const { id } = router.query
   const dispatch = useDispatch()
-  const bookCreate = useSelector((state:RootState)=> state.create)
+  const bookCreate = useSelector((state: RootState) => state.create)
   const imgPath = `http://localhost:5000${bookCreate.coverPath}`
   const [chapters, setChapters] = useState<Chapter[]>([])
   const [isPublished, setIsPublished] = useState(false)
-  useEffect(()=>{
-    getBook(id, dispatch, setChapters, setIsPublished)
-  },[id])
+  const [trigger, setTrigger]= useState(false)
+  const [msg, setMsg] = useState('')
+
+  useEffect(()=> {
+    if(trigger){
+      setTimeout(()=> {
+        setTrigger(false)
+      }, 5000)
+    }
+  },[trigger])
+  useEffect(() => {
+    getBook(id, dispatch, setChapters, setIsPublished, setMsg, setTrigger)
+  }, [id])
 
   const displayChapters = chapters.map(chapter => {
     return (
       <Chapter
-              key={chapter._id}
-              id={chapter._id}
-              title={chapter.title}
-              isPublish={chapter.isPublished}
-            />
+        key={chapter._id}
+        id={chapter._id}
+        title={chapter.title}
+        isPublish={chapter.isPublished}
+      />
     )
   })
   return (
@@ -78,13 +87,13 @@ const EditBook = () => {
             <form method="post" encType="multipart/form-data" className={styles.bookImgForm}>
               <label htmlFor="avatar" className={styles.bookImgLabel}>
                 Choisir une couverture
-                <input 
-                type="file" 
-                accept="image/*" 
-                name="avatar" 
-                id="avatar" 
-                className={styles.bookImgInput}
-                onChange={(e) => updateBookCover(e.target.files, dispatch, id)}
+                <input
+                  type="file"
+                  accept="image/*"
+                  name="avatar"
+                  id="avatar"
+                  className={styles.bookImgInput}
+                  onChange={(e) => updateBookCover(e.target.files, dispatch, id, setMsg, setTrigger)}
                 />
               </label>
             </form>
@@ -100,19 +109,19 @@ const EditBook = () => {
 
         </div>
 
-        <form className={styles.bookDesc} onSubmit={(e)=> {
+        <form className={styles.bookDesc} onSubmit={(e) => {
           e.preventDefault()
-          handleBookSumbit(bookCreate,router, id)
+          handleBookSumbit(bookCreate, router, id, setMsg, setTrigger)
         }}>
 
-            <div className={!isPublished ? styles.publishedButton : [styles.publishedButton, styles.waiting].join(' ')} onClick={() => handlePublishing(id, router)}>{isPublished ? 'Mettre en attente' : 'Publier'}</div>
-         
+          <div className={!isPublished ? styles.publishedButton : [styles.publishedButton, styles.waiting].join(' ')} onClick={() => handlePublishing(id, router, setMsg, setTrigger)}>{isPublished ? 'Mettre en attente' : 'Publier'}</div>
+
           <InputField
             id='title'
             name='title'
             label={`Titre de l'ouvrage`}
             value={bookCreate.title}
-            onChange={(e) => dispatch(bookTitle({title: e.currentTarget.value}))}
+            onChange={(e) => dispatch(bookTitle({ title: e.currentTarget.value }))}
           />
           <TextArea
             id='description'
@@ -120,7 +129,7 @@ const EditBook = () => {
             label='Description'
             rows={20}
             value={bookCreate.description}
-            onChange={(e) => dispatch(bookDescription({description: e.currentTarget.value}))}
+            onChange={(e) => dispatch(bookDescription({ description: e.currentTarget.value }))}
           />
           <div className={styles.button}>
             <SubmitButton
@@ -129,14 +138,18 @@ const EditBook = () => {
           </div>
 
           <div className={styles.chapter}>
-           {chapters.length > 0 ? <p className={styles.chapTitle}>Chapitres :</p> : null}
+            {chapters.length > 0 ? <p className={styles.chapTitle}>Chapitres :</p> : null}
 
             {displayChapters}
 
           </div>
-          <div className={styles.createChapter} onClick={()=> createChapter(id, router, chapters.length+1)}>Créer un chapitre</div>
+          <div className={styles.createChapter} onClick={() => createChapter(id, router, chapters.length + 1, setMsg, setTrigger)}>Créer un chapitre</div>
         </form>
       </div>
+      {trigger ? <Toast
+        message={msg}
+        click={() => setTrigger(false)}
+      /> : null}
     </Layout>
   )
 }
@@ -144,21 +157,26 @@ const EditBook = () => {
 export default EditBook
 
 
-const handleBookSumbit = async (book:BookState, router: NextRouter, id: any) => {
-    
+const handleBookSumbit = async (book: BookState, router: NextRouter, id: any,
+  msgSetter: React.Dispatch<React.SetStateAction<string>>,
+  showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
+
   console.log(book);
   try {
-    const res = await axios.patch(`/api/v1/book/${id}`,book)
+    const res = await axios.patch(`/api/v1/book/${id}`, book)
     const data = await res.data
-    console.log(data.msg);
-  } catch (error) {
-    console.log(error);
-    
+    msgSetter(data.msg)
+    showSetter(true)
+  } catch (error: any) {
+    msgSetter(error.response.data.msg)
+    showSetter(true)
   }
 }
 
-const updateBookCover = async (file: FileList | null, 
-  dispatch: Dispatch, id:any ) => {
+const updateBookCover = async (file: FileList | null,
+  dispatch: Dispatch, id: any,
+  msgSetter: React.Dispatch<React.SetStateAction<string>>,
+  showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
   if (file !== null) {
     console.log(file[0]);
     const formData = new FormData();
@@ -171,67 +189,75 @@ const updateBookCover = async (file: FileList | null,
         }
       })
       const img = await res.data.image
-      console.log(img);
-      
-      dispatch(bookImgPath({coverPath: img}))
 
-    } catch (error) {
-      console.log(error);
+      dispatch(bookImgPath({ coverPath: img }))
 
+    } catch (error: any) {
+      msgSetter(error.response.data.msg)
+      showSetter(true)
     }
   }
 }
 
 const getBook = async (
-  id: any, 
-  dispatch:Dispatch, 
-  setChapter:React.Dispatch<React.SetStateAction<Chapter[]>>,
-  setIsPublished:React.Dispatch<React.SetStateAction<boolean>>)=>{
+  id: any,
+  dispatch: Dispatch,
+  setChapter: React.Dispatch<React.SetStateAction<Chapter[]>>,
+  setIsPublished: React.Dispatch<React.SetStateAction<boolean>>,
+  msgSetter: React.Dispatch<React.SetStateAction<string>>,
+  showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
   try {
     const res = await axios(`/api/v1/book/${id}`)
     const data = await res.data.book
-    dispatch(bookTitle({title : data.title}))
-    dispatch(bookDescription({description : data.description}))
-    dispatch(bookCategory({category : data.category}))
+    dispatch(bookTitle({ title: data.title }))
+    dispatch(bookDescription({ description: data.description }))
+    dispatch(bookCategory({ category: data.category }))
     data.tags.forEach((tag: string) => {
-      dispatch(bookGenre({tags : tag}))
+      dispatch(bookGenre({ tags: tag }))
     })
     setChapter([])
-    data.chapters.forEach((chapter:Chapter)=>{
-        setChapter(prev => [...prev, chapter])
+    data.chapters.forEach((chapter: Chapter) => {
+      setChapter(prev => [...prev, chapter])
     })
-    dispatch(bookImgPath({coverPath : data.coverPath}))
+    dispatch(bookImgPath({ coverPath: data.coverPath }))
     setIsPublished(data.isPublished)
-  } catch (error) {
-    
+  } catch (error: any) {
+    if(error.code !== 'ERR_BAD_RESPONSE'){
+      msgSetter(error.response.data.msg)
+      showSetter(true)
+    }
   }
-
 }
 
-const handlePublishing =async (id:any, router:NextRouter) => {
+const handlePublishing = async (id: any, router: NextRouter,
+  msgSetter: React.Dispatch<React.SetStateAction<string>>,
+  showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
   try {
-    const res = await axios.patch(`/api/v1/book/${id}`, {togglePublished: true})
+    const res = await axios.patch(`/api/v1/book/${id}`, { togglePublished: true })
     router.reload()
-  } catch (error) {
-    
+  } catch (error: any) {
+    msgSetter(error.response.data.msg)
+    showSetter(true)
   }
 }
 
-const createChapter = async (bookId:any, router:NextRouter, chapterOrder: number) => {
+const createChapter = async (bookId: any, router: NextRouter, chapterOrder: number,
+  msgSetter: React.Dispatch<React.SetStateAction<string>>,
+  showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
   const defaultChapter = {
     bookId,
     content: "Commencez votre chapitre",
     title: "Choisissez un titre",
     chapterOrder
   }
-  
+
   try {
     const res = await axios.post(`/api/v1/chapter/create`, defaultChapter)
     const data = await res.data
     const chapterId = await data.chapter._id
     router.push(`/book/write/editor/${chapterId}`)
-  } catch (error) {
-    console.log(error);
-    
+  } catch (error: any) {
+    msgSetter(error.response.data.msg)
+    showSetter(true)
   }
 }

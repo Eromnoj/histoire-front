@@ -6,21 +6,19 @@ import BookShowcase from '../components/BookShowcase'
 
 import Layout from '../components/layout/Layout'
 import Filters from '../components/Filters'
-import { nextPage, RootState } from '../stores'
-import { useDispatch } from 'react-redux'
 
 import React from 'react'
 
 const Home = () => {
 
-  const dispatch = useDispatch()
   const [windowWidth, setWindowWidth] = useState(0)
 
-  
   useEffect(() => {
     setWindowWidth(window.innerWidth)
-  }, [windowWidth])
-  
+    window.addEventListener('resize', () => setWindowWidth(window.innerWidth))
+    return () => window.removeEventListener('resize', () => setWindowWidth(window.innerWidth))
+    
+  }, [])
   
   return (
     <Layout>

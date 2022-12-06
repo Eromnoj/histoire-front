@@ -5,14 +5,23 @@ import Layout from '../components/layout/Layout'
 
 import InputField from '../components/form/InputField'
 import SubmitButton from '../components/form/SubmitButton'
-
-import React, { useState } from 'react'
+import Toast from '../components/Toast'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 const Forgot = () => {
 
   const [email, setEmail] = useState('')
+  const [trigger, setTrigger]= useState(false)
+  const [msg, setMsg] = useState('')
 
+  useEffect(()=> {
+    if(trigger){
+      setTimeout(()=> {
+        setTrigger(false)
+      }, 5000)
+    }
+  },[trigger])
   return (
     <Layout>
       <Head>
@@ -25,7 +34,7 @@ const Forgot = () => {
         <p className={styles.subtitle}> Entrez votre adresse afin de recevoir l'email pour renouveller votre mot de passe</p>
         <form className={styles.loginForm} onSubmit={(e) =>{
           e.preventDefault()
-          handleSendEmail(email)
+          handleSendEmail(email, setMsg, setTrigger)
         }}>
           <InputField
             id='email'
@@ -44,6 +53,10 @@ const Forgot = () => {
           </div>
         </form>
       </div>
+      {trigger ? <Toast 
+          message={msg}
+          click={()=> setTrigger(false)}
+        /> : null }
     </Layout>
   )
 }
@@ -51,16 +64,19 @@ const Forgot = () => {
 export default Forgot
 
 //functions
-const handleSendEmail = async (email:string) => {
+const handleSendEmail = async (email:string,
+  msgSetter: React.Dispatch<React.SetStateAction<string>>,
+  showSetter: React.Dispatch<React.SetStateAction<boolean>>,) => {
   const origin = typeof window !== 'undefined' && window.location.origin ? window.location.origin : ''
       
   try {
     const res = await axios.post('/api/v1/auth/recover', {email, origin})
     const {data} = res
-    
-    console.log(data)
-  } catch (error) {
+    msgSetter(data.msg)
+    showSetter(true)
+  } catch (error:any) {
     console.log(error);
-    
+    msgSetter(error.response.data.msg)
+    showSetter(true)
   }
 }

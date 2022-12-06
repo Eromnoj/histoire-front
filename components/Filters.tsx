@@ -30,7 +30,10 @@ const Filters: FC = () => {
   }
   useEffect(() => {
     setWindowWidth(window.innerWidth)
-  }, [windowWidth])
+    window.addEventListener('resize', () => setWindowWidth(window.innerWidth))
+    return () => window.removeEventListener('resize', () => setWindowWidth(window.innerWidth))
+    
+  }, [])
 
   return (
     <div className={styles.filters}>

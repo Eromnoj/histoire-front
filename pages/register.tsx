@@ -5,6 +5,7 @@ import Layout from '../components/layout/Layout'
 
 import InputField from '../components/form/InputField'
 import SubmitButton from '../components/form/SubmitButton'
+import Toast from '../components/Toast'
 
 import React, { useEffect, useReducer, useState } from 'react'
 import axios, { AxiosError } from 'axios'
@@ -25,14 +26,16 @@ const Register = () => {
  
 
   const [registerData, dispatch] = useReducer(reducer, initialState)
-  const [showMsg, setShowMsg] = useState(true)
+  const [trigger, setTrigger]= useState(false)
   const [msg, setMsg] = useState('')
 
   useEffect(()=> {
-    if (showMsg) {
-      setTimeout(() => setShowMsg(false), 5000)
+    if(trigger){
+      setTimeout(()=> {
+        setTrigger(false)
+      }, 5000)
     }
-    },[showMsg])
+  },[trigger])
 
   return (
     <Layout>
@@ -43,10 +46,10 @@ const Register = () => {
       </Head>
       <div className={styles.main}>
         <p className={styles.title}>Créer mon compte</p>
-        {showMsg ? <p>{msg}</p> : null}
+        
         <form className={styles.loginForm} onSubmit={(e) => {
           e.preventDefault()
-          handleRegister(registerData,setMsg,setShowMsg,dispatchSession,router)
+          handleRegister(registerData,setMsg,setTrigger,dispatchSession,router)
         }
         } >
           <InputField
@@ -76,13 +79,17 @@ const Register = () => {
           <div className={styles.button}>
             <p></p>
             <SubmitButton
-              name="Se Connecter"
+              name="S'enregistrer"
             />
           </div>
         </form>
 
         <div className={styles.account}>Vous avez un compte ? <Link href="/login">Connectez-vous ici !</Link></div>
       </div>
+      {trigger ? <Toast 
+          message={msg}
+          click={()=> setTrigger(false)}
+        /> : null }
     </Layout>
   )
 }

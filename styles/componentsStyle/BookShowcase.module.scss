@@ -80,7 +80,8 @@
 
 @media screen and (min-width: 780px) {
   .showcase {
-    width: 750px;
+
+    // width: 750px;
 
     .books {
       display: grid;
@@ -89,21 +90,32 @@
       column-gap: 75px;
     }
 
-    .navBottom {
-      align-self: flex-end;
-    }
+
   }
 }
 
 @media screen and (min-width: 900px) {
   .showcase {
 
-    .toggleFilter{
-      align-self: flex-start;
-    }
+
     .filtersShow {
       width: 95vw;
     }
+    
   }
 
+}
+
+
+@media screen and (min-width: 1066px) {
+  .showcase {
+
+    // width: 750px;
+    .toggleFilter {
+      align-self: flex-start;
+    }
+    .navBottom {
+      align-self: flex-end;
+    }
+  }
 }

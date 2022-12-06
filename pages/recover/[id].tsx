@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import Head from 'next/head'
 import styles from '../../styles/login.module.scss'
 
@@ -6,8 +6,8 @@ import Layout from '../../components/layout/Layout'
 
 import InputField from '../../components/form/InputField'
 import SubmitButton from '../../components/form/SubmitButton'
-
-import axios, { AxiosError } from 'axios'
+import Toast from '../../components/Toast'
+import axios from 'axios'
 
 import { useRouter } from 'next/router'
 
@@ -15,10 +15,22 @@ const Recover = () => {
   const router = useRouter()
   const {id} = router.query
   const [password, setPassword] = useState('')
-  const [showMsg, setShowMsg] = useState(false)
+  const [trigger, setTrigger]= useState(false)
   const [msg, setMsg] = useState('')
 
-  const handlePassword = async (id:string | string[] | undefined, password: string) => {
+  useEffect(()=> {
+    if(trigger){
+      setTimeout(()=> {
+        setTrigger(false)
+      }, 5000)
+    }
+  },[trigger])
+
+  const handlePassword = async (id:string | string[] | undefined, 
+    password: string, 
+    setShowMsg:React.Dispatch<React.SetStateAction<boolean>>,
+    setMsg:React.Dispatch<React.SetStateAction<string>>
+    ) => {
     try {
       const res = await axios.post('/api/v1/auth/validchange', {id, password})
       console.log(res)
@@ -39,10 +51,9 @@ const Recover = () => {
         </Head>
         <div className={styles.main}>
           <p className={styles.title}>Renouveller mon mot de passe</p>
-          {showMsg ? <p>{msg}</p> : null}
           <form className={styles.loginForm} onSubmit={(e)=> {
             e.preventDefault()
-            handlePassword(id, password)
+            handlePassword(id, password, setTrigger, setMsg)
           }}>
 
             <InputField
@@ -61,6 +72,10 @@ const Recover = () => {
             </div>
           </form>
         </div>
+        {trigger ? <Toast 
+          message={msg}
+          click={()=> setTrigger(false)}
+        /> : null }
       </Layout>
     )
   

@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react'
 import UserNav from '../../components/UserNav'
 import InputField from '../../components/form/InputField'
 import SubmitButton from '../../components/form/SubmitButton'
+import Toast from '../../components/Toast'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState, userInfoEmail, userInfoFacebook, userInfoName, userInfoPassword, userInfoTwitter } from '../../stores'
 
@@ -23,24 +24,23 @@ const UserInfo = () => {
 
   const [password, setPassword] = useState('')
 
+  const [trigger, setTrigger]= useState(false)
   const [msg, setMsg] = useState('')
-  const [showMsg, setShowMsg] = useState(false)
 
+  useEffect(()=> {
+    if(trigger){
+      setTimeout(()=> {
+        setTrigger(false)
+      }, 5000)
+    }
+  },[trigger])
 
   useEffect(() => {
     fetchUserData(userSession.userId,
       dispatch,
       setMsg,
-      setShowMsg)
+      setTrigger)
   }, [])
-
-  useEffect(() => {
-    if (showMsg) {
-      setTimeout(() => {
-        setShowMsg(false)
-      }, 5000)
-    }
-  }, [showMsg])
 
   return (
     <Layout>
@@ -55,14 +55,13 @@ const UserInfo = () => {
         </div>
 
         <div className={styles.content}>
-          {showMsg ? <p>{msg}</p> : null}
           <form className={styles.infoForm} onSubmit={(e) => {
             e.preventDefault()
             submitChange(userInfo,
               password,
               userSession.userId,
               setMsg,
-              setShowMsg)
+              setTrigger)
             setPassword('')
           }}>
             <InputField
@@ -80,6 +79,7 @@ const UserInfo = () => {
               value={userInfo.email}
               onChange={(e) => dispatch(userInfoEmail({ email: e.currentTarget.value }))}
             />
+
             <InputField
               id='facebook'
               type='url'
@@ -88,14 +88,15 @@ const UserInfo = () => {
               value={userInfo.facebook}
               onChange={(e) => dispatch(userInfoFacebook({ facebook: e.currentTarget.value }))}
             />
+
             <InputField
               id='twitter'
-              type='url'
               name='twitter'
               label='Twitter'
               value={userInfo.twitter}
               onChange={(e) => dispatch(userInfoTwitter({ twitter: e.currentTarget.value }))}
             />
+
             <InputField
               id='newPassword'
               type='newPassword'
@@ -127,6 +128,10 @@ const UserInfo = () => {
 
         </div>
       </div>
+      {trigger ? <Toast 
+          message={msg}
+          click={()=> setTrigger(false)}
+        /> : null }
     </Layout>
   )
 }
@@ -143,10 +148,11 @@ const fetchUserData = async (id: string,
   try {
     const res = await axios(`/api/v1/user/${id}`)
     const user = res.data.user
+    
     dispatch(userInfoEmail({ email: user.email }))
     dispatch(userInfoName({ username: user.username }))
-    dispatch(userInfoTwitter({ twitter: user.twitter }))
-    dispatch(userInfoFacebook({ facebook: user.facebook }))
+    user.twitter ? dispatch(userInfoTwitter({ twitter: user.twitter })) : dispatch(userInfoTwitter({ twitter: 'https://' }))
+    user.facebook ? dispatch(userInfoFacebook({ facebook: user.facebook })) : dispatch(userInfoFacebook({facebook : 'https://'}))
 
   } catch (error: any) {
     msgSetter(error.response.data.msg)

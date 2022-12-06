@@ -12,6 +12,7 @@ import Tag from '../../../components/form/Tag'
 import AuthorAvatar from '../../../components/AuthorAvatar'
 import Select from '../../../components/form/Select'
 import SubmitButton from '../../../components/form/SubmitButton'
+import Toast from '../../../components/Toast'
 import axios from 'axios'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -50,6 +51,16 @@ const BookDescription: FC<dataProps> = ({ data }) => {
   const router = useRouter()
   const { slug } = router.query
   const [chapSlug, setChapSlug] = data.chapters.length <= 0 ? useState('Pas de chapitres') : useState(data.chapters[0].slug)
+  const [trigger, setTrigger]= useState(false)
+  const [msg, setMsg] = useState('')
+
+  useEffect(()=> {
+    if(trigger){
+      setTimeout(()=> {
+        setTrigger(false)
+      }, 5000)
+    }
+  },[trigger])
 
   const [isFavorite, setIsFavorite] = useState(data.favorite)
   const [rate, setRate] = useState(0)
@@ -93,7 +104,7 @@ const BookDescription: FC<dataProps> = ({ data }) => {
   useEffect(() => {
     if (userId) {
       getFavorites(slug, userId, setIsFavorite)
-      getUserRate(data._id, setRate)
+      getUserRate(data._id, setRate, setMsg, setTrigger)
     }
   }, [])
 
@@ -101,17 +112,7 @@ const BookDescription: FC<dataProps> = ({ data }) => {
   let rateDisplay = []
   const star = (key:number, styleArray:string[]) => { 
     return(
-   <li key={key} className={styleArray.join(' ')} onClick={async () => {
-    try {
-      const res = await axios.post('/api/v1/book/ratebook',{bookId: data._id, rate: key.toString()})
-      const resData = await res.data
-      getUserRate(data._id, setRate)
-      console.log((resData));
-    } catch (error) {
-      console.log(error);
-      
-    }
-   }}>
+   <li key={key} className={styleArray.join(' ')} onClick={() => handleRate(data._id, key, setRate, setMsg, setTrigger)}>
     <Image
       src={Star}
       width={45}
@@ -135,7 +136,7 @@ const BookDescription: FC<dataProps> = ({ data }) => {
     }
   }) : [
     {
-      key: 'no name',
+      key: 3,
       _id: 'none',
       chapterName: `Pas de chapitres`
     }
@@ -162,7 +163,7 @@ const BookDescription: FC<dataProps> = ({ data }) => {
               category={data.category}
               rating={data.avgRate}
               favorite={isFavorite}
-              favClick={() => handleFav(slug, userId, data._id, setIsFavorite)}
+              favClick={() => handleFav(slug, userId, data._id, setIsFavorite, setMsg, setTrigger)}
             />
 
             <div className={styles.tag}>
@@ -233,7 +234,10 @@ const BookDescription: FC<dataProps> = ({ data }) => {
             </div>
           </form>
         </div>
-
+        {trigger ? <Toast
+        message={msg}
+        click={() => setTrigger(false)}
+      /> : null}
       </div>
     </Layout>
   )
@@ -262,25 +266,52 @@ const getFavorites = async (slug: any,
 
 const handleFav = async (slug: any,
   userId: string,
-  id: string, setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>) => {
+  id: string, setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>,
+  msgSetter: React.Dispatch<React.SetStateAction<string>>,
+  showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
   try {
     const res = await axios.post(`/api/v1/user/favorites/${id}`)
     getFavorites(slug, userId, setIsFavorite)
     // TODO Ajouter le toast avec le message d'Ajout
-
+    const data = res.data
+    console.log(data);
+    
+    msgSetter(data.msg)
+    showSetter(true)
   } catch (error) {
     console.log(error);
 
   }
 }
 
-const getUserRate = async (id: string, setRate: React.Dispatch<React.SetStateAction<number>>) => {
+const handleRate = async (bookId: string, rate:number, 
+  setRate: React.Dispatch<React.SetStateAction<number>>,
+  msgSetter: React.Dispatch<React.SetStateAction<string>>,
+  showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
+  try {
+    const res = await axios.post('/api/v1/book/ratebook',{bookId: bookId, rate: rate.toString()})
+    const data = await res.data
+    getUserRate(bookId, setRate, msgSetter, showSetter)
+    msgSetter(data.msg)
+    showSetter(true)
+  } catch (error) {
+    msgSetter('Une erreur est survenue.')
+    showSetter(true)
+  }
+ }
+
+const getUserRate = async (id: string, setRate: React.Dispatch<React.SetStateAction<number>>,
+  msgSetter: React.Dispatch<React.SetStateAction<string>>,
+  showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
   try {
     const res = await axios(`/api/v1/user/rate/${id}`)
     const rate = await res.data.rate
     setRate(rate)
-  } catch (error) {
-    console.log('coucou');
+  } catch (error:any) {
+    if(error.code === 'ERR_BAD_REQUEST'){
+      msgSetter(`N'hésitez pas à donner une note !`)
+    showSetter(true)
+    }
     
   }
 }

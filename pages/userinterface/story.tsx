@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import Layout from '../../components/layout/Layout'
 import UserNav from '../../components/UserNav'
 import BookMin from '../../components/BookMin'
+import Toast from '../../components/Toast'
 import axios from 'axios'
 
 type book = {
@@ -18,13 +19,21 @@ type book = {
 const Stories = () => {
 
   const [myBooks, setMyBooks] = useState<book[]>([])
+  
+  const [trigger, setTrigger]= useState(false)
+  const [msg, setMsg] = useState('')
 
+  useEffect(()=> {
+    if(trigger){
+      setTimeout(()=> {
+        setTrigger(false)
+      }, 5000)
+    }
+  },[trigger])
 
   useEffect(() => {
-    getMyBooks(setMyBooks)
+    getMyBooks(setMyBooks, setTrigger, setMsg)
   }, [])
-
-  console.log(myBooks);
 
   const displayBooks = myBooks.map(book => {
     return (
@@ -58,19 +67,26 @@ const Stories = () => {
           </div>
         </div>
       </div>
+      {trigger ? <Toast 
+          message={msg}
+          click={()=> setTrigger(false)}
+        /> : null }
     </Layout>
   )
 }
 
 export default Stories
 
-const getMyBooks = async (setMyBooks: React.Dispatch<React.SetStateAction<book[]>>) => {
+const getMyBooks = async (setMyBooks: React.Dispatch<React.SetStateAction<book[]>>,
+  setTrigger:React.Dispatch<React.SetStateAction<boolean>>,
+  setMsg:React.Dispatch<React.SetStateAction<string>>) => {
   try {
     const res = await axios('/api/v1/book/getmybooks')
     const data = await res.data
     setMyBooks(data.books)
-  } catch (error) {
-
+  } catch (error:any) {
+    setTrigger(true)
+    setMsg(error.response.data.msg)
   }
 
 }

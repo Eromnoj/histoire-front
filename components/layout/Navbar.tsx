@@ -15,9 +15,13 @@ const Navbar: FC = () => {
 
   const router = useRouter()
   const dispatch = useDispatch()
+  
   useEffect(() => {
     setWindowWidth(window.innerWidth)
-  }, [windowWidth])
+    window.addEventListener('resize', () => setWindowWidth(window.innerWidth))
+    return () => window.removeEventListener('resize', () => setWindowWidth(window.innerWidth))
+    
+  }, [])
 
   const handleLogout = async () => {
     try {

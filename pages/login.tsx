@@ -5,8 +5,8 @@ import Layout from '../components/layout/Layout'
 
 import InputField from '../components/form/InputField'
 import SubmitButton from '../components/form/SubmitButton'
-
-import React, { useReducer, useState } from 'react'
+import Toast from '../components/Toast'
+import React, { useReducer, useState, useEffect } from 'react'
 
 import axios, { AxiosError } from 'axios'
 
@@ -25,9 +25,16 @@ const Login = () => {
 
 
   const [loginData, dispatch] = useReducer(reducer, initialState)
-  const [showMsg, setShowMsg] = useState(true)
+  const [trigger, setTrigger]= useState(false)
   const [msg, setMsg] = useState('')
 
+  useEffect(()=> {
+    if(trigger){
+      setTimeout(()=> {
+        setTrigger(false)
+      }, 5000)
+    }
+  },[trigger])
   return (
     <Layout>
       <Head>
@@ -37,10 +44,10 @@ const Login = () => {
       </Head>
       <div className={styles.main}>
         <p className={styles.title}>Se connecter</p>
-        {showMsg ? <p>{msg}</p> : null}
+       
         <form className={styles.loginForm} onSubmit={(e) => {
           e.preventDefault()
-          handleLogin(loginData, setMsg, setShowMsg, dispatchSession, router)
+          handleLogin(loginData, setMsg, setTrigger, dispatchSession, router)
         }}>
           <InputField
             id='email'
@@ -69,6 +76,10 @@ const Login = () => {
 
         <div className={styles.account}>Pas encore inscrit ? <Link href='/register'>Créer votre compte maintenant !</Link></div>
       </div>
+      {trigger ? <Toast 
+          message={msg}
+          click={()=> setTrigger(false)}
+        /> : null }
     </Layout>
   )
 }

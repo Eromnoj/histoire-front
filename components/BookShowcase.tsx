@@ -1,9 +1,11 @@
 import React, { FC, useState, useEffect } from 'react'
-import Book from './Book'
 import styles from '../styles/componentsStyle/BookShowcase.module.scss'
+
+import Book from './Book'
 import NavArrow from './NavArrow'
 import Sort from './Sort'
 import Filters from './Filters'
+import Toast from './Toast'
 import Image from 'next/image'
 import Down from '../public/img/down.png'
 
@@ -31,7 +33,16 @@ type FilterType = {
   page: number
 }
 const bookShowcase: FC = () => {
+  const [trigger, setTrigger]= useState(false)
+  const [msg, setMsg] = useState('')
 
+  useEffect(()=> {
+    if(trigger){
+      setTimeout(()=> {
+        setTrigger(false)
+      }, 5000)
+    }
+  },[trigger])
 
   const [windowWidth, setWindowWidth] = useState(0)
   const [toggleFilter, setToggleFilter] = useState(true)
@@ -45,21 +56,11 @@ const bookShowcase: FC = () => {
   const [limitBook, setlimitBook] = useState(0)
   useEffect(() => {
     setWindowWidth(window.innerWidth)
-  }, [windowWidth])
+    window.addEventListener('resize', () => setWindowWidth(window.innerWidth))
+    return () => window.removeEventListener('resize', () => setWindowWidth(window.innerWidth))
+    
+  }, [])
 
-
-
-  const handleFav = async (id: string) => {
-    try {
-      const res = await axios.post(`/api/v1/user/favorites/${id}`)
-      getBooks(userId, filter, setBooks, setNoResult, setTotalBook, setlimitBook)
-      // TODO Ajouter le toast avec le message d'Ajout
-
-    } catch (error) {
-      console.log(error);
-
-    }
-  }
 
   const [books, setBooks] = useState<Array<BookType>>([])
 
@@ -80,7 +81,7 @@ const bookShowcase: FC = () => {
         rating={book.avgRate}
         favorite={book.favorite}
         slug={book.slug}
-        favClick={() => handleFav(book._id)} />
+        favClick={() => handleFav(book._id,userId, filter, setBooks, setNoResult, setTotalBook, setlimitBook, setMsg, setTrigger)} />
     )
   })
   
@@ -99,10 +100,10 @@ const bookShowcase: FC = () => {
               }}
             />
             <NavArrow direction='right' onClick={() => dispatch(nextPage({ total: totalBook, limit: limitBook }))}
-              style={{
-                opacity: filter.page > Math.floor(totalBook / limitBook) || totalBook / limitBook === 1 ? '50%' : '100%',
-                cursor: filter.page > Math.floor(totalBook / limitBook) || totalBook / limitBook === 1 ? 'default' : 'pointer'
-              }}
+             style={{
+              opacity: filter.page >= Math.floor(totalBook / limitBook) ? '50%' : '100%',
+              cursor: filter.page >= Math.floor(totalBook / limitBook) ? 'default' : 'pointer'
+            }}
             />
           </div>
         </div>
@@ -128,11 +129,15 @@ const bookShowcase: FC = () => {
         />
         <NavArrow direction='right' onClick={() => dispatch(nextPage({ total: totalBook, limit: limitBook }))}
           style={{
-            opacity: filter.page >= Math.ceil(totalBook / limitBook) ? '50%' : '100%',
-            cursor: filter.page >= Math.ceil(totalBook / limitBook) ? 'default' : 'pointer'
+            opacity: filter.page >= Math.floor(totalBook / limitBook) ? '50%' : '100%',
+            cursor: filter.page >= Math.floor(totalBook / limitBook) ? 'default' : 'pointer'
           }}
         />
       </div>
+      {trigger ? <Toast
+        message={msg}
+        click={() => setTrigger(false)}
+      /> : null}
     </div>
   )
 }
@@ -166,5 +171,28 @@ const getBooks = async (id: string,
   } catch (error: any) {
     console.log(error)
     setNoResult(true)
+  }
+}
+
+
+const handleFav = async (id: string,
+  userId: string,
+  filter: FilterType,
+  setBooks: React.Dispatch<React.SetStateAction<BookType[]>>,
+  setNoResult: React.Dispatch<React.SetStateAction<boolean>>,
+  setTotalBook: React.Dispatch<React.SetStateAction<number>>,
+  setlimitBook: React.Dispatch<React.SetStateAction<number>>,
+  msgSetter: React.Dispatch<React.SetStateAction<string>>,
+  showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
+  try {
+    const res = await axios.post(`/api/v1/user/favorites/${id}`)
+    getBooks(userId, filter, setBooks, setNoResult, setTotalBook, setlimitBook)
+    // TODO Ajouter le toast avec le message d'Ajout
+    const data = res.data
+    msgSetter(data.msg)
+    showSetter(true)
+  } catch (error) {
+    console.log(error);
+
   }
 }
