@@ -23,7 +23,7 @@ const Description: FC = () => {
   const userDescription = useSelector((state: RootState) => state.userDescription)
   const userSession = useSelector((state: RootState) => state.userSession)
   const [password, setPassword] = useState('')
-  const [authorAvatar, setAuthorAvatar] = useState('http://localhost:5000/uploads/headshot.png')
+  const [authorAvatar, setAuthorAvatar] = useState('/uploads/headshot.png')
   const [trigger, setTrigger]= useState(false)
   const [msg, setMsg] = useState('')
 
@@ -60,7 +60,7 @@ const Description: FC = () => {
           <div className={styles.avatarMod}>
             <div className={styles.avatar}>
                 <Image
-                  src={authorAvatar}
+                  src={process.env.NEXT_PUBLIC_API_URL+authorAvatar}
                   alt='Avatar'
                   fill={true}
                   style={{borderRadius: '100%',objectFit:'cover'}}
@@ -157,7 +157,6 @@ const updateAvatar = async (file: FileList | null,
   msgSetter: React.Dispatch<React.SetStateAction<string>>,
   showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
   if (file !== null) {
-    console.log(file[0]);
     const formData = new FormData();
     formData.append('image', file[0])
     try {
@@ -166,9 +165,8 @@ const updateAvatar = async (file: FileList | null,
           'Content-Type': 'multipart/form-data'
         }
       })
-      const img = await res.data.image
+      const imgPath = await res.data.image
 
-      const imgPath = 'http://localhost:5000' + img
       avatarSetter(imgPath)
 
     } catch (error:any) {
@@ -189,7 +187,7 @@ const fetchUserData = async (id: string,
     const user = await res.data.user
     dispatch(userDescriptionContent({ content: user.description }))
     dispatch(userDescriptionImgPath({ imgPath: user.imgPath }))
-    const imgPath = 'http://localhost:5000' + user.imgPath
+    const imgPath = user.imgPath
     avatarSetter(imgPath)
   } catch (error: any) {
     msgSetter(error.response.data.msg)

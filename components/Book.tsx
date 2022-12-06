@@ -44,7 +44,7 @@ const Book: FC<BookProps> = ({
     <div className={styles.bookCard}>
       <div className={styles.image}>
         <Image
-          src={`http://localhost:5000${picture}`}
+          src={picture}
           alt={"picture of a book"}
           width={300}
           height={300}

@@ -9,7 +9,26 @@
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  transition: background-color 0.5s;
   margin-bottom: 45px;
+  position: relative;
+
+  .isPublished {
+    position: absolute;
+    right : 10px;
+    top: -20px;
+    z-index: 20;
+    background-color: variables.$yellow;
+    color: variables.$white;
+    padding: 4px 8px;
+    padding-top: 8px;
+    border-radius: 4px;
+  }
+
+  &:hover {
+    background-color: darken(variables.$white, 10%);
+    transition: background-color 0.5s;
+  }
 
   .title {
     height: 55px;
@@ -48,10 +67,17 @@
       align-items: center;
       justify-content: space-between;
 
+
       .modify,
       .delete {
         margin-right: 2px;
         margin-bottom: 4px;
+        transition: transform .5s;
+
+        &:hover {
+          transform: rotate(15deg);
+          transition: transform .5s;
+        }
       }
 
       .delete {
@@ -92,6 +118,7 @@
         margin-right: 10px;
         cursor: pointer;
       }
+
       .buttonDiscard {
         background-color: variables.$blue;
         color: variables.$white;

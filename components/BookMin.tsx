@@ -11,7 +11,7 @@ import axios from 'axios'
 import { useRouter } from 'next/router'
 import type { NextRouter } from 'next/router'
 
-const BookMin: FC<BookMinProps> = ({ id, title, total, published, category }) => {
+const BookMin: FC<BookMinProps> = ({ id, title, total, published, category, isPublished }) => {
   const router = useRouter()
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
@@ -19,6 +19,10 @@ const BookMin: FC<BookMinProps> = ({ id, title, total, published, category }) =>
   const color = categoryColor(category)
   return (
     <div className={styles.bookDiv}>
+      {isPublished ?
+      <div className={styles.isPublished}>Publié</div> :
+      null
+    }
       <div className={styles.title} style={{ backgroundColor: color }}>{title}</div>
 
       <div className={styles.bookInfo}>

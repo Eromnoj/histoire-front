@@ -6,6 +6,13 @@
   align-items: center;
   justify-content: flex-start;
 
+  a {
+    text-decoration: none;
+    color: variables.$green;
+    &:hover {
+      color: darken(variables.$green, 10%)
+    }
+  }
   .title {
     font-size: 25px;
   }

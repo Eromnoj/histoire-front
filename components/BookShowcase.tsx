@@ -32,6 +32,7 @@ type FilterType = {
   sorted: string,
   page: number
 }
+
 const bookShowcase: FC = () => {
   const [trigger, setTrigger]= useState(false)
   const [msg, setMsg] = useState('')
@@ -65,7 +66,7 @@ const bookShowcase: FC = () => {
   const [books, setBooks] = useState<Array<BookType>>([])
 
   useEffect(() => {
-    getBooks(userId, filter, setBooks, setNoResult, setTotalBook, setlimitBook)
+    getBooks(userId, filter, setBooks, setNoResult, setTotalBook, setlimitBook, setMsg, setTrigger)
   }, [filter])
 
   const showBooks = books.map(book => {
@@ -73,7 +74,7 @@ const bookShowcase: FC = () => {
       <Book
         key={book._id}
         id={book._id}
-        picture={book.coverPath}
+        picture={process.env.NEXT_PUBLIC_API_URL+book.coverPath}
         title={book.title}
         author={book.author[0].username}
         authorId={book.author[0]._id}
@@ -109,7 +110,12 @@ const bookShowcase: FC = () => {
         </div>
         :
         <>
-          <div className={styles.toggleFilter} onClick={() => setToggleFilter(prev => !prev)}>Filtres <div className={toggleFilter ? styles.arrow : styles.arrowDown}><Image src={Down} width={30} height={30} alt='' /></div></div>
+          <div className={styles.toggleFilter} onClick={() => setToggleFilter(prev => !prev)}>
+            Filtres 
+            <div className={toggleFilter ? styles.arrow : styles.arrowDown}>
+              <Image src={Down} width={30} height={30} alt='' />
+              </div>
+              </div>
 
           <div className={toggleFilter ? styles.filtersHide : styles.filtersShow}>
             <Filters />
@@ -149,7 +155,9 @@ const getBooks = async (id: string,
   setBooks: React.Dispatch<React.SetStateAction<BookType[]>>,
   setNoResult: React.Dispatch<React.SetStateAction<boolean>>,
   setTotalBook: React.Dispatch<React.SetStateAction<number>>,
-  setlimitBook: React.Dispatch<React.SetStateAction<number>>) => {
+  setlimitBook: React.Dispatch<React.SetStateAction<number>>,
+  msgSetter: React.Dispatch<React.SetStateAction<string>>,
+  showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
   try {
     let path = ''
     if (id) {
@@ -169,7 +177,8 @@ const getBooks = async (id: string,
     setBooks(data.books)
     setNoResult(false)
   } catch (error: any) {
-    console.log(error)
+    msgSetter(error.response.data.msg)
+    showSetter(true)
     setNoResult(true)
   }
 }
@@ -186,13 +195,14 @@ const handleFav = async (id: string,
   showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
   try {
     const res = await axios.post(`/api/v1/user/favorites/${id}`)
-    getBooks(userId, filter, setBooks, setNoResult, setTotalBook, setlimitBook)
+    getBooks(userId, filter, setBooks, setNoResult, setTotalBook, setlimitBook, msgSetter, showSetter)
     // TODO Ajouter le toast avec le message d'Ajout
     const data = res.data
     msgSetter(data.msg)
     showSetter(true)
-  } catch (error) {
-    console.log(error);
+  } catch (error:any) {
+    msgSetter(error.response.data.msg)
+    showSetter(true)
 
   }
 }

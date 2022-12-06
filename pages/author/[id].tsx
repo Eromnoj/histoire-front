@@ -113,7 +113,7 @@ const AuthorDescription: FC<dataProps> = ({ data }) => {
       <Book
         key={book._id}
         id={book._id}
-        picture={book.coverPath}
+        picture={process.env.NEXT_PUBLIC_API_URL+book.coverPath}
         title={book.title}
         author={data.username}
         authorId={data._id}
@@ -139,7 +139,7 @@ const AuthorDescription: FC<dataProps> = ({ data }) => {
               <AuthorAvatar
                 id={data._id}
                 name={data.username}
-                imgUrl={data.imgPath}
+                imgUrl={process.env.NEXT_PUBLIC_API_URL+data.imgPath}
               />
             </div>
             <div className={styles.social}>

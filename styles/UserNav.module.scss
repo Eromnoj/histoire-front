@@ -16,15 +16,40 @@
       align-items: center;
       padding-left: 5px;
       color: variables.$white;
+      text-decoration: none;
     }
     .link:nth-child(1){
       background-color: variables.$blue;
+      transition: background-color 0.5s;
+      transition: transform 0.5s;
+      &:hover {
+        background-color: darken(variables.$blue, 10%);
+        transition: background-color 0.5s;
+        transition: transform 0.5s;
+        transform: translateX(10px);
+      }
     }
     .link:nth-child(2){
       background-color: variables.$red;
+      transition: background-color 0.5s;
+      transition: transform 0.5s;
+      &:hover {
+        background-color: darken(variables.$red, 10%);
+        transition: background-color 0.5s;
+        transition: transform 0.5s;
+        transform: translateX(10px);
+      }
     }
     .link:nth-child(3){
       background-color: variables.$green;
+      transition: background-color 0.5s;
+      transition: transform 0.5s;
+      &:hover {
+        background-color: darken(variables.$green, 10%);
+        transition: background-color 0.5s;
+        transition: transform 0.5s;
+        transform: translateX(10px);
+      }
     }
   }
 }

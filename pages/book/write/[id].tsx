@@ -27,7 +27,7 @@ type BookState = {
   coverPath: string
 }
 
-type Chapter = {
+type ChapterType = {
   _id: string,
   title: string,
   chapterOrder: number,
@@ -39,8 +39,8 @@ const EditBook = () => {
   const { id } = router.query
   const dispatch = useDispatch()
   const bookCreate = useSelector((state: RootState) => state.create)
-  const imgPath = `http://localhost:5000${bookCreate.coverPath}`
-  const [chapters, setChapters] = useState<Chapter[]>([])
+  const imgPath = process.env.NEXT_PUBLIC_API_URL+bookCreate.coverPath
+  const [chapters, setChapters] = useState<ChapterType[]>([])
   const [isPublished, setIsPublished] = useState(false)
   const [trigger, setTrigger]= useState(false)
   const [msg, setMsg] = useState('')
@@ -178,7 +178,6 @@ const updateBookCover = async (file: FileList | null,
   msgSetter: React.Dispatch<React.SetStateAction<string>>,
   showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
   if (file !== null) {
-    console.log(file[0]);
     const formData = new FormData();
     formData.append('image', file[0])
     formData.append('bookId', id)
@@ -202,7 +201,7 @@ const updateBookCover = async (file: FileList | null,
 const getBook = async (
   id: any,
   dispatch: Dispatch,
-  setChapter: React.Dispatch<React.SetStateAction<Chapter[]>>,
+  setChapter: React.Dispatch<React.SetStateAction<ChapterType[]>>,
   setIsPublished: React.Dispatch<React.SetStateAction<boolean>>,
   msgSetter: React.Dispatch<React.SetStateAction<string>>,
   showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
@@ -216,7 +215,7 @@ const getBook = async (
       dispatch(bookGenre({ tags: tag }))
     })
     setChapter([])
-    data.chapters.forEach((chapter: Chapter) => {
+    data.chapters.forEach((chapter: ChapterType) => {
       setChapter(prev => [...prev, chapter])
     })
     dispatch(bookImgPath({ coverPath: data.coverPath }))

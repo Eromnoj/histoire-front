@@ -156,7 +156,7 @@ const BookDescription: FC<dataProps> = ({ data }) => {
 
             <Book
               id={data._id}
-              picture={data.coverPath}
+              picture={process.env.NEXT_PUBLIC_API_URL+data.coverPath}
               title={data.title}
               author={data.author[0].username}
               authorId={data.author[0]._id}
@@ -181,7 +181,7 @@ const BookDescription: FC<dataProps> = ({ data }) => {
                   <AuthorAvatar
                     id={data.author[0]._id}
                     name={data.author[0].username}
-                    imgUrl={data.author[0].imgPath}
+                    imgUrl={process.env.NEXT_PUBLIC_API_URL+data.author[0].imgPath}
                   />
                 </Link>
               </div>
@@ -248,7 +248,7 @@ export default BookDescription
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { slug } = context.query
 
-  const res = await axios(`http://localhost:5000/api/v1/book/byslug/${slug}`)
+  const res = await axios(`${process.env.API_URL}api/v1/book/byslug/${slug}`)
   const data = await res.data.book
 
   return { props: { data } }
@@ -257,7 +257,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const getFavorites = async (slug: any,
   userId: string,
   setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>) => {
-  const res = await axios(`http://localhost:3000/api/v1/book/byslug/${slug}?userId=${userId}`)
+  const res = await axios(`/api/v1/book/byslug/${slug}?userId=${userId}`)
   const favorites = await res.data.book.favorite
   setIsFavorite(favorites)
 

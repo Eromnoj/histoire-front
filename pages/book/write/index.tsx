@@ -13,7 +13,6 @@ import SubmitButton from '../../../components/form/SubmitButton'
 import Toast from '../../../components/Toast'
 import { useSelector, useDispatch } from 'react-redux'
 import { bookDescription, bookReinit, bookTitle, RootState } from '../../../stores'
-import { Dispatch } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { NextRouter, useRouter } from 'next/router'
 
@@ -65,7 +64,7 @@ const Create = () => {
         </div>
         <form className={styles.bookDesc} onSubmit={(e)=> {
           e.preventDefault()
-          handleBookSumbit(dispatch,bookCreate,router, setMsg, setTrigger)
+          handleBookSumbit(bookCreate,router, setMsg, setTrigger)
         }}>
           <InputField
             id='title'
@@ -99,7 +98,7 @@ const Create = () => {
 
 export default Create
 
-const handleBookSumbit = async (dispatch:Dispatch, book:BookState, router: NextRouter,
+const handleBookSumbit = async (book:BookState, router: NextRouter,
   msgSetter: React.Dispatch<React.SetStateAction<string>>,
   showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
     

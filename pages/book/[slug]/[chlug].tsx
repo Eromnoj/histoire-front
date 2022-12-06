@@ -103,7 +103,7 @@ export default read
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { chlug } = context.query
 
-  const res = await axios(`http://localhost:5000/api/v1/chapter/getbyslug/${chlug}`)
+  const res = await axios(`${process.env.API_URL}api/v1/chapter/getbyslug/${chlug}`)
   const data = await res.data.chapter
 
   return { props: { data } }
@@ -126,7 +126,6 @@ const setBookmark = async (userId: string,
       setMessage(resData.msg)
     
     } catch (error: any) {
-      console.log(error)
       setTrigger(true)
       setMessage(error.response.data.msg)
       

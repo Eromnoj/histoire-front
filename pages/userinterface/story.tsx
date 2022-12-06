@@ -14,7 +14,8 @@ type book = {
   title: string,
   category: string,
   chaptersTotal: number,
-  chaptersPublished: number
+  chaptersPublished: number,
+  isPublished: boolean
 }
 const Stories = () => {
 
@@ -44,6 +45,7 @@ const Stories = () => {
         total={book.chaptersTotal}
         published={book.chaptersPublished}
         category={book.category}
+        isPublished={book.isPublished}
       />
     )
   })

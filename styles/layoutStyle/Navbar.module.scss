@@ -24,6 +24,14 @@
       list-style: none;
       background-color: variables.$seashell;
 
+      .selected {
+        background-color: variables.$white;
+        padding: 5px;
+        border-radius: 2px;
+        width: 60%;
+        align-self: flex-end;
+      }
+
       li {
         color: variables.$dark-brown;
         text-align: right;
@@ -31,7 +39,27 @@
         margin-top: 40px;
         margin-right: 20px;
         height: 30px;
+        cursor: pointer;
 
+        a {
+          text-decoration: none;
+          color: variables.$dark-brown;
+          display: inline-flex;
+          height: 1em;
+          overflow: hidden;
+          flex-direction: column;
+          padding: 1px;
+          justify-items: center;
+
+          &:hover .inner {
+            transform: translateY(-100%);
+          }
+
+          .inner {
+            transform: translateY(0);
+            transition: transform 0.6s;
+          }
+        }
         &:nth-child(4) {
           margin-top: 55px;
           height: 60px;
@@ -51,11 +79,40 @@
       display: flex;
       flex-direction: row;
       list-style: none;
+      
+
+      .selected {
+        background-color: variables.$white;
+        padding: 5px;
+        border-radius: 2px;
+      }
 
       li {
+        height: 1.3em;
         color: variables.$dark-brown;
         font-size: 25px;
         margin-left: 45px;
+        cursor: pointer;
+
+        a {
+          text-decoration: none;
+          color: variables.$dark-brown;
+          display: inline-flex;
+          height: 1em;
+          overflow: hidden;
+          flex-direction: column;
+          padding: 1px;
+          justify-items: center;
+
+          &:hover .inner {
+            transform: translateY(-100%);
+          }
+
+          .inner {
+            transform: translateY(0);
+            transition: transform 0.6s;
+          }
+        }
       }
     }
   }

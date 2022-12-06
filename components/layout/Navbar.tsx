@@ -20,7 +20,7 @@ const Navbar: FC = () => {
     setWindowWidth(window.innerWidth)
     window.addEventListener('resize', () => setWindowWidth(window.innerWidth))
     return () => window.removeEventListener('resize', () => setWindowWidth(window.innerWidth))
-    
+
   }, [])
 
   const handleLogout = async () => {
@@ -37,7 +37,7 @@ const Navbar: FC = () => {
   const { userId } = useSelector((state: RootState) => state.userSession)
 
   const isLogin = userId !== '' ? true : false
-  
+
   return (
     <header className={styles.header}>
       {windowWidth >= 900 ?
@@ -54,17 +54,66 @@ const Navbar: FC = () => {
       <nav className={windowWidth >= 900 ? styles.navbar : styles.dropdown} >
         {toggle || windowWidth >= 900 ?
           <ul>
-            <li><Link href='/'>Parcourir</Link></li>
+            <li 
+            className={router.pathname === "/" || (router.pathname.startsWith('/book') && !router.pathname.startsWith('/book/write') || router.pathname.startsWith('/author'))  
+            ? styles.selected: styles.notSelected}><Link href='/'><span className={styles.inner}>
+                    <span className={styles.content}>
+                      Parcourir
+                    </span>
+                  </span>
+                  <span className={styles.inner} aria-hidden="true">
+                    <span className={styles.content}>
+                      Parcourir
+                    </span>
+                  </span></Link></li>
             {isLogin ?
               <>
-                <li><Link href='/userinterface/infos/'>Mon espace</Link></li>
-                <li><Link href='/book/write'>Ecrire</Link></li>
+                <li className={router.pathname.startsWith("/userinterface") ? styles.selected: styles.notSelected}><Link href='/userinterface/infos/'>
+                  <span className={styles.inner}>
+                    <span className={styles.content}>
+                      Mon espace
+                    </span>
+                  </span>
+                  <span className={styles.inner} aria-hidden="true">
+                    <span className={styles.content}>
+                      Mon espace
+                    </span>
+                  </span>
+                </Link></li>
+                <li className={router.pathname.startsWith("/book/write") ? styles.selected: styles.notSelected}><Link href='/book/write'><span className={styles.inner}>
+                    <span className={styles.content}>
+                      Ecrire
+                    </span>
+                  </span>
+                  <span className={styles.inner} aria-hidden="true">
+                    <span className={styles.content}>
+                      Ecrire
+                    </span>
+                  </span></Link></li>
               </> : null
-      }
-            {isLogin ? 
-            <li onClick={handleLogout}><a>Me déconnecter</a></li> :
-            <li><Link href='/login'>Me Connecter</Link></li>
-            } 
+            }
+            {isLogin ?
+              <li onClick={handleLogout}><a><span className={styles.inner}>
+              <span className={styles.content}>
+                Me déconnecter
+              </span>
+            </span>
+            <span className={styles.inner} aria-hidden="true">
+              <span className={styles.content}>
+                Me deconnecter
+              </span>
+            </span></a></li> :
+              <li className={router.pathname.startsWith("/login") ? styles.selected: styles.notSelected}><Link href='/login'><span className={styles.inner}>
+              <span className={styles.content}>
+                Me connecter
+              </span>
+            </span>
+            <span className={styles.inner} aria-hidden="true">
+              <span className={styles.content}>
+                Me connecter
+              </span>
+            </span></Link></li>
+            }
           </ul>
           : null}
       </nav>

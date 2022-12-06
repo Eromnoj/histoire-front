@@ -19,6 +19,7 @@ export type BookMinProps = {
   total: number
   published: number
   category: string
+  isPublished: boolean
 }
 
 export type ChapterProps = {
