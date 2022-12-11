@@ -5,9 +5,8 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'http',
-        hostname:'localhost',
-        port:'5000',
+        protocol: 'https',
+        hostname:'calm-earth-06774.herokuapp.com',
         pathname:'/uploads/**'
       }
       ]

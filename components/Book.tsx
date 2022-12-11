@@ -46,8 +46,8 @@ const Book: FC<BookProps> = ({
         <Image
           src={picture}
           alt={"picture of a book"}
-          width={300}
-          height={300}
+          fill={true}
+          style={{objectFit:'cover'}}
         />
       </div>
       <div className={styles.bookInfo} style={{backgroundColor: colorTag}} >

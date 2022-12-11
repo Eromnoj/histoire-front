@@ -123,7 +123,7 @@ export default AuthorDescription
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query
-  const res = await axios(`http://localhost:5000/api/v1/user/${id}`)
+  const res = await axios(`${process.env.API_URL}api/v1/user/${id}`)
   const data = await res.data.user
 
   console.log(data);
