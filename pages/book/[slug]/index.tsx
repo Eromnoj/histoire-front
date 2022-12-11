@@ -29,7 +29,11 @@ const BookDescription: FC<BookDescProps> = ({ data }) => {
   const { userId } = useSelector((state: RootState) => state.userSession)
   const router = useRouter()
   const { slug } = router.query
-  const [chapSlug, setChapSlug] = data.chapters.length <= 0 ? useState('Pas de chapitres') : useState(data.chapters[0].slug)
+  const [chapSlug, setChapSlug] = useState<string | undefined>('Pas de chapitres')
+
+  if(data.chapters.length <= 0){
+    setChapSlug(data.chapters[0].slug)
+  } 
   const [trigger, setTrigger]= useState(false)
   const [msg, setMsg] = useState('')
 
@@ -151,7 +155,7 @@ const BookDescription: FC<BookDescProps> = ({ data }) => {
           </div>
 
           <div className={styles.authorInfo}>
-            <p>A propos de l'auteur :</p>
+            <p>A propos de l&apos;auteur :</p>
 
             <div className={styles.authorID}>
               <div className={styles.avatar}>

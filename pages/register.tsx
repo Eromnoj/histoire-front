@@ -39,7 +39,7 @@ const Register = () => {
   return (
     <Layout>
       <Head>
-        <title>Histoires | S' inscrire</title>
+        <title>Histoires | S&apos; inscrire</title>
         <meta name="description" content="Créer un compte" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

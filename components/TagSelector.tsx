@@ -10,7 +10,9 @@ import { chooseGenre, bookGenre } from '../stores'
 
 const TagSelector: FC<TagSelectorProps> = ({ method }) => {
 
-  const filter = method === 'filter' ? useSelector((state: RootState) => state.filter) : useSelector((state: RootState) => state.create)
+  const filterFilter = useSelector((state: RootState) => state.filter)
+  const filterCreate = useSelector((state: RootState) => state.create)
+  const filter = method === 'filter' ? filterFilter : filterCreate
   const { tags } = filter
   const dispatch = useDispatch()
   const allGenres = [{ id: 'youth', label: 'Jeunesse' },

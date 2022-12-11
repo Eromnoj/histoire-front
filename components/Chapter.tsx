@@ -78,7 +78,7 @@ const Chapter: FC<ChapterProps> = ({ id, title, isPublish }) => {
         <div className={styles.delModal}>
           <div className={styles.modalBox}>
 
-            <p>Voulez-vous supprimer le chapitre "{title}" ?</p>
+            <p>Voulez-vous supprimer le chapitre &quot;{title}&quot; ?</p>
             <p>Cette action est irréversible.</p>
             <button className={styles.buttonDelete} onClick={() => deleteChapter(id, setShowDeleteModal, router)}>Effacer</button>
             <button className={styles.buttonDiscard} onClick={() => setShowDeleteModal(false)}>Annuler</button>

@@ -8,7 +8,7 @@ const Select: FC<SelectProps> = ({ id, name, options, onChange }) => {
 
       <select name={name} id={id} className={styles.select} onChange={onChange}>
         {
-          options.map((opt: OptionProps) => <option value={opt._id}>{opt.chapterName}</option>)
+          options.map((opt: OptionProps) => <option key={opt._id}value={opt._id}>{opt.chapterName}</option>)
         }
       </select>
     </div>

@@ -16,7 +16,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { nextPage, prevPage, RootState } from '../stores'
 
 
-const bookShowcase: FC = () => {
+const BookShowcase: FC = () => {
   const [trigger, setTrigger]= useState(false)
   const [msg, setMsg] = useState('')
 
@@ -131,7 +131,7 @@ const bookShowcase: FC = () => {
   )
 }
 
-export default bookShowcase
+export default BookShowcase
 
 const getBooks = async (id: string,
   filter: FilterType,
@@ -179,7 +179,6 @@ const handleFav = async (id: string,
   try {
     const res = await axios.post(`/api/v1/user/favorites/${id}`)
     getBooks(userId, filter, setBooks, setNoResult, setTotalBook, setlimitBook, msgSetter, showSetter)
-    // TODO Ajouter le toast avec le message d'Ajout
     const data = res.data
     msgSetter(data.msg)
     showSetter(true)

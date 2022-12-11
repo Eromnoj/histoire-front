@@ -14,7 +14,7 @@ import { RootState } from '../../../stores'
 import type { ReaderProps } from '../../../types/pagesPropsTypes'
 import type { BookMarkType } from '../../../types/dataTypes'
 
-const read: FC<ReaderProps> = ({ data }) => {
+const Read: FC<ReaderProps> = ({ data }) => {
 
   const chapterEl = useRef<HTMLInputElement>(null)
   const [chapterScroll, setChapterScroll] = useState(0)
@@ -87,7 +87,7 @@ const read: FC<ReaderProps> = ({ data }) => {
   )
 }
 
-export default read
+export default Read
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { chlug } = context.query

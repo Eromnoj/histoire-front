@@ -32,7 +32,7 @@ const Forgot = () => {
       </Head>
       <div className={styles.main}>
         <p className={styles.title}>Mot de passe oublié</p>
-        <p className={styles.subtitle}> Entrez votre adresse afin de recevoir l'email pour renouveller votre mot de passe</p>
+        <p className={styles.subtitle}> Entrez votre adresse afin de recevoir l&apos;email pour renouveller votre mot de passe</p>
         <form className={styles.loginForm} onSubmit={(e) =>{
           e.preventDefault()
           handleSendEmail(email, setMsg, setTrigger)

@@ -5,10 +5,16 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname:'calm-earth-06774.herokuapp.com',
+        protocol: 'http',
+        hostname:'localhost',
+        port:'5000',
         pathname:'/uploads/**'
       }
+            // {
+      //   protocol: 'https',
+      //   hostname:'calm-earth-06774.herokuapp.com',
+      //   pathname:'/uploads/**'
+      // }
       ]
   }
 }

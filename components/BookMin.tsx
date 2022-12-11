@@ -59,7 +59,7 @@ const BookMin: FC<BookMinProps> = ({ id, title, total, published, category, isPu
         <div className={styles.delModal}>
           <div className={styles.modalBox}>
 
-            <p>Voulez-vous supprimer le livre "{title}" ?</p>
+            <p>Voulez-vous supprimer le livre &quot;{title}&quot; ?</p>
             <p>Cette action est irréversible.</p>
             <button className={styles.buttonDelete} onClick={() => deleteBook(id, setShowDeleteModal, router)}>Effacer</button>
             <button className={styles.buttonDiscard} onClick={() => setShowDeleteModal(false)}>Annuler</button>

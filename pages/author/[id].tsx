@@ -15,49 +15,51 @@ import Book from '../../components/Book'
 import Toast from '../../components/Toast'
 import { GetServerSideProps } from 'next'
 import axios from 'axios'
+import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../stores'
 
 
 const AuthorDescription: FC<AuthorProps> = ({ data }) => {
 
-  
-  const {userId} = useSelector((state:RootState)=> state.userSession)
-  
+  const router = useRouter()
+  const { userId } = useSelector((state: RootState) => state.userSession)
+
 
   const [windowWidth, setWindowWidth] = useState(0)
 
   useEffect(() => {
     setWindowWidth(window.innerWidth)
+    window.addEventListener('resize', () => setWindowWidth(window.innerWidth))
+    return () => window.removeEventListener('resize', () => setWindowWidth(window.innerWidth))
   }, [])
 
-  const [trigger, setTrigger]= useState(false)
+  const [trigger, setTrigger] = useState(false)
   const [msg, setMsg] = useState('')
 
-  useEffect(()=> {
-    if(trigger){
-      setTimeout(()=> {
+  useEffect(() => {
+    if (trigger) {
+      setTimeout(() => {
         setTrigger(false)
       }, 5000)
     }
-  },[trigger])
+  }, [trigger])
 
 
   const showBooks = data.books.map(book => {
-    const [isFavorite, setIsFavorite] = useState(book.favorite)
     return (
       <Book
         key={book._id}
         id={book._id}
-        picture={process.env.NEXT_PUBLIC_API_URL+book.coverPath}
+        picture={process.env.NEXT_PUBLIC_API_URL + book.coverPath}
         title={book.title}
         author={data.username}
         authorId={data._id}
         category={book.category}
         rating={book.avgRate[0]}
-        favorite={isFavorite}
+        favorite={book.favorite}
         slug={book.slug}
-        favClick={() => handleFav(book.slug, userId, book._id, setIsFavorite, setMsg, setTrigger )}
+        favClick={() => router.push(`/book/${book.slug}`)}
       />
     )
   })
@@ -75,7 +77,7 @@ const AuthorDescription: FC<AuthorProps> = ({ data }) => {
               <AuthorAvatar
                 id={data._id}
                 name={data.username}
-                imgUrl={process.env.NEXT_PUBLIC_API_URL+data.imgPath}
+                imgUrl={process.env.NEXT_PUBLIC_API_URL + data.imgPath}
               />
             </div>
             <div className={styles.social}>
@@ -107,13 +109,13 @@ const AuthorDescription: FC<AuthorProps> = ({ data }) => {
         </div>
         <div className={styles.bookNav}>
           <div className={styles.books}>
-          {showBooks}
+            {showBooks}
           </div>
         </div>
         {trigger ? <Toast
-        message={msg}
-        click={() => setTrigger(false)}
-      /> : null}
+          message={msg}
+          click={() => setTrigger(false)}
+        /> : null}
       </div>
     </Layout>
   )
@@ -126,36 +128,42 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const res = await axios(`${process.env.API_URL}api/v1/user/${id}`)
   const data = await res.data.user
 
-  console.log(data);
-  
   return { props: { data } }
 }
 
-const getFavorites = async (slug: any,
-  userId: string,
-  setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>) => {
-  const res = await axios(`/api/v1/book/byslug/${slug}?userId=${userId}`)
-  const favorites = await res.data.book.favorite
-  setIsFavorite(favorites)
+// const getFavorites = async (slug: any,
+//   userId: string,
+//   setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>,
+//   msgSetter: React.Dispatch<React.SetStateAction<string>>,
+//   showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
+//   try {
+//     const res = await axios(`/api/v1/book/byslug/${slug}?userId=${userId}`)
+//     const favorites = await res.data.book.favorite
+//     setIsFavorite(favorites)
 
-}
+//   } catch (error: any) {
+//     msgSetter(error.response.data.msg)
+//     showSetter(true)
+//   }
+
+// }
 
 
-const handleFav = async (slug: any,
-  userId: string,
-  id: string, 
-  setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>,
-  msgSetter: React.Dispatch<React.SetStateAction<string>>,
-  showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
-  try {
-    const res = await axios.post(`/api/v1/user/favorites/${id}`)
-    getFavorites(slug, userId, setIsFavorite)
-    // TODO Ajouter le toast avec le message d'Ajout
-    const data = res.data
-    msgSetter(data.msg)
-    showSetter(true)
-  } catch (error) {
-    console.log(error);
-
-  }
-}
+// const handleFav = async (slug: any,
+//   userId: string,
+//   id: string,
+//   setIsFavorite: React.Dispatch<React.SetStateAction<boolean>>,
+//   msgSetter: React.Dispatch<React.SetStateAction<string>>,
+//   showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
+//   try {
+//     const res = await axios.post(`/api/v1/user/favorites/${id}`)
+//     getFavorites(slug, userId, setIsFavorite, msgSetter, showSetter)
+//     // TODO Ajouter le toast avec le message d'Ajout
+//     const data = res.data
+//     msgSetter(data.msg)
+//     showSetter(true)
+//   }  catch (error: any) {
+//     msgSetter(error.response.data.msg)
+//     showSetter(true)
+//   }
+// }
