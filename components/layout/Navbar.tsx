@@ -29,7 +29,7 @@ const Navbar: FC = () => {
       console.log(res);
       
       dispatch(userSessionLogout())
-      // router.push('/login')
+      router.push('/login')
 
     } catch (error) {
 
