@@ -6,84 +6,20 @@ import Layout from '../../components/layout/Layout'
 
 import React, { FC } from 'react'
 
-import Image from 'next/image'
-import Facebook from '../../public/img/Facebook.png'
-import Twitter from '../../public/img/Twitter.png'
-import Mail from '../../public/img/Envelope.png'
+
+import type { AuthorProps } from '../../types/pagesPropsTypes'
 
 import AuthorAvatar from '../../components/AuthorAvatar'
+import SocialLink from '../../components/SocialLinks'
 import Book from '../../components/Book'
 import Toast from '../../components/Toast'
 import { GetServerSideProps } from 'next'
 import axios from 'axios'
-import Link from 'next/link'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../stores'
 
-type SocialLinkProps = {
-  twitter?: string
-  facebook?: string
-  email?: string
-}
-const SocialLink: FC<SocialLinkProps> = ({ twitter, facebook, email }) => {
 
-  return (
-    <div className={styles.links}>
-
-      {twitter ?
-        <div className={styles.socialLink}>
-          <Link href={twitter}>
-            <Image
-              src={Twitter}
-              width={45}
-              height={45}
-              alt='Facebook'
-            />
-          </Link>
-        </div>
-        : null}
-      {facebook ?
-        <div className={styles.socialLink}>
-          <Link href={facebook}>
-            <Image
-              src={Facebook}
-              width={45}
-              height={45}
-              alt='Facebook'
-            />
-          </Link>
-        </div>
-        : null}
-      {email ?
-        <div className={styles.socialLink}>
-          <Link href={'mailto:' + email}>
-            <Image
-              src={Mail}
-              width={45}
-              height={45}
-              alt='Facebook'
-            />
-          </Link>
-        </div>
-        : null}
-    </div>
-  )
-}
-
-type dataProps = {
-  data: {
-    _id: string
-    email: string
-    twitter: string
-    facebook: string
-    description: string
-    imgPath: string
-    username: string
-    books: { category: string, favorite: boolean, _id: string, coverPath: string, title: string , avgRate: number[], slug: string}[]
-  }
-}
-
-const AuthorDescription: FC<dataProps> = ({ data }) => {
+const AuthorDescription: FC<AuthorProps> = ({ data }) => {
 
   
   const {userId} = useSelector((state:RootState)=> state.userSession)
@@ -129,7 +65,7 @@ const AuthorDescription: FC<dataProps> = ({ data }) => {
     <Layout>
       <Head>
         <title>Histoires | {data.username}</title>
-        <meta name="description" content="Partagez vos histoires" />
+        <meta name="description" content={`${data.username} : Description de l'auteur, ces livres, `} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.main}>

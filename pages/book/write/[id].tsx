@@ -19,21 +19,7 @@ import { Dispatch } from '@reduxjs/toolkit'
 import axios from 'axios'
 import { NextRouter, useRouter } from 'next/router'
 
-type BookState = {
-  category: string,
-  tags: string[],
-  title: string,
-  description: string,
-  coverPath: string
-}
-
-type ChapterType = {
-  _id: string,
-  title: string,
-  chapterOrder: number,
-  isPublished: boolean
-}
-
+import type { ChapterType, BookStateType } from '../../../types/dataTypes'
 const EditBook = () => {
   const router = useRouter()
   const { id } = router.query
@@ -69,8 +55,8 @@ const EditBook = () => {
   return (
     <Layout>
       <Head>
-        <title>Histoires | Parcourir</title>
-        <meta name="description" content="Partagez vos histoires" />
+        <title>Histoires | {bookCreate.title}</title>
+        <meta name="description" content={`Je modifie le livre : ${bookCreate.title}`} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.main}>
@@ -157,7 +143,7 @@ const EditBook = () => {
 export default EditBook
 
 
-const handleBookSumbit = async (book: BookState, router: NextRouter, id: any,
+const handleBookSumbit = async (book: BookStateType, router: NextRouter, id: any,
   msgSetter: React.Dispatch<React.SetStateAction<string>>,
   showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
 

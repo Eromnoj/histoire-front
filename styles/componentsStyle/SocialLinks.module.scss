@@ -1,0 +1,25 @@
+@use '../variables';
+
+
+.links {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+
+@media screen and (min-width:900px) {
+
+  .links {
+    margin-top: 30px;
+    justify-content: space-evenly;
+    display: flex;
+  }
+}
+
+@media screen and (min-width:1066px) {
+
+  .links {
+    justify-content: space-evenly;
+  }
+}

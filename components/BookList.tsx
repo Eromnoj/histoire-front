@@ -3,6 +3,7 @@ import styles from '../styles/componentsStyle/BookList.module.scss'
 
 import StoryLink from './StoryLink'
 import NavArrow from './NavArrow'
+
 const BookList: FC = () => {
   return (
     <div className={styles.bookList}>

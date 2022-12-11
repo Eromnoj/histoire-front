@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import Tag from './form/Tag'
 import { backFirstPage, RootState } from '../stores'
 import { sortBy } from '../stores'
 
-const Sort = () => {
+const Sort:FC = () => {
 
   const filter = useSelector((state:RootState)=> state.filter)
   const {sorted} = filter

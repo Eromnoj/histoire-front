@@ -1,13 +1,10 @@
-import React, { FC, MouseEventHandler } from 'react'
+import React, { FC } from 'react'
 import styles from '../styles/componentsStyle/Toast.module.scss'
 import Image from 'next/image'
 import Cross from '../public/img/Cross.png'
 
+import type { ToastProps } from '../types/componentsTypes'
 
-type ToastProps = {
-  message: string,
-  click: MouseEventHandler
-}
 const Toast: FC<ToastProps> = ({ message, click }) => {
 
   return (
@@ -16,13 +13,13 @@ const Toast: FC<ToastProps> = ({ message, click }) => {
         {message}
       </div>
       <div className={styles.toastClose} onClick={click}>
-          <Image
+        <Image
           src={Cross}
           width={45}
           height={45}
           alt='Fermer'
-          />
-        </div>
+        />
+      </div>
     </div>
   )
 }

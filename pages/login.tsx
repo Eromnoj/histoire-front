@@ -8,15 +8,13 @@ import SubmitButton from '../components/form/SubmitButton'
 import Toast from '../components/Toast'
 import React, { useReducer, useState, useEffect } from 'react'
 
-import axios, { AxiosError } from 'axios'
-
-import { NextRouter, useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import { useDispatch } from 'react-redux'
-import { userSessionLogin } from '../stores'
 import Link from 'next/link'
-import { Dispatch } from '@reduxjs/toolkit'
 
-import {LoginData, initialState, reducer} from '../reducers/login'
+import { initialState, reducer} from '../reducers/login'
+
+import { handleLogin } from '../utils/AuthenticationFunction'
 const Login = () => {
 
   const router = useRouter()
@@ -85,26 +83,4 @@ const Login = () => {
 }
 
 export default Login
-
-
-const handleLogin = async (data: LoginData,
-  msgSetter: React.Dispatch<React.SetStateAction<string>>,
-  showSetter: React.Dispatch<React.SetStateAction<boolean>>,
-  dispatchSession: Dispatch,
-  router: NextRouter) => {
-
-  try {
-    const res = await axios.post('/api/v1/auth/login', data)
-    const userData = await res.data
-    dispatchSession(userSessionLogin(userData.user))
-    const { userId } = userData.user
-    router.push(`/userinterface/infos/`)
-
-  } catch (error: any | AxiosError) {
-    // console.log(error)
-    msgSetter(error.response.data.msg)
-    showSetter(true)
-  }
-
-}
 

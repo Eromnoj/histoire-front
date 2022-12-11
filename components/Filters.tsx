@@ -4,7 +4,6 @@ import styles from '../styles/componentsStyle/Filters.module.scss'
 import CategorySelector from './CategorySelector'
 import TagSelector from './TagSelector'
 import InputField from './form/InputField'
-import BookList from './BookList'
 import Sort from './Sort'
 
 

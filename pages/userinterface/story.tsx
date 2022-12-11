@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import styles from '../../styles/Stories.module.scss'
 
-import React, { useEffect, useState } from 'react'
+import React, {FC, useEffect, useState } from 'react'
 
 import Layout from '../../components/layout/Layout'
 import UserNav from '../../components/UserNav'
@@ -9,17 +9,11 @@ import BookMin from '../../components/BookMin'
 import Toast from '../../components/Toast'
 import axios from 'axios'
 
-type book = {
-  _id: string,
-  title: string,
-  category: string,
-  chaptersTotal: number,
-  chaptersPublished: number,
-  isPublished: boolean
-}
-const Stories = () => {
+import type { BookStoryType } from '../../types/dataTypes'
 
-  const [myBooks, setMyBooks] = useState<book[]>([])
+const Stories:FC = () => {
+
+  const [myBooks, setMyBooks] = useState<BookStoryType[]>([])
   
   const [trigger, setTrigger]= useState(false)
   const [msg, setMsg] = useState('')
@@ -52,8 +46,8 @@ const Stories = () => {
   return (
     <Layout>
       <Head>
-        <title>Histoires | Parcourir</title>
-        <meta name="description" content="Partagez vos histoires" />
+        <title>Histoires | Mes histoires</title>
+        <meta name="description" content="Parcourir et éditez mes histoires" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.main}>
@@ -79,7 +73,7 @@ const Stories = () => {
 
 export default Stories
 
-const getMyBooks = async (setMyBooks: React.Dispatch<React.SetStateAction<book[]>>,
+const getMyBooks = async (setMyBooks: React.Dispatch<React.SetStateAction<BookStoryType[]>>,
   setTrigger:React.Dispatch<React.SetStateAction<boolean>>,
   setMsg:React.Dispatch<React.SetStateAction<string>>) => {
   try {

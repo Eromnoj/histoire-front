@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from 'react'
+import React,{FC,useState, useEffect} from 'react'
 import Head from 'next/head'
 import styles from '../../styles/login.module.scss'
 
@@ -11,7 +11,7 @@ import axios from 'axios'
 
 import { useRouter } from 'next/router'
 
-const Recover = () => {
+const Recover:FC = () => {
   const router = useRouter()
   const {id} = router.query
   const [password, setPassword] = useState('')
@@ -46,7 +46,7 @@ const Recover = () => {
       <Layout>
         <Head>
           <title>Histoires | Renouveller mon mot de passe</title>
-          <meta name="description" content="Me connecter à mon compte" />
+          <meta name="description" content="Renouveller mon mot de passe" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <div className={styles.main}>

@@ -8,15 +8,14 @@ import SubmitButton from '../components/form/SubmitButton'
 import Toast from '../components/Toast'
 
 import React, { useEffect, useReducer, useState } from 'react'
-import axios, { AxiosError } from 'axios'
 
-import { NextRouter, useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import  {useDispatch } from 'react-redux'
-import { userSessionLogin } from '../stores'
 import Link from 'next/link'
-import { Dispatch } from '@reduxjs/toolkit'
 
-import { initialState, reducer, RegisterData } from '../reducers/register'
+import { initialState, reducer } from '../reducers/register'
+
+import { handleRegister } from '../utils/AuthenticationFunction'
 
 const Register = () => {
 
@@ -95,24 +94,3 @@ const Register = () => {
 }
 
 export default Register
-
-
-// Functions
-const handleRegister = async (data: RegisterData,
-  msgSetter: React.Dispatch<React.SetStateAction<string>>,
-  showSetter: React.Dispatch<React.SetStateAction<boolean>>,
-  dispatchSession:Dispatch,
-  router: NextRouter) => {
-
-    try {
-      const res = await axios.post('/api/v1/auth/register', data)
-      const userData = await res.data
-      dispatchSession(userSessionLogin(userData.user))
-      router.push(`/userinterface/infos/`)
-   
-    } catch (error: any | AxiosError) {
-      msgSetter(error.response.data.msg)
-      showSetter(true)
-    }
-
-  }

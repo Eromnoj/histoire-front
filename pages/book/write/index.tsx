@@ -16,14 +16,7 @@ import { bookDescription, bookReinit, bookTitle, RootState } from '../../../stor
 import axios from 'axios'
 import { NextRouter, useRouter } from 'next/router'
 
-
-type BookState = {
-  category: string,
-  tags: string[],
-  title: string,
-  description: string,
-  coverPath: string
-}
+import type { BookStateType } from '../../../types/dataTypes'
 
 const Create = () => {
   const dispatch = useDispatch()
@@ -46,8 +39,8 @@ const Create = () => {
   return (
     <Layout>
       <Head>
-        <title>Histoires | Parcourir</title>
-        <meta name="description" content="Partagez vos histoires" />
+        <title>Histoires | Ecrire une nouvelle histoire</title>
+        <meta name="description" content="J'écris mon histoire" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.main}>
@@ -98,7 +91,7 @@ const Create = () => {
 
 export default Create
 
-const handleBookSumbit = async (book:BookState, router: NextRouter,
+const handleBookSumbit = async (book:BookStateType, router: NextRouter,
   msgSetter: React.Dispatch<React.SetStateAction<string>>,
   showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
     

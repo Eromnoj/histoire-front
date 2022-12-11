@@ -7,7 +7,8 @@ import InputField from '../components/form/InputField'
 import SubmitButton from '../components/form/SubmitButton'
 import Toast from '../components/Toast'
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+
+import { handleSendEmail} from '../utils/AuthenticationFunction'
 
 const Forgot = () => {
 
@@ -62,21 +63,3 @@ const Forgot = () => {
 }
 
 export default Forgot
-
-//functions
-const handleSendEmail = async (email:string,
-  msgSetter: React.Dispatch<React.SetStateAction<string>>,
-  showSetter: React.Dispatch<React.SetStateAction<boolean>>,) => {
-  const origin = typeof window !== 'undefined' && window.location.origin ? window.location.origin : ''
-      
-  try {
-    const res = await axios.post('/api/v1/auth/recover', {email, origin})
-    const {data} = res
-    msgSetter(data.msg)
-    showSetter(true)
-  } catch (error:any) {
-    console.log(error);
-    msgSetter(error.response.data.msg)
-    showSetter(true)
-  }
-}

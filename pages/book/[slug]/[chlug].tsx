@@ -11,21 +11,10 @@ import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../stores'
 
-type dataProps = {
-  data: {
-    _id: string,
-    title: string,
-    chapterOrder: number,
-    isPublished: boolean,
-    content: string,
-    slug: string
-  }
-}
-type BookMark = {
-  chapterId : string,
-  bookmark: number
-}
-const read: FC<dataProps> = ({ data }) => {
+import type { ReaderProps } from '../../../types/pagesPropsTypes'
+import type { BookMarkType } from '../../../types/dataTypes'
+
+const read: FC<ReaderProps> = ({ data }) => {
 
   const chapterEl = useRef<HTMLInputElement>(null)
   const [chapterScroll, setChapterScroll] = useState(0)
@@ -115,7 +104,7 @@ const setBookmark = async (userId: string,
   setMessage:React.Dispatch<React.SetStateAction<string>>,
   setTrigger:React.Dispatch<React.SetStateAction<boolean>>) => {
  
-    const bookmark:BookMark = {
+    const bookmark:BookMarkType = {
       chapterId: id,
       bookmark: scrollPosition
     }

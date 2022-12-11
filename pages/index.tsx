@@ -24,7 +24,7 @@ const Home = () => {
     <Layout>
       <Head>
         <title>Histoires | Parcourir</title>
-        <meta name="description" content="Partagez vos histoires" />
+        <meta name="description" content="Créez, editez et partagez vos histoires" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={windowWidth >= 1066 ? styles.main : styles.mainResponsive}>

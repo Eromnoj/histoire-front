@@ -21,32 +21,11 @@ import { GetServerSideProps } from 'next'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../stores'
 
+import type { BookDescProps } from '../../../types/pagesPropsTypes'
+import type { ChapterType } from '../../../types/dataTypes'
 
 
-type dataProps = {
-  data: {
-    _id: string
-    tags: string[]
-    description: string
-    coverPath: string
-    title: string
-    author: { username: string, description: string, _id: string, imgPath: string }[]
-    category: string
-    avgRate: number
-    favorite: boolean
-    chapters: Chapter[]
-  }
-}
-
-type Chapter = {
-  _id: string,
-  title: string,
-  chapterOrder: number,
-  isPublished: boolean,
-  slug: string
-}
-
-const BookDescription: FC<dataProps> = ({ data }) => {
+const BookDescription: FC<BookDescProps> = ({ data }) => {
   const { userId } = useSelector((state: RootState) => state.userSession)
   const router = useRouter()
   const { slug } = router.query
@@ -128,7 +107,7 @@ const BookDescription: FC<dataProps> = ({ data }) => {
     }
   }
 
-  const displayChapter = data.chapters.length > 0 ? data.chapters.map((chapter:Chapter) => {
+  const displayChapter = data.chapters.length > 0 ? data.chapters.map((chapter:ChapterType) => {
    return {
       key: chapter._id,
       _id: chapter.slug,
@@ -145,8 +124,8 @@ const BookDescription: FC<dataProps> = ({ data }) => {
   return (
     <Layout>
       <Head>
-        <title>Histoires | Parcourir</title>
-        <meta name="description" content="Partagez vos histoires" />
+        <title>Histoires | {data.title}</title>
+        <meta name="description" content={`${data.title} par ${data.author[0].username} : ${data.description}`} />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className={styles.main}>

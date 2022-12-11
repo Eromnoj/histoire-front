@@ -34,6 +34,16 @@ export type NavArrowProps = {
   style? : {}
 }
 
+export type ToastProps = {
+  message: string,
+  click: MouseEventHandler
+}
+
+export type SocialLinkProps = {
+  twitter?: string
+  facebook?: string
+  email?: string
+}
 
 //form Components
 
@@ -78,7 +88,7 @@ export type SelectProps = {
 }
 
 export type OptionProps = {
-  _id: string
+  _id?: string
   chapterName: string
 }
 

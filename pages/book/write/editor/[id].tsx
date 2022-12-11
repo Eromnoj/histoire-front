@@ -15,18 +15,14 @@ import axios from 'axios'
 
 const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false
 
-type Chapter = {
-  title: string,
-  content: string,
-  chapterOrder: number
-}
+import type { EditorChapterType } from '../../../../types/dataTypes'
 
 const Edit = () => {
   const router = useRouter()
   const {id} = router.query
 
   const dispatch = useDispatch()
-  const chapter:Chapter = useSelector((state:RootState) => state.chapter)
+  const chapter:EditorChapterType = useSelector((state:RootState) => state.chapter)
   const [trigger, setTrigger]= useState(false)
   const [msg, setMsg] = useState('')
 
@@ -110,7 +106,7 @@ const getChapterContent = async (id:any, dispatch:Dispatch,
   }
 }
 
-const saveChapter = async (id: any, chapterData:Chapter,
+const saveChapter = async (id: any, chapterData:EditorChapterType,
   msgSetter: React.Dispatch<React.SetStateAction<string>>,
   showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
   try {

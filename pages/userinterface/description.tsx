@@ -47,7 +47,7 @@ const Description: FC = () => {
   return (
     <Layout>
       <Head>
-        <title>Histoires | Parcourir</title>
+        <title>Histoires | Ma déscription</title>
         <meta name="description" content="Partagez vos histoires" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

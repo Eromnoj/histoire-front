@@ -1,6 +1,8 @@
 import React, { FC, useState, useEffect } from 'react'
 import styles from '../styles/componentsStyle/BookShowcase.module.scss'
 
+import type {BookType, FilterType} from '../types/dataTypes'
+
 import Book from './Book'
 import NavArrow from './NavArrow'
 import Sort from './Sort'
@@ -13,25 +15,6 @@ import axios from 'axios'
 import { useSelector, useDispatch } from 'react-redux'
 import { nextPage, prevPage, RootState } from '../stores'
 
-type BookType = {
-  _id: string
-  coverPath: string
-  title: string
-  author: { username: string, description: string, _id: string }[],
-  category: string
-  avgRate: number
-  slug: string
-  favorite: boolean
-}
-
-
-type FilterType = {
-  category: string[],
-  tags: string[],
-  search: string,
-  sorted: string,
-  page: number
-}
 
 const bookShowcase: FC = () => {
   const [trigger, setTrigger]= useState(false)
