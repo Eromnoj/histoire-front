@@ -32,7 +32,8 @@ const Navbar: FC = () => {
       // router.push('/login')
 
     } catch (error) {
-
+      console.log(error);
+      
     }
   }
 
