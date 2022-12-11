@@ -13,7 +13,7 @@ export const config = {
 
 export default (req:NextApiRequest,res: NextApiResponse) => {
   return new Promise<void>((resolve, reject) => {
-    proxy.web(req, res, {target: API_URL, changeOrigin: true, cookieDomainRewrite: "effervescent-marzipan-3cf65f.netlify.app"}, (err) => {
+    proxy.web(req, res, {target: API_URL, changeOrigin: false}, (err) => {
       if (err) {
         return reject(err)
       }
