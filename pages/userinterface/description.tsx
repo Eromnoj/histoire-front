@@ -165,7 +165,8 @@ const updateAvatar = async (file: FileList | null,
           'Content-Type': 'multipart/form-data'
         }
       })
-      const imgPath = await res.data.image
+      const data = await res.data
+      const imgPath = data.image
 
       avatarSetter(imgPath)
 
