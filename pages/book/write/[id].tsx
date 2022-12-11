@@ -173,7 +173,8 @@ const updateBookCover = async (file: FileList | null,
           'Content-Type': 'multipart/form-data'
         }
       })
-      const img = await res.data.image
+      const data = await res.data
+      const img = data.image
 
       dispatch(bookImgPath({ coverPath: img }))
 
