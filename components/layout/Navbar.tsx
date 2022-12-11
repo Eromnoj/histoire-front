@@ -26,8 +26,6 @@ const Navbar: FC = () => {
   const handleLogout = async () => {
     try {
       const res = await axios('/api/v1/auth/logout')
-      console.log(res);
-      document.cookie('token=0; path=/')
       dispatch(userSessionLogout())
       router.push('/login')
 
