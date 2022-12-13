@@ -125,6 +125,7 @@ const BookDescription: FC<BookDescProps> = ({ data }) => {
     }
   ]
 
+  if(data.chapters.length > 0) setChapSlug(data.chapters[0].slug)
   return (
     <Layout>
       <Head>
