@@ -9,12 +9,14 @@
 .select {
   width: 95%;
   height: 45px;
-  overflow:hidden; 
-  white-space:nowrap; 
-  text-overflow:ellipsis;
   font-family: 'Josefin Sans', sans-serif;
   @include variables.drop-shadow(2px, 2px);
   font-size: 20px;
-  color: variables.$dark-brown
+  color: variables.$dark-brown;
+  &:not(:-internal-list-box) {
+    overflow:hidden; 
+    white-space:nowrap; 
+    text-overflow:ellipsis;
+  }
 }
 }
