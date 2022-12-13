@@ -31,9 +31,12 @@ const BookDescription: FC<BookDescProps> = ({ data }) => {
   const { slug } = router.query
   const [chapSlug, setChapSlug] = useState<string | undefined>('Pas de chapitres')
 
-  if(data.chapters.length <= 0){
-    setChapSlug(data.chapters[0].slug)
-  } 
+  useEffect(()=> {
+
+    if(data.chapters.length <= 0){
+      setChapSlug(data.chapters[0].slug)
+    } 
+  },[data])
   const [trigger, setTrigger]= useState(false)
   const [msg, setMsg] = useState('')
 
