@@ -31,22 +31,21 @@ const BookDescription: FC<BookDescProps> = ({ data }) => {
   const { slug } = router.query
   const [chapSlug, setChapSlug] = useState<string | undefined>('Pas de chapitres')
 
-  useEffect(()=> {
 
-    if(data.chapters.length <= 0){
-      setChapSlug(data.chapters[0].slug)
-    } 
-  },[data])
-  const [trigger, setTrigger]= useState(false)
+  if (data.chapters.length > 0) {
+    setChapSlug(data.chapters[0].slug)
+  }
+
+  const [trigger, setTrigger] = useState(false)
   const [msg, setMsg] = useState('')
 
-  useEffect(()=> {
-    if(trigger){
-      setTimeout(()=> {
+  useEffect(() => {
+    if (trigger) {
+      setTimeout(() => {
         setTrigger(false)
       }, 5000)
     }
-  },[trigger])
+  }, [trigger])
 
   const [isFavorite, setIsFavorite] = useState(data.favorite)
   const [rate, setRate] = useState(0)
@@ -96,26 +95,27 @@ const BookDescription: FC<BookDescProps> = ({ data }) => {
 
 
   let rateDisplay = []
-  const star = (key:number, styleArray:string[]) => { 
-    return(
-   <li key={key} className={styleArray.join(' ')} onClick={() => handleRate(data._id, key, setRate, setMsg, setTrigger)}>
-    <Image
-      src={Star}
-      width={45}
-      height={45}
-      alt={`Star vote ${key}`}
-    />
-  </li>)}
-  for(let i=0; i < 5; i++ ){
-    if(i < 5 - rate){
-      rateDisplay.push(star(Math.abs(i-5),[styles.star]))
+  const star = (key: number, styleArray: string[]) => {
+    return (
+      <li key={key} className={styleArray.join(' ')} onClick={() => handleRate(data._id, key, setRate, setMsg, setTrigger)}>
+        <Image
+          src={Star}
+          width={45}
+          height={45}
+          alt={`Star vote ${key}`}
+        />
+      </li>)
+  }
+  for (let i = 0; i < 5; i++) {
+    if (i < 5 - rate) {
+      rateDisplay.push(star(Math.abs(i - 5), [styles.star]))
     } else {
-      rateDisplay.push(star(Math.abs(i-5),[styles.star, styles.ok]))
+      rateDisplay.push(star(Math.abs(i - 5), [styles.star, styles.ok]))
     }
   }
 
-  const displayChapter = data.chapters.length > 0 ? data.chapters.map((chapter:ChapterType) => {
-   return {
+  const displayChapter = data.chapters.length > 0 ? data.chapters.map((chapter: ChapterType) => {
+    return {
       key: chapter._id,
       _id: chapter.slug,
       chapterName: `Chapitre ${chapter.chapterOrder} - ${chapter.title}`
@@ -141,7 +141,7 @@ const BookDescription: FC<BookDescProps> = ({ data }) => {
 
             <Book
               id={data._id}
-              picture={process.env.NEXT_PUBLIC_API_URL+data.coverPath}
+              picture={process.env.NEXT_PUBLIC_API_URL + data.coverPath}
               title={data.title}
               author={data.author[0].username}
               authorId={data.author[0]._id}
@@ -166,7 +166,7 @@ const BookDescription: FC<BookDescProps> = ({ data }) => {
                   <AuthorAvatar
                     id={data.author[0]._id}
                     name={data.author[0].username}
-                    imgUrl={process.env.NEXT_PUBLIC_API_URL+data.author[0].imgPath}
+                    imgUrl={process.env.NEXT_PUBLIC_API_URL + data.author[0].imgPath}
                   />
                 </Link>
               </div>
@@ -185,7 +185,7 @@ const BookDescription: FC<BookDescProps> = ({ data }) => {
         </div>
         <div className={styles.content}>
           <div className={styles.rate}>
-              <h3>Notez cet ouvrage :</h3>
+            <h3>Notez cet ouvrage :</h3>
             <ul className={styles.starsList}>
               {rateDisplay}
             </ul>
@@ -196,18 +196,18 @@ const BookDescription: FC<BookDescProps> = ({ data }) => {
           </p>
 
 
-          <form className={styles.selectChapter} onSubmit= { data.chapters.length > 0 ? (e) => {
+          <form className={styles.selectChapter} onSubmit={data.chapters.length > 0 ? (e) => {
             e.preventDefault()
             console.log(e);
             router.push(`/book/${slug}/${chapSlug}`)
           } : (e) => e.preventDefault()  // If there's no chapters, do nothing
-        }>
+          }>
             <div>
 
               <Select
                 id='select_chapter'
                 name='select_chapter'
-                onChange={(e)=>{ setChapSlug(e.currentTarget.value)}}
+                onChange={(e) => { setChapSlug(e.currentTarget.value) }}
                 options={displayChapter}
               />
             </div>
@@ -220,9 +220,9 @@ const BookDescription: FC<BookDescProps> = ({ data }) => {
           </form>
         </div>
         {trigger ? <Toast
-        message={msg}
-        click={() => setTrigger(false)}
-      /> : null}
+          message={msg}
+          click={() => setTrigger(false)}
+        /> : null}
       </div>
     </Layout>
   )
@@ -260,7 +260,7 @@ const handleFav = async (slug: any,
     // TODO Ajouter le toast avec le message d'Ajout
     const data = res.data
     console.log(data);
-    
+
     msgSetter(data.msg)
     showSetter(true)
   } catch (error) {
@@ -269,12 +269,12 @@ const handleFav = async (slug: any,
   }
 }
 
-const handleRate = async (bookId: string, rate:number, 
+const handleRate = async (bookId: string, rate: number,
   setRate: React.Dispatch<React.SetStateAction<number>>,
   msgSetter: React.Dispatch<React.SetStateAction<string>>,
   showSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
   try {
-    const res = await axios.post('/api/v1/book/ratebook',{bookId: bookId, rate: rate.toString()})
+    const res = await axios.post('/api/v1/book/ratebook', { bookId: bookId, rate: rate.toString() })
     const data = await res.data
     getUserRate(bookId, setRate, msgSetter, showSetter)
     msgSetter(data.msg)
@@ -283,7 +283,7 @@ const handleRate = async (bookId: string, rate:number,
     msgSetter('Une erreur est survenue.')
     showSetter(true)
   }
- }
+}
 
 const getUserRate = async (id: string, setRate: React.Dispatch<React.SetStateAction<number>>,
   msgSetter: React.Dispatch<React.SetStateAction<string>>,
@@ -292,11 +292,11 @@ const getUserRate = async (id: string, setRate: React.Dispatch<React.SetStateAct
     const res = await axios(`/api/v1/user/rate/${id}`)
     const rate = await res.data.rate
     setRate(rate)
-  } catch (error:any) {
-    if(error.code === 'ERR_BAD_REQUEST'){
+  } catch (error: any) {
+    if (error.code === 'ERR_BAD_REQUEST') {
       msgSetter(`N'hésitez pas à donner une note !`)
-    showSetter(true)
+      showSetter(true)
     }
-    
+
   }
 }
