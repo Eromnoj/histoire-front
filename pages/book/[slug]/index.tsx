@@ -124,8 +124,6 @@ const BookDescription: FC<BookDescProps> = ({ data }) => {
       chapterName: `Pas de chapitres`
     }
   ]
-
-  if(data.chapters.length > 0) setChapSlug(data.chapters[0].slug)
   return (
     <Layout>
       <Head>
