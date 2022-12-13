@@ -9,6 +9,7 @@
 .select {
   width: 95%;
   height: 45px;
+  overflow-wrap: break-word;
   font-family: 'Josefin Sans', sans-serif;
   @include variables.drop-shadow(2px, 2px);
   font-size: 20px;
