@@ -13,12 +13,7 @@
   @include variables.drop-shadow(2px, 2px);
   font-size: 20px;
   color: variables.$dark-brown;
-
+  overflow-x: hidden;
 }
 }
 
-select:not(:-internal-list-box) {
-  overflow:hidden; 
-  white-space:nowrap; 
-  text-overflow:ellipsis;
-}
