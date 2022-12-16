@@ -28,7 +28,7 @@ const Navbar: FC = () => {
     try {
       const res = await axios(`/api/v1/auth/logout`)
       dispatch(userSessionLogout())
-      deleteCookie('token', {httpOnly: true})
+      deleteCookie('token', {httpOnly: true, domain: 'effervescent-marzipan-3cf65f.netlify.app', path:'/'})
       router.push('/login')
 
     } catch (error) {
