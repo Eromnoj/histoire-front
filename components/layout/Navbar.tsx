@@ -25,7 +25,7 @@ const Navbar: FC = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await axios(`/api/v1/auth/logout`)
+      const res = await axios(`/api/logout`)
       dispatch(userSessionLogout())
       const data = await res.data
       console.log(data);
