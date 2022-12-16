@@ -28,8 +28,8 @@ const Navbar: FC = () => {
     try {
       const res = await axios(`/api/v1/auth/logout`)
       dispatch(userSessionLogout())
-      deleteCookie('token')
-      router.push('/login')
+      // deleteCookie('token')
+      // router.push('/login')
 
     } catch (error) {
 
