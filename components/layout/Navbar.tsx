@@ -27,9 +27,6 @@ const Navbar: FC = () => {
     try {
       const res = await axios(`/api/v1/auth/logout`)
       dispatch(userSessionLogout())
-      const data = await res.data
-      console.log(data);
-      
       router.push('/login')
 
     } catch (error) {
