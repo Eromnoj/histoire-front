@@ -3,7 +3,6 @@ import styles from '../../styles/layoutStyle/Navbar.module.scss'
 import Image from 'next/image'
 import burger from '../../public/img/Menu.png'
 import Link from 'next/link'
-import { deleteCookie, setCookie } from 'cookies-next'
 
 import axios from 'axios'
 import { useRouter } from 'next/router'
@@ -28,8 +27,8 @@ const Navbar: FC = () => {
     try {
       const res = await axios(`/api/v1/auth/logout`)
       dispatch(userSessionLogout())
-      // deleteCookie('token')
-      // router.push('/login')
+
+      router.push('/login')
 
     } catch (error) {
 
