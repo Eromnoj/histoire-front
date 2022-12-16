@@ -28,7 +28,7 @@ const Navbar: FC = () => {
     try {
       const res = await axios(`/api/v1/auth/logout`)
       dispatch(userSessionLogout())
-      deleteCookie('token', {httpOnly: true, domain: process.env.NEXT_PUBLIC_API_URL, path:'/'})
+      setCookie('token', {expires: new Date(Date.now())})
       router.push('/login')
 
     } catch (error) {
